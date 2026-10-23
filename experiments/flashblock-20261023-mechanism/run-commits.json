@@ -56,6 +56,16 @@
       "stage": "summary_polish",
       "sha": "8b39878944e8c2b9580abb7e958d3bf8ec25be3d",
       "note": "summary-only change; raw formal data unchanged"
+    },
+    {
+      "stage": "summary_provenance_commands",
+      "sha": "a9c021af2eb8adb2f0977d5fd3dbe94901b6e0fa",
+      "note": "exact executed commands and report artifact list; raw formal data unchanged"
+    },
+    {
+      "stage": "summary_compact_exports",
+      "sha": "59a4e63d5ffcb6c715ad89459597fa913e81160c",
+      "note": "bounded trace and compact per-prompt export; raw formal data unchanged"
     }
   ],
   "push_mode": "relay",
