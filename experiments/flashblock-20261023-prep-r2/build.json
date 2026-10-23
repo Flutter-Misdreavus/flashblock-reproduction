@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r2",
+  "commit": "40d9a88272829e63a9d176ee6ec1126b46a6e507",
+  "command": "TMPDIR=<runtime>/tmp bash repro/build_flash_attn.sh",
+  "script_sha256": "8628a2c16992ee2961574c3a97c658dcf716540f0d2a8e4e9df3498acb75d7b7",
+  "vendored_tree_commit": "a322fb80f29df0d4cc842fbc011929bc85ba8f36",
+  "env": {
+    "CUDA_HOME": "/usr/local/cuda-12.8",
+    "FLASH_ATTN_CUDA_ARCHS": "86",
+    "FLASH_ATTENTION_FORCE_BUILD": "TRUE",
+    "MAX_JOBS": "2",
+    "TORCH_CUDA_ARCH_LIST": "8.6"
+  },
+  "nvcc": "Cuda compilation tools, release 12.8, V12.8.93",
+  "torch": "2.4.1+cu121",
+  "torch_cuda": "12.1",
+  "compiled_sources": [
+    "csrc/flash_attn/src/flash_bwd_hdim128_bf16_sm80.cu",
+    "csrc/flash_attn/src/flash_fwd_hdim128_bf16_sm80.cu",
+    "csrc/flash_attn/src/flash_fwd_split_hdim128_bf16_sm80.cu",
+    "csrc/flash_attn/src/update_attn_fused.cu"
+  ],
+  "artifact": {
+    "path": "/data/research/flashblock-reproduction/flash-attention/flash_attn_2_cuda.cpython-310-x86_64-linux-gnu.so",
+    "sha256": "f82cca5e9ac5ebea3e8d15933190b736b7e9fe68bf94ffc90d1fa03b8c4b6a12",
+    "bytes": 12190192,
+    "gencode": "-gencode arch=compute_86,code=compute_86 (PTX only)",
+    "driver_jit_warmed_by": "repro/flashblock_prep_cli.py correctness (bf16_dense_parity, 69s first launch)"
+  },
+  "exit_code": 0,
+  "wall_seconds": 362,
+  "log_path_outside_git": "/data/research/flashblock-reproduction-runtime/logs/build-r2.log",
+  "note": "Build is from the vendored flash-attention fork; no PyPI flash-attn wheel. CUDA 12.8 nvcc against torch cu121 is the observed deviation from the task text (cu124); torch cu121 minor-version compatibility accepted and documented."
+}
