@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "status": "SUCCEEDED",
+  "argv": [
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python",
+    "repro/mechanism_cli.py",
+    "preflight",
+    "--run-dir",
+    "runs/flashblock-20261023-mechanism",
+    "--out",
+    "runs/flashblock-20261023-mechanism/preflight.json",
+    "--attempt",
+    "1"
+  ],
+  "execution_commit": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
+  "attempt": 1,
+  "started_at_utc": "2026-10-23T02:39:06Z",
+  "unit": {
+    "status": "SUCCEEDED",
+    "all_pass": true,
+    "tests": {
+      "prefill_block_causal_gqa": {
+        "lengths": [
+          75,
+          128
+        ],
+        "heads": 32,
+        "kv_heads": 8,
+        "head_dim": 128,
+        "rel_l2": 0.002414433950028876,
+        "max_abs": 0.009951353073120117,
+        "pass": true
+      },
+      "paged_kv_scatter": {
+        "slots": [
+          5,
+          -1,
+          260,
+          3,
+          0,
+          -1,
+          511
+        ],
+        "bitwise_k": true,
+        "bitwise_v": true,
+        "negative_slot_untouched": true,
+        "pass": true
+      },
+      "fp32_split_recombine": {
+        "nonempty_rel_l2": 1.4954529592509536e-07,
+        "nonempty_max_abs": 1.7881393432617188e-07,
+        "empty_history_rel_l2": 0.0,
+        "empty_history_max_abs": 0.0,
+        "pass": true
+      },
+      "history_page_mapping": {
+        "block_table": [
+          3,
+          0,
+          2
+        ],
+        "num_tokens": 600,
+        "exact": true,
+        "pass": true
+      }
+    },
+    "execution_commit": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
+    "torch": "2.4.1+cu121",
+    "cuda": "12.1",
+    "device": "NVIDIA GeForce RTX 3090",
+    "argv": [
+      "/data/research/flashblock-reproduction-runtime/venv/bin/python",
+      "/data/research/flashblock-reproduction/repro/mechanism_cli.py",
+      "unit",
+      "--config",
+      "/data/research/flashblock-reproduction/experiments/flashblock-20261023-mechanism/mechanism-config.json",
+      "--out",
+      "/data/research/flashblock-reproduction/runs/flashblock-20261023-mechanism/preflight/unit.json"
+    ]
+  },
+  "neutrality": {
+    "nohook_token_ids_sha256": "e19ddbd3e70346b82f9adb6675d5d75b021e052d3cc99994ccac4e3516912696",
+    "hook_token_ids_sha256": "e19ddbd3e70346b82f9adb6675d5d75b021e052d3cc99994ccac4e3516912696",
+    "token_ids_equal": true,
+    "nohook_token_counts": [
+      16
+    ],
+    "hook_token_counts": [
+      16
+    ],
+    "hook_counts": {
+      "0": 13,
+      "2": 13,
+      "17": 13,
+      "35": 13
+    },
+    "required_layers": [
+      "0",
+      "2",
+      "17",
+      "35"
+    ],
+    "all_required_hooks_nonzero": true,
+    "n_aligned_observations": 512,
+    "hook_capture_errors": [],
+    "nohook_generation_seconds": 8.092,
+    "hook_generation_seconds": 8.936,
+    "nohook_resources": {
+      "peak_allocated_mib": 11068.6,
+      "peak_reserved_mib": 11106.0,
+      "min_free_mib_sampled": 8563.1,
+      "free_mib_start": 19729.1,
+      "free_mib_end": 8563.1,
+      "gpu_total_mib": 24134.2,
+      "samples": 16
+    },
+    "hook_resources": {
+      "peak_allocated_mib": 11068.6,
+      "peak_reserved_mib": 11106.0,
+      "min_free_mib_sampled": 8563.1,
+      "free_mib_start": 19729.1,
+      "free_mib_end": 8563.1,
+      "gpu_total_mib": 24134.2,
+      "samples": 18
+    }
+  },
+  "attempts": [
+    {
+      "name": "unit",
+      "returncode": 0,
+      "log": "/data/research/flashblock-reproduction/runs/flashblock-20261023-mechanism/preflight/unit.log"
+    },
+    {
+      "name": "nohook",
+      "returncode": 0,
+      "log": "/data/research/flashblock-reproduction/runs/flashblock-20261023-mechanism/preflight/nohook.log"
+    },
+    {
+      "name": "hook",
+      "returncode": 0,
+      "log": "/data/research/flashblock-reproduction/runs/flashblock-20261023-mechanism/preflight/hook.log"
+    }
+  ],
+  "ended_at_utc": "2026-10-23T02:39:42Z"
+}
