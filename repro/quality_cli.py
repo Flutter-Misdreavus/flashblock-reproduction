@@ -228,7 +228,7 @@ def _build_prompts(tokenizer, rows, cfg):
         chat = tokenizer.apply_chat_template(
             [{"role": "user", "content": content}],
             tokenize=False, add_generation_prompt=True)
-        hard = template.format(problem=question)
+        hard = template.replace("{problem}", question)
         if chat != hard:
             raise RuntimeError(f"chat template mismatch at test index {index}: "
                                f"renderer != frozen hard template")
