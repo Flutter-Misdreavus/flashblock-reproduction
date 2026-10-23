@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "parent_run_id": "flashblock-20261023-efficiency",
+  "ready": true,
+  "hypothesis": "Untrained tau2 reuse trades numerical approximation for decoding cost; measure its paired GSM8K answer-quality effect without test-driven tuning.",
+  "baseline": "Original TraDo4B BF16 optimized dense, original zero-shot chat instruction, fixed seed42.",
+  "intervention": "Official s2/tau2 A/L cache reuse only; original weights, no distillation.",
+  "dataset": "Frozen model d350259d64abf9219362ccb1435d68910744eea7 and openai/gsm8k main 740312add88f781978c0658806c59bc2815b9866; existing verified runtime files only.",
+  "split": "Exactly128 heldout GSM8K test IDs frozen during preparation: sorted(random.Random(42).sample(range(1319),128)); train100..101 only for smoke.",
+  "primary_metric": "Paired numeric exact-match difference (s2 minus dense), percentage points across all128 fixed items; report both counts/EM.",
+  "decision_rule": "Loss>5pp is continuation warning. Report paired bootstrap95%CI and discordance; <=5pp loss does NOT establish equivalence. Negative results retained. Any nonfinite/cacheidentity/resource failure blocks acceptance. No test-set tuning.",
+  "controls": [
+    "GPT accepts parent efficiency evidence with corrected CPU profile attribution; read experiments/flashblock-20261023-efficiency/supervisor-review.md and implementation-notes.md. Prior conservative campaign charge=1.90GPUh; quality<=5.00h, campaign<=8h, reserve>=1.10h.",
+    "Originalmodel/dataset versions as parent; originalzero-shot chat template and instruction audited in preparation; noquantization/training/prompt/tau/threshold tuning.",
+    "Block4, denoise8, dynamic.9, temp1, top_p1, top_k0, seed42, TRADO_CONSISTENT_SAMPLING_PARAMS=1. ordinaryEOS; max_new_tokens4096 BOTHconditions. No ignoreEOS leak from performanceconfig.",
+    "Static groups of4 sorted frozenIDs; even groupindexdense then s2, odd s2 then dense. Resetseed42 andallrequest/prefixstate each group-condition; same membership/order. max_active=batch_size4, TP1,eager; true A/L identity/compaction acceptedparent preflight.",
+    "Onlyoneengine/modelalive. Releaseoldtensor/modelreferences before creatingnew. Mayreuseoneengine acrossallgroups; condition ratio setperrequest. Keep resource monitoring active and finite-logit hook; no speed claims from qualitytimings.",
+    "Freeze exact rational numeric scorer and authoredtests before heldout generation; goldsuffix####. Lastcompleteboxpreferred, invalidboxfails; ifnone,lastnumberfallback separatelyflagged. No gold-aware candidate selection/eval/arbitrarysymbolics.",
+    "Oneoutputperitem/condition; persistgroupresultsraw outsideGit immediately, sanitizedmetrics inexperiments. No overwrites/cherrypicking/regeneration forwronganswers. Exceptions stop; resumeonlyunfinished after committedmechanicalfix with unchangedprotocol, recordingmixedSHAs.",
+    "GPU UUID GPU-REDACTED only; ownpeak<=16GiB/free>=3GiB; CPU<=8, newdisk<=30GiB/free>=40GiB. Campaign<=8GPUh includingpriorconservativecharge/failures. Stage<=5GPUh and remainingcampaignbudget.",
+    "Clean committedcode/config before EVERYGPUcommand including smoke. Noallowdirty. Max2mechanicalrepaircycles. Explicitstagedpaths, checkpoint15min, relaypushbyGPT. Nootherprocesschanges/nestedagents/environmentreinstalls.",
+    "All128items denominator retained; reporterrors/truncation/invalidIDs/masks/extractionfailures. Primarydelta s2-dense inpp, paired10kbootstrapseed20261023; discordance4cells. Descriptiveexploratory1seed; noequivalence/paperdistilledtableclaim.",
+    "No additional evaluation/tuning after thismatrix. StopforGPTreview andfinalreport."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Start from GPT-accepted efficiency-stage code. Commit scorer/authored tests/config and generation driver before all GPU calls and before reading generated heldout answers.",
+  "environment": "Existing isolated Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9, compiled customFA; DO NOT reinstall. xxhash3.5.0 pinned; verify/install only missing requirements.",
+  "experiment_commands": [
+    "Read accepted parentreview and implementation-notes.md. Verify frozenIDs/dataset/model hashes and freeze original chat prompts, scorer and inference config. Implement scorer and authored CPU tests before heldout generation; explicit commit first.",
+    "Run committed train-only2prompt ordinary-EOS smoke with finite-logit checks and validrawIDs/cached-buffer handling. No scientific-parameter changes; preserve all failures; up to2 committed mechanical repairs.",
+    "Generate exactly128 outputs per condition, fixed32 groups of4, alternating dense/s2 order bygroup; seed42 resetpergroup/condition, max4096 ordinaryEOS, persist eachgroup immediately. Sameweights/sampler/IDs/template. No re-generation of completed items and no posthoc answer-aware extraction.",
+    "Export sanitized per-item scores, gold/predicted numeric answers, extractionmethod/length/stopreason/timing/outputhash; raw question/answer text, tokens and logs stayoutsideGit. Calculate pairedEM/counts/delta/bootstrapCI/discordance/truncation/extractionfailures/lengths and resourceledger.",
+    "Commit evidence, structuredreport and actual allrunSHAs. Stop for GPT independent review; no tuning or follow-on training."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 5.0,
+    "wall_seconds": 19800,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only; one bounded headless session, no API purchases."
+  },
+  "stop_conditions": [
+    "Quality active GPU-command allocation<=5.00h AND campaign<=8.00h, prior GPT conservativecharge1.90h; include allsmoke/failed/resumedcommands. Wrapper19800s/systemd19860s.",
+    "Immediate stop OOM/nonfinite/cacheidentityfailure/invalidrawIDs/masks/resourcebreach. Stop if cap/template/scorer/provenance mismatch. Do not silently change scientific parameters.",
+    "Max2 committed mechanical repaircycles. Preserveallfailedattempts. Never reruncompletedtestanswers due poorquality.",
+    "Finishfixed128pairedquality once, commitreport andstopforGPTreview."
+  ],
+  "required_outputs": [
+    "report.json",
+    "quality-config.json",
+    "scorer-test-results.json and committed scorer",
+    "input-manifest.json with frozen IDs/template/hash audit",
+    "train-smoke.json",
+    "quality-per-item.json (256 rows)",
+    "quality-summary.json",
+    "resource-ledger.json",
+    "commands-and-provenance.json",
+    "versioned driver/config/scorer and actualrunSHAs",
+    "raw-output-manifest.json",
+    "raw-generated-outputs.json or bounded per-condition/group artifacts (ignored, never Git)"
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}

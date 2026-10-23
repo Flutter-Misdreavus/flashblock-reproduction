@@ -1,0 +1,20 @@
+{
+  "run_id": "flashblock-20261023-efficiency",
+  "prior_conservative_campaign_charge_gpu_hours": 1.0,
+  "wrapper_wall_seconds": 2968.607,
+  "worker_selected_gpu_command_wall_seconds": 2004.418,
+  "worker_aborted_restart_charge_seconds": 30.0,
+  "worker_aborted_restart_charge_is_approximate": true,
+  "supervisor_conservative_stage_charge_gpu_hours": 0.9,
+  "campaign_charge_after_gpu_hours": 1.9,
+  "campaign_limit_gpu_hours": 8.0,
+  "remaining_gpu_hours": 6.1,
+  "quality_authorized_stage_gpu_hours": 5.0,
+  "reserve_after_quality_cap_gpu_hours": 1.1,
+  "method": "Charge whole wrapper2968.607s including CPU and failed/aborted commands, rounded upward to0.90h. Upper allocation charge, not measured GPU busy time. Covers approximate aborted-restart ledger and live-check gap.",
+  "resource_breach": "OOM during second-engine construction: own process about19.51GiB/torchallocated19.18GiB, physicalfree7.12MiB; not resource compliant. Lifecycle fix and fresh B4 continuation passed. Accepted measured rows peak14768.6MiB and minimumfree4723.1MiB.",
+  "event_id": "176165f536d3d9dc19db4d1bdfabc014e2db561486a0df7a0b617d9e95b03823",
+  "task_sha256": "ff83981bc2d40d59edf07547ba946939dee138b5b64d32f39e4fb9a26634caae",
+  "completed_at": "2026-10-23T03:57:25.493677+00:00",
+  "report_sha256": "154611e8f4e5db372ebee451d8cf059b7bd9463edb37da22a1bf4724c651c799"
+}
