@@ -1530,8 +1530,10 @@ def cmd_summarize(args):
         "rule": "descriptive support if mean paired gap > 0; CI entirely > 0 adds evidence only on this small subset",
         "mean_gap_positive": bool(primary["mean"] is not None and primary["mean"] > 0),
         "ci_entirely_positive": bool(ci_low is not None and ci_low > 0),
-        "negative_or_heterogeneous_layer_heads_retained": bool(
-            dense_sum["n_layer_head_nonpositive_gap"] > 0),
+        "negative_gap_layer_heads_retained": int(dense_sum["n_layer_head_nonpositive_gap"]),
+        "heterogeneity_reported": True,
+        "layer_head_gap_range": [dense_sum["layer_head_gap_min"],
+                                 dense_sum["layer_head_gap_max"]],
         "no_exactness_or_quality_inferred_from_cosine": True,
     }
     summary = {
@@ -1755,7 +1757,11 @@ def cmd_summarize(args):
         f"[{primary['ci_low']}, {primary['ci_high']}]; mean cos_out={dense_sum['mean_cos_out']['mean']}, "
         f"mean cos_in={dense_sum['mean_cos_in']['mean']}. "
         f"{dense_sum['n_layer_head_positive_gap']}/{dense_sum['n_layer_head_positive_gap'] + dense_sum['n_layer_head_nonpositive_gap']} "
-        f"selected layer-head means are positive. s2 reuse: mean actual-vs-fresh-full relL2="
+        f"selected layer-head means are positive (range {dense_sum['layer_head_gap_min']}.."
+        f"{dense_sum['layer_head_gap_max']}; heterogeneity retained), with changed-row "
+        f"stratum mean {dense_sum['mean_gap_changed_stratum']['mean']} and unchanged-row "
+        f"stratum mean {dense_sum['mean_gap_unchanged_stratum']['mean']}. "
+        f"s2 reuse: mean actual-vs-fresh-full relL2="
         f"{s2_sum['mean_actual_full_rel_l2_reuse']['mean']}, mean stale-merge relL2="
         f"{s2_sum['mean_stale_merge_rel_l2_reuse']['mean']}. "
         f"Cache-label max relL2 dense/s2={dense_sum['max_cache_label_rel_l2']}/{s2_sum['max_cache_label_rel_l2']}. "
