@@ -475,28 +475,34 @@ def cmd_correctness(args):
         r = _kernel_call(q2, k_cache, v_cache, k2, v2, cs2, Q,
                          out_past=state["A"].clone(), lse_past=state["L"].clone(),
                          update_mask=zeros, store_mask=zeros, dirty_mask=zeros)
-        # independent composition: cached history is prefix-only (block1 is stale/omitted)
-        hist_out, hist_lse = _ref_attn_lse(q2, k_cache[:, :prefix], v_cache[:, :prefix])
         cur_out, cur_lse = _ref_attn_lse(q2, k2, v2)
-        merged, merged_lse = _merge_ref(hist_out, hist_lse, cur_out, cur_lse)
+        # Independent target for the actual stale cache: A/L were produced for q1
+        # over the prefix; q2 is a changed query, so the cached per-row history is
+        # stale but still exactly composable with the freshly computed block2.
+        stale_target, _ = _merge_ref(state["A"], state["L"], cur_out, cur_lse)
+        # Fresh-query composition is a separate staleness diagnostic, not the target.
+        hist_out, hist_lse = _ref_attn_lse(q2, k_cache[:, :prefix], v_cache[:, :prefix])
+        fresh_target, _ = _merge_ref(hist_out, hist_lse, cur_out, cur_lse)
         full_out, full_lse = _ref_attn_lse(q2, k_cache[:, :prefix + 2 * Q], v_cache[:, :prefix + 2 * Q])
         rec = {
-            "rel_l2_vs_stale_composition": _rel_l2(r["out"], merged),
-            "max_abs_vs_stale_composition": _max_abs(r["out"], merged),
+            "rel_l2_vs_stale_composition": _rel_l2(r["out"], stale_target),
+            "max_abs_vs_stale_composition": _max_abs(r["out"], stale_target),
+            "rel_l2_vs_fresh_query_composition": _rel_l2(r["out"], fresh_target),
             "rel_l2_vs_full_recompute": _rel_l2(r["out"], full_out),
             "max_abs_vs_full_recompute": _max_abs(r["out"], full_out),
             "returned_lse_rel_l2_vs_current_block": _rel_l2(r["lse"], cur_lse),
             "cache_L_equals_history": bool(torch.equal(r["lse_past"], state["L"])),
-            "stale_cache_missing_tokens": Q,
+            "stale_cache_query_rows": "q2 differs from q1 that produced A/L",
         }
         ok = (rec["rel_l2_vs_stale_composition"] <= 1e-2
               and rec["max_abs_vs_stale_composition"] <= 5e-2
               and rec["cache_L_equals_history"])
         return {"_passed": ok,
                 "tolerance": {"rel_l2": 1e-2, "max_abs": 5e-2},
-                "note": "A/L are the persistent prefix-only cache; block1 is intentionally not in the "
-                        "cache, so the independent target is log-space composition(prefix, block2), "
-                        "not full recomputation. Full-recompute error is reported as approximation.",
+                "note": "A/L were produced by the store call for q1 over the prefix and are passed "
+                        "unchanged with changed q2; the independent target is therefore log-space "
+                        "composition(stale A/L, fresh current-block attention), not a fresh-query or "
+                        "full recomputation. Those errors are reported separately as staleness.",
                 "cases": rec}
 
     _case("cached_reuse_changed_q_stale_composition", cached_changed_q_stale, results)
@@ -517,9 +523,8 @@ def cmd_correctness(args):
         r0 = _kernel_call(q3, k_cache, v_cache, k3, v3, cs3, Q,
                           out_past=state["A"].clone(), lse_past=state["L"].clone(),
                           update_mask=zeros, store_mask=zeros, dirty_mask=zeros)
-        hist_out, hist_lse = _ref_attn_lse(q3, k_cache[:, :prefix], v_cache[:, :prefix])
         cur_out, cur_lse = _ref_attn_lse(q3, k3, v3)
-        merged, _ = _merge_ref(hist_out, hist_lse, cur_out, cur_lse)
+        merged, _ = _merge_ref(state["A"], state["L"], cur_out, cur_lse)
         full_out, _ = _ref_attn_lse(q3, k_cache[:, :prefix + 3 * Q], v_cache[:, :prefix + 3 * Q])
         clean = ~dirty
         rec = {
