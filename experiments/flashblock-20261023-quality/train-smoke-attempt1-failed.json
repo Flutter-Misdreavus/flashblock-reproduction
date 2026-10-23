@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "stage": "train_smoke",
+  "scope": "GSM8K train prompts 100,101; ordinary EOS; max 256 new tokens; smoke only, no accuracy claim",
+  "execution_commit": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+  "status": "FAILED",
+  "config_sha256": "a28464c94e6fc8d8eb7e071660e0c4c03ef59b13fc62121592a44f5ae003111e",
+  "manifest_sha256": "adaf7f60e16904673a3367ede7f0b11789d832795a8fd2388f3f5cdcfdf98e76",
+  "budget_deadline": {
+    "base_prior_seconds": 2.117,
+    "stage_left_seconds": 17997.883,
+    "campaign_left_seconds": 17997.883,
+    "deadline_margin_seconds": 120.0
+  },
+  "commands": [
+    "smoke train100..101 both conditions ordinary EOS max256"
+  ],
+  "preconstruction": {
+    "mem_total_mib": 24576.0,
+    "mem_used_mib": 4589.5625,
+    "mem_free_mib": 19986.4375,
+    "util_gpu_pct": 10
+  },
+  "kv_cache": {
+    "blocks": 146,
+    "cal_blocks": 2,
+    "free_data_blocks": 144,
+    "needed_data_blocks": 66
+  },
+  "finite_parameters": {
+    "tensors": 291,
+    "elements": 4411424256,
+    "nonfinite_elements": 0,
+    "nonfinite_tensors": []
+  },
+  "logits_audit": {
+    "calls": 0,
+    "nonfinite_calls": 0,
+    "max_numel": 0
+  },
+  "error": "RuntimeError('reset with live requests: 1')",
+  "traceback": "Traceback (most recent call last):\n  File \"/data/research/flashblock-reproduction/repro/quality_cli.py\", line 759, in cmd_smoke\n    res = _run_batch(h, cfg, items, cond, ratio, group_index=-1,\n  File \"/data/research/flashblock-reproduction/repro/quality_cli.py\", line 529, in _run_batch\n    eff._reset_engine(h)\n  File \"/data/research/flashblock-reproduction/repro/efficiency_cli.py\", line 357, in _reset_engine\n    raise RuntimeError(f\"reset with live requests: {len(sch.running)}\")\nRuntimeError: reset with live requests: 1\n",
+  "sampler": {
+    "samples": 20,
+    "mem_free_min_mib": 2469.1,
+    "mem_used_max_mib": 22106.9,
+    "util_gpu_mean_pct": 45.4,
+    "util_gpu_max_pct": 100,
+    "sample_first": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 4589.5625,
+      "mem_free_mib": 19986.4375,
+      "util_gpu_pct": 10,
+      "t": 1792728739.2023594
+    },
+    "sample_last": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 22106.875,
+      "mem_free_mib": 2469.125,
+      "util_gpu_pct": 100,
+      "t": 1792728748.7405055
+    },
+    "end_query": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 22106.875,
+      "mem_free_mib": 2469.125,
+      "util_gpu_pct": 8
+    },
+    "breach": {
+      "kind": "physical_free_mib",
+      "value": 2469.125,
+      "limit": 3072.0,
+      "at": "2026-10-23T04:12:28Z"
+    },
+    "limits": {
+      "min_free_mib": 3072.0,
+      "max_allocated_mib": 16384.0
+    },
+    "note": "physical NVML memory/util sampled identically both conditions; shared GPU"
+  },
+  "engine_allocated_after_release_mib": 13842.8,
+  "wall_seconds": 10.307,
+  "finished_at": "2026-10-23T04:12:29Z",
+  "conditions": {
+    "dense": {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-quality",
+      "group_index": -1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "group_condition_order": 0,
+      "execution_commit": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "config_sha256": "a28464c94e6fc8d8eb7e071660e0c4c03ef59b13fc62121592a44f5ae003111e",
+      "manifest_sha256": "adaf7f60e16904673a3367ede7f0b11789d832795a8fd2388f3f5cdcfdf98e76",
+      "scorer_sha256": "7f9225c8aef0018ace2d4f81f2f6bbfb4c2be10305c11b9afd21d58b47e21f8a",
+      "eos_token_id": 151643,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "batch_size": 2,
+      "prefill_seconds": null,
+      "decode_seconds": null,
+      "wall_seconds": 0.001,
+      "counters": {},
+      "peak_allocated_mib": 13842.8,
+      "peak_reserved_mib": 17202.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 22106.875,
+        "mem_free_mib": 2469.125,
+        "util_gpu_pct": 100
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 22106.875,
+        "mem_free_mib": 2469.125,
+        "util_gpu_pct": 100
+      },
+      "problems": [
+        "boundary resource violation: physical free 2469.1 MiB",
+        "sampler guard breach: {'kind': 'physical_free_mib', 'value': 2469.125, 'limit': 3072.0, 'at': '2026-10-23T04:12:28Z'}",
+        "seq 1 no finished output",
+        "collected 0 rows for 2 items",
+        "generation exception: RuntimeError(\"resource guard breach: {'kind': 'physical_free_mib', 'value': 2469.125, 'limit': 3072.0, 'at': '2026-10-23T04:12:28Z'}\")"
+      ],
+      "status": "FAILED",
+      "error": "RuntimeError(\"resource guard breach: {'kind': 'physical_free_mib', 'value': 2469.125, 'limit': 3072.0, 'at': '2026-10-23T04:12:28Z'}\")",
+      "items": []
+    }
+  }
+}
