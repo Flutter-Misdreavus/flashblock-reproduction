@@ -61,7 +61,7 @@ for entry in rm['groups']:
   assert r['correct']==(pred['value'] is not None and pred['value']==Fraction(meta[key[0]]['gold_numeric']))
   if tok is not None:
    assert all(isinstance(x,int) and 0<=x<len(tok) for x in tokens)
-   assert read(Path(a.tokenizer)/'config.json')['mask_token_id'] not in tokens and tok.decode(tokens,skip_special_tokens=False)==text
+   assert tok.mask_token_id is not None and tok.mask_token_id not in tokens and tok.decode(tokens,skip_special_tokens=False)==text
    assert r['empty_output']==(not tok.decode(tokens,skip_special_tokens=True).strip())
    stop='eos' if tokens[-1]==tok.eos_token_id else ('max_tokens' if len(tokens)==4096 else 'other')
    assert stop==raw['finish_reason']==r['stop_reason'];assert r['truncated']==(stop=='max_tokens');decoded+=1
