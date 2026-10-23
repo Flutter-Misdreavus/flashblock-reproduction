@@ -1,0 +1,100 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "parent_run_id": "flashblock-20261023-mechanism",
+  "frozen_before_any_gpu_probe": true,
+  "decision_rule": "mean of five paired dense_decode_seconds/s2_decode_seconds ratios at B4L8192 >= 1.10 meets the frozen engineering target; all rows retained",
+  "model": {
+    "model_id": "Gen-Verse/TraDo-4B-Instruct",
+    "revision": "d350259d64abf9219362ccb1435d68910744eea7",
+    "local_path": "/data/research/flashblock-reproduction-runtime/models/TraDo-4B-Instruct",
+    "config_sha256": "69cf6d55e2cc92e864a72c5b9a14ad214f0529f5da793ed066be9cb5286e90d0",
+    "weights_sha256_verified_by_parent": true
+  },
+  "dataset": {
+    "dataset": "openai/gsm8k",
+    "config": "main",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "train_parquet": "/data/research/minicache-reproduction-runtime/data/gsm8k/main/train-00000-of-00001.parquet",
+    "train_sha256": "ea82612ea9582142387730c793eb67d3b12849002bc0b7fa6f8efafa7351419d",
+    "split": "train only; no heldout QA",
+    "field_recipe": "question + '\\n' + answer, rows joined with '\\n\\n', tokenizer.encode",
+    "input_index_start": 400,
+    "rows_per_input": 80,
+    "lengths": [1024, 4096, 8192],
+    "inputs_per_length": 4,
+    "no_heldout_test": true
+  },
+  "controls": {
+    "seed": 42,
+    "block_length": 4,
+    "denoising_steps": 8,
+    "dynamic_threshold": 0.9,
+    "remasking_strategy": "low_confidence_dynamic",
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "consistent_sampling_params_env": "1",
+    "sparsity_ratio_s2": 2.0,
+    "sparsity_ratio_dense": 0.0,
+    "max_new_tokens": 256,
+    "ignore_eos": true,
+    "gpu_memory_utilization": 0.8,
+    "max_model_len": 8448,
+    "max_num_batched_tokens": 8448,
+    "warmup_model_len": 8448,
+    "gpu_uuid": "GPU-REDACTED",
+    "cpu_threads": 8,
+    "peak_allocated_limit_mib": 16384,
+    "min_free_mib": 3072,
+    "max_new_disk_gib": 30
+  },
+  "settings": [
+    {"name": "B1L1024", "batch": 1, "length": 1024},
+    {"name": "B1L4096", "batch": 1, "length": 4096},
+    {"name": "B1L8192", "batch": 1, "length": 8192},
+    {"name": "B4L1024", "batch": 4, "length": 1024},
+    {"name": "B4L4096", "batch": 4, "length": 4096},
+    {"name": "B4L8192", "batch": 4, "length": 8192}
+  ],
+  "conditions": [
+    {"name": "dense", "ratio": 0.0},
+    {"name": "s2", "ratio": 2.0}
+  ],
+  "pair_rounds": [
+    ["dense", "s2"],
+    ["s2", "dense"],
+    ["dense", "s2"],
+    ["s2", "dense"],
+    ["dense", "s2"]
+  ],
+  "primary_setting": "B4L8192",
+  "preflight": {
+    "batch": 4,
+    "max_active": 4,
+    "indices": [100, 101, 102, 103, 104, 105],
+    "max_tokens": [16, 32, 48, 64, 16, 32],
+    "identity_layers": [0, 35],
+    "tiny_batch": 4,
+    "tiny_length": 1024,
+    "tiny_max_tokens": 16
+  },
+  "profiling": {
+    "setting": "B4L8192",
+    "activities": ["CUDA"],
+    "attention_name_patterns": ["flash", "attn", "attention", "fmha", "softmax"]
+  },
+  "bootstrap": {
+    "seed": 20261023,
+    "reps": 10000,
+    "confidence": 0.95
+  },
+  "budget": {
+    "gpu_count": 1,
+    "stage_gpu_hours": 1.5,
+    "campaign_before_gpu_hours": 1.0,
+    "campaign_limit_gpu_hours": 8.0,
+    "gpu_command_wall_limit_seconds": 4800,
+    "wrapper_wall_seconds": 7200
+  }
+}
