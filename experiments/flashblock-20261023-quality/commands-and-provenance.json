@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "created_at": "2026-10-23T04:41:34Z",
+  "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+  "task_sha256": "c0d6bf7b1c2010aa763cdca56b6d2cad0a0077ef0c983a733e0bf351b318262a",
+  "config_sha256": "85bc177814968b49f72f549b6ff86b51911a2b5391725bd34d1d0b3d321e6daf",
+  "manifest_sha256": "c4bb9f1e02db4c41d0f9f8d7686f82d996c0ea19e2fd41367d26c8122114c5cd",
+  "scorer_sha256": "7f9225c8aef0018ace2d4f81f2f6bbfb4c2be10305c11b9afd21d58b47e21f8a",
+  "scorer_tests_sha256": "02302dc5f87819f70de4c5355bbb6743871a96f60740adb7d25c6bacde4741ac",
+  "environment": "isolated Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9 custom FlashAttention; no reinstall",
+  "entries": [
+    {
+      "schema_version": 1,
+      "stage": "scorer_tests",
+      "argv": [
+        "repro/quality_cli.py",
+        "scorer-tests"
+      ],
+      "git_head": "a4da402157b8ccde74b6294df41b7d1b83fa4fad",
+      "at": "2026-10-23T04:08:48Z",
+      "status": "PASSED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "scorer_tests",
+      "argv": [
+        "repro/quality_cli.py",
+        "scorer-tests"
+      ],
+      "git_head": "cbe44ad8d0bdd6071105c481930824d4579957df",
+      "at": "2026-10-23T04:09:02Z",
+      "status": "PASSED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "freeze",
+      "argv": [
+        "repro/quality_cli.py",
+        "freeze"
+      ],
+      "git_head": "0d30eac5bc43a0ad5bd3fa81faf74b9b3fd9039b",
+      "at": "2026-10-23T04:10:24Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "scorer_tests",
+      "argv": [
+        "repro/quality_cli.py",
+        "scorer-tests"
+      ],
+      "git_head": "3601ec67f1c1890f560640749cd417b5c7eaf01c",
+      "at": "2026-10-23T04:11:42Z",
+      "status": "PASSED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "environment_probe",
+      "argv": [
+        "repro/quality_cli.py",
+        "probe"
+      ],
+      "git_head": "979b43b5cc8952bb688ed09c2729bf987b3d2b84",
+      "at": "2026-10-23T04:11:49Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": 2.116816759109497,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "argv": [
+        "repro/quality_cli.py",
+        "smoke",
+        "--manifest-sha",
+        "adaf7f60e16904673a3367ede7f0b11789d832795a8fd2388f3f5cdcfdf98e76"
+      ],
+      "git_head": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "at": "2026-10-23T04:12:29Z",
+      "status": "FAILED",
+      "wall_seconds": 10.307,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "freeze",
+      "argv": [
+        "repro/quality_cli.py",
+        "freeze"
+      ],
+      "git_head": "ff3079a13b06330034b332fda3831a8f74fb0b9b",
+      "at": "2026-10-23T04:14:11Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "argv": [
+        "repro/quality_cli.py",
+        "smoke",
+        "--manifest-sha",
+        "5f5952bfc1e184938b01b89846382bdadcd2b2803bcd64d04ffddce44921780d"
+      ],
+      "git_head": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "at": "2026-10-23T04:15:00Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": 41.44,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "freeze",
+      "argv": [
+        "repro/quality_cli.py",
+        "freeze"
+      ],
+      "git_head": "c732e1beaf1b30be589f66e1ea4b285695f0c713",
+      "at": "2026-10-23T04:16:30Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "argv": [
+        "repro/quality_cli.py",
+        "smoke",
+        "--manifest-sha",
+        "c4bb9f1e02db4c41d0f9f8d7686f82d996c0ea19e2fd41367d26c8122114c5cd"
+      ],
+      "git_head": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c",
+      "at": "2026-10-23T04:17:26Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": 42.28,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "quality_generation",
+      "argv": [
+        "repro/quality_cli.py",
+        "generate"
+      ],
+      "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "at": "2026-10-23T04:41:02Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": 1395.492,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "summarize",
+      "argv": [
+        "repro/quality_cli.py",
+        "summarize"
+      ],
+      "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "at": "2026-10-23T04:41:12Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": null,
+      "note": null
+    },
+    {
+      "schema_version": 1,
+      "stage": "ledger",
+      "argv": [
+        "repro/quality_cli.py",
+        "ledger"
+      ],
+      "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "at": "2026-10-23T04:41:28Z",
+      "status": "SUCCEEDED",
+      "wall_seconds": null,
+      "note": null
+    }
+  ]
+}

@@ -1,0 +1,1229 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "note": "raw generated text/token IDs stay outside Git under runs/<run_id>/raw",
+  "groups": [
+    {
+      "group_index": 0,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-00-dense.json",
+      "sha256": "f061ae2ac71909ffd7068abf96e5078cbf870da44f0a2437da565581055a55a5",
+      "bytes": 15936,
+      "items": [
+        13,
+        23,
+        51,
+        54
+      ],
+      "output_sha256": [
+        "b7952bdc1ca5e96dc9b401324d0d936547f55dfec0b6cc5dc94094a5bb6b14b1",
+        "13ae16560a05fd884a4c1a4b5a9f9da9c7eb85732d973c3059b54c6a6d472940",
+        "186fe52d60e25f236798cb6b067a758aca02a44e137a00331cce4b9dc74e3c8e",
+        "aaef64b320a18d1627bd455604d186c63e097243c5bd0a590a3626c007cae574"
+      ]
+    },
+    {
+      "group_index": 0,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-00-s2.json",
+      "sha256": "c3b0f7fb3cf26306a06aa8e55058e483fa74fa91723966553e081a265de9b99d",
+      "bytes": 16893,
+      "items": [
+        13,
+        23,
+        51,
+        54
+      ],
+      "output_sha256": [
+        "dcdeb0c6ac9412ced5ddd43e113972661db1241edb728aa7e7259b2475ac8bf0",
+        "d0529b4077601ffb3d8660ce15398aaa7217db4650dbd74c6e28af8192b08120",
+        "93c651bc1ecb93b135d72daf2011d9960a7689e049e2f60a97a9d2db76d99aa3",
+        "a8c698b666d2d1fac44450d988bf94bd2b80d082cb270112479e66345ed94493"
+      ]
+    },
+    {
+      "group_index": 1,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-01-dense.json",
+      "sha256": "6948a5223cfc35cbbcb922ad7923370760a9447d3bb4331c301db5b45fb377c0",
+      "bytes": 16634,
+      "items": [
+        61,
+        65,
+        88,
+        93
+      ],
+      "output_sha256": [
+        "4edecd32db677649960041ddd7fe369245e5c1112b90a802aa0cbfa7a706ae15",
+        "731e7324d664f4c556b3b9182a898554883cfb5297a96231017af10adbf9a363",
+        "0b2ec1cd92aabfc9fd3e3a93e2226e801f2ca90792ba397bb9d73620376436a3",
+        "a57c896899ced43520a27efcb28bc69fb9aa99b1d084a64dffb9219ed23fc41b"
+      ]
+    },
+    {
+      "group_index": 1,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-01-s2.json",
+      "sha256": "d159e70b7864b970ad0ca209c0231073c458f8e9d895bcec2fff7e8c9ce59c29",
+      "bytes": 14637,
+      "items": [
+        61,
+        65,
+        88,
+        93
+      ],
+      "output_sha256": [
+        "25eda619d2169581417baba5043f5ac57b8dc3349b317d6d781d5993e7c04d78",
+        "4c767f5c6b4f59529d1852882c48d28fe48a9b5eba02e5e1585fef25d5dd8720",
+        "72bb3807475f02b3d3bc187d62303d6221bb1109624496a62f6222f12c5f5bd0",
+        "9d205aeae046abe4fa0fe4fe9ce8a70f591a4299128e4c93446cb792d67a084b"
+      ]
+    },
+    {
+      "group_index": 2,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-02-dense.json",
+      "sha256": "c92beef4d568e8aa550c82df2cb0ee3dcf15fbbbd1bbca2cb528b41434463777",
+      "bytes": 12527,
+      "items": [
+        96,
+        114,
+        130,
+        135
+      ],
+      "output_sha256": [
+        "3f60a22dbcc51f1a10db66bc9a90be6583c87f799e5f30e334c8e358d9789c2f",
+        "04b6da2aaff03be52a55dddb13db45ed0cb917d16ca042162b62c7bb2bd074d3",
+        "58a1e3a6fce4cb9a298ee9bdd1c1d39c99b7e1d271256824d2c7e93079f7fd30",
+        "dcd4e32a92c0ef14fe3539638867a1d7b2fa07535b14246e67f6374c789cb03b"
+      ]
+    },
+    {
+      "group_index": 2,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-02-s2.json",
+      "sha256": "816ce19c56bc593356fe720c3c2aef1f32455b14bb94cd9e0e2a7f889ccf110a",
+      "bytes": 12083,
+      "items": [
+        96,
+        114,
+        130,
+        135
+      ],
+      "output_sha256": [
+        "3f60a22dbcc51f1a10db66bc9a90be6583c87f799e5f30e334c8e358d9789c2f",
+        "6afdb29e3ae51142219f3158058f04baab7ca685d33c940b401fc36794812144",
+        "543dc3330b50276c45d03ef4d9b9eb93187fe8d6c2ec3208a21ef1e7bf5caaa0",
+        "8a3bab77f76c2afb8a861d8bb9095105c7aee5ba4c4d1c58e413e2dc8de3d8d6"
+      ]
+    },
+    {
+      "group_index": 3,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-03-dense.json",
+      "sha256": "7d7310847b897b037ca0b119fc242d1cb5d4eaa30ac71a7db0e9ef46fc8c0b31",
+      "bytes": 18777,
+      "items": [
+        142,
+        146,
+        161,
+        163
+      ],
+      "output_sha256": [
+        "e31bf89a9372780fed3f3892cf58410bcdff79545255a5f9dd7a4db4794e4cf6",
+        "c885396e0fa460b7e28c114bf90c06113188d24f53d665c7e660501314af3d3b",
+        "7fff8478a81b57b9ed12c67efa256e116ffdad87c42a741e7eda0fae50970dfe",
+        "c61cc022665ebdb65a17ed2d44179cd2cf33419893f6c863810b357689064dc8"
+      ]
+    },
+    {
+      "group_index": 3,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-03-s2.json",
+      "sha256": "bf37bc95104bcad341ef624f39043393cad094127db48f7c890cdbf3acbaf664",
+      "bytes": 18053,
+      "items": [
+        142,
+        146,
+        161,
+        163
+      ],
+      "output_sha256": [
+        "430a42cbca6e83d5762934bb109f7005ac2daad138625bd6ec9b8bb35c94eb4f",
+        "d57a436d796a48dcf608939615dbe0502aee102bd3661da484af3b087ca3377a",
+        "7fff8478a81b57b9ed12c67efa256e116ffdad87c42a741e7eda0fae50970dfe",
+        "36f9e126f1d6fc8fa755cddd0a3f22249053efff0a26406db48a8c946429f77c"
+      ]
+    },
+    {
+      "group_index": 4,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-04-dense.json",
+      "sha256": "db92cdfd6b215c1bab1d880c64071daa7f72bc08463ca7e834fb352270aa47b9",
+      "bytes": 16203,
+      "items": [
+        178,
+        186,
+        189,
+        191
+      ],
+      "output_sha256": [
+        "64be6914c051ed65e715b31249305fd6f36b1ab6cafdb4d89751e4a5abb5bfc7",
+        "6ac35d6aba58c04c86ee72093d64f7243713690668d8cbcc58fd2aa1024c8fd5",
+        "12c5a062f2221ee179b1e5e16514d18241dc64b93065caeda3c028936468dfab",
+        "18ff7d4348da135aeccbc15cda8fab1362a8f5b2a65c892f65a35ec3438f3ed8"
+      ]
+    },
+    {
+      "group_index": 4,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-04-s2.json",
+      "sha256": "2376040ce902f5a900458cfba7d8b7680854781bbfb3aba4feb4712762d07f2a",
+      "bytes": 15726,
+      "items": [
+        178,
+        186,
+        189,
+        191
+      ],
+      "output_sha256": [
+        "64be6914c051ed65e715b31249305fd6f36b1ab6cafdb4d89751e4a5abb5bfc7",
+        "172d92ae50de494de15e58ee20141c67c0b6d012374032b38b6a6b52b1bef9af",
+        "720784635dedca65c6613b8c1a3827966dab2ef61037ea452e741ab0b9cc95d3",
+        "b15ba6b27ef6da31dab6026a9416838863480aa9c933e5e722e2c0e80837bd46"
+      ]
+    },
+    {
+      "group_index": 5,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-05-dense.json",
+      "sha256": "92889a04b096177fe51cc2dd07512cd7885d54073bfc0939dbdc34cd0138785f",
+      "bytes": 21694,
+      "items": [
+        198,
+        206,
+        209,
+        224
+      ],
+      "output_sha256": [
+        "b7250bb1f0415a7a18673ed6ead87ba9ca0f4e21ddf64b0db2e8c62ad4f756e1",
+        "889fffd7acad2e400931fb83451d0fef9115118747390f5b3f032e6fe67721ea",
+        "66b84d931535db0007978b29a7e14cfa22acdcaad63de5073ad824d606fd7437",
+        "c3e1de09e1c03826a94f53348c5c95bfd230480bfb6ca0768244bea3d72a7e33"
+      ]
+    },
+    {
+      "group_index": 5,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-05-s2.json",
+      "sha256": "9fc8a99868385d462a1b2784925c359ef0f6be80587896e9c270892eb21a6a04",
+      "bytes": 20567,
+      "items": [
+        198,
+        206,
+        209,
+        224
+      ],
+      "output_sha256": [
+        "1c186bb9926bbae6459cc44417f9a29f13e01d6e9a5777ac1205f443f7b267f6",
+        "309359afc9ae815de080a490b0fbd1c0225492e169aa7c644c51f0fd9b43bcb4",
+        "10501258c3011466e7e70c9fcc515cb8e2e506c4446fccc4017f94af38224702",
+        "55ada59a37a42c02e9e7b707dd00c7c64fb1bd71fa18ac4ed5cbe2ff10c6d3c4"
+      ]
+    },
+    {
+      "group_index": 6,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-06-dense.json",
+      "sha256": "da094de03c65306d26d20a81d1cffbb89162130702660bcbeddc130ff97dbc5c",
+      "bytes": 18944,
+      "items": [
+        228,
+        234,
+        255,
+        283
+      ],
+      "output_sha256": [
+        "23c68c25ef4f03c45bae37c9d5c0b52df5d615472dd0f91d93a210c803460960",
+        "3f6992fac032ab7db92ad44ae6449971b7fe161c6cc226739eb7cf1ca79e87aa",
+        "16a59fde104d1455998906e986aa702d2f0ad9ce876b8b08787df308367fc58f",
+        "84f176e80b269242b80fc4a752eab0d4b0ed24d44505501a36fedcf398ff1b47"
+      ]
+    },
+    {
+      "group_index": 6,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-06-s2.json",
+      "sha256": "b4477d54ee50d20991829737f09447f9dc890236ee59ab3e1958b0006b1ec202",
+      "bytes": 17341,
+      "items": [
+        228,
+        234,
+        255,
+        283
+      ],
+      "output_sha256": [
+        "044fa3dc4060b73ff57f77599a448b71569cea6c204ed9817f359e394a2a67f7",
+        "8d560cec835cc4110243f371a9d198af190659ab7d75aa69216706a00d80f377",
+        "4417cf4715af32f5255b0402cc737a33dffe30d208c3d629bb10ce97fb0a89f0",
+        "7c5206c25c762962567a3d8a791edfe56f64e90a21d2c537291c715b4117907c"
+      ]
+    },
+    {
+      "group_index": 7,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-07-dense.json",
+      "sha256": "0e8ea0349760254b5342f821de0350e45de9f6081b4db8a4e865d70ba070e3ff",
+      "bytes": 22049,
+      "items": [
+        285,
+        292,
+        313,
+        318
+      ],
+      "output_sha256": [
+        "7f632e6cea9a46ae20a42e75a838c3b0b1bf1d125875aeddc3aec640f60a9ba9",
+        "b42bf817a43a1099fdfde975cceaf00906636efedaea77a87f361aeb87b940b7",
+        "2ab8dcae9ad791f8760fc39a4b3f887e2c7ee3c4ebf2aaa9a589ee5a7bc89172",
+        "03f0aa989fadcad4b7d0232ab841fb68b1cff7020cbec2787dffe1d6d0f901d1"
+      ]
+    },
+    {
+      "group_index": 7,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-07-s2.json",
+      "sha256": "9e1ee0e333e551c37cf3ed587e32edd28fde71b3c95b4d8006ae017b8d3ec019",
+      "bytes": 24125,
+      "items": [
+        285,
+        292,
+        313,
+        318
+      ],
+      "output_sha256": [
+        "fd4f1c511e02e6c53b4f03422df46d62711840b57c6c0716b6b0d11305df41cf",
+        "13c5028204adaf291082ad8517a6f30ac0341a54525637d1954319c11efa7807",
+        "1a452395983e46b3a6c06dc72bb4d51deebe7087933e045dfff7cbf5d3818daf",
+        "03f0aa989fadcad4b7d0232ab841fb68b1cff7020cbec2787dffe1d6d0f901d1"
+      ]
+    },
+    {
+      "group_index": 8,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-08-dense.json",
+      "sha256": "1a7a12ad1d35ff5d6d5ba01735cfc2fc1d109837d595065435141213ea01a346",
+      "bytes": 18495,
+      "items": [
+        326,
+        327,
+        333,
+        334
+      ],
+      "output_sha256": [
+        "bd63191fd0f361e7789b3c4824cc006a4eef16db3fa0224ed561071aaf5130de",
+        "7546d09e74fc3d2c101a2e787b55330d0f658c08817fa727f334ed475628f716",
+        "4e073b9c8d1925b2a1f2449c93f5e38d02cf2cb8e501c0f0b8e65f2b4a9a672e",
+        "d4cce676891a91c2c4e95b798d81e484e4e9f408e87b780848317313891c35f0"
+      ]
+    },
+    {
+      "group_index": 8,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-08-s2.json",
+      "sha256": "2202da7e2cd90360214afafd1cc206b9d897cf8b706e15232295d9e81c121cec",
+      "bytes": 17839,
+      "items": [
+        326,
+        327,
+        333,
+        334
+      ],
+      "output_sha256": [
+        "2e838ccce9cc5d0afe94740e320a65d1cdb464895beb9a2faeb485dfa1ef2c0e",
+        "fdd608f96b0e41965a692ef6e02b3ab2c7e26cc1497c96251b436b5f46f55956",
+        "bd1b7ffe66fa534eeae990dc2c8609a6fa788942ecb8d2eefb32d9d34241a4a6",
+        "e6531ff60d0579b4d701a5c6e667cc65d4d76918d32142a709f7bdccd9f9a67f"
+      ]
+    },
+    {
+      "group_index": 9,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-09-dense.json",
+      "sha256": "4ab257c5de83c457cc2d398df3ff9c16a7f5e7c5efb9532f69c627f535ee4be9",
+      "bytes": 18905,
+      "items": [
+        350,
+        393,
+        407,
+        429
+      ],
+      "output_sha256": [
+        "ee3a6c1b209267d6123a3163f76f7e8f3c1c2e1a7c64289d47369047c8cda0db",
+        "efb68bf7c7dc2683f56064515a1399c92389d8ca14ee760061b6db2d0936db34",
+        "a363b56d43368dae9c4e16b252174d2f7635c46e7ace49d614b7049aadc48e7c",
+        "a074f574cb4e50c440bbc809b10ee4e684b39157266147d8d9d18e02f56d7f95"
+      ]
+    },
+    {
+      "group_index": 9,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-09-s2.json",
+      "sha256": "afcc9a194418bdf898e0f46df643d8750f9b0009956ee9779df90286aa8ee024",
+      "bytes": 16688,
+      "items": [
+        350,
+        393,
+        407,
+        429
+      ],
+      "output_sha256": [
+        "2ab3899cfcd8cd2cde19a3d28ad0049ccce42b41c9dd77288e7eb734e5c50934",
+        "678b73b248540d168fb3e4252164d4a2d23dda62cb3b1cb3e2fffdbdbc5dd0c2",
+        "5cc3415a76fb301d7413231b5140bf29f05848fbb9a140904829b652b91982df",
+        "522fbb4b100ef8bc2c85a67d44e539aa08dc364a54f55b6a8e6c315ed075c36f"
+      ]
+    },
+    {
+      "group_index": 10,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-10-dense.json",
+      "sha256": "3e4d0c559eb373ee75e3410fad1c946460ba7e320e6590ed21239138a43118ee",
+      "bytes": 15744,
+      "items": [
+        432,
+        435,
+        440,
+        447
+      ],
+      "output_sha256": [
+        "b06fc78f390752c8aafc0fb1bb5918d5ba1b4596692bdc02a2efab1f6ddf0f44",
+        "65bbcc447846d1aecc8e076dd0d755b3d53921cff3fd5d24acee478ef296f212",
+        "a58677c8b77d0159671824592506021fb83520ba971d0b2a574d99e70a7b39e5",
+        "0163c3c704b7f06c22d41d8ae0867678555fddeec956c40051140b590e725090"
+      ]
+    },
+    {
+      "group_index": 10,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-10-s2.json",
+      "sha256": "a591b62b185a421e63c439748decdeaff3e7ff1b81dd8f7ba0fb85145b0d4ebb",
+      "bytes": 15756,
+      "items": [
+        432,
+        435,
+        440,
+        447
+      ],
+      "output_sha256": [
+        "54ecc54a27eabf4613e89cdf5d52d0bf55d6ded62ab40103cea769a6a2b8cc53",
+        "bc177c638c7b95f7ce94c7cdb1842ea8f09d8fa1a41b22cabad0d46f955ccaf4",
+        "ece4a218a7d7aca0866b9cef22c73d64796d77e5eb6251a8e7277c86e169e20b",
+        "38d708865bdb62cade7793a7a60ef2b5d2953bb7129b7129f3028076608570d3"
+      ]
+    },
+    {
+      "group_index": 11,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-11-dense.json",
+      "sha256": "b759d353dbd442cf40ded54b2ed519a13dabef1ea96945d1dcddea19f71eb09e",
+      "bytes": 20106,
+      "items": [
+        449,
+        451,
+        457,
+        466
+      ],
+      "output_sha256": [
+        "a4add1bc411e64063a68086769943d4c9ee4c1265efd2b73e939fe2ac1948a6c",
+        "2493db79b1ac3b0ec88bb556333f6fabdf0bad02772be4d927d3fc2d8d0c7657",
+        "a897f389449547377e5bfdd2e036663ad4824aff8dbd95990da9b06747a53169",
+        "4eae90e093324b1cc38cba4d8b3b30031f2331e56cfb73eb246a4b295f897732"
+      ]
+    },
+    {
+      "group_index": 11,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-11-s2.json",
+      "sha256": "3a467f5ff8f01dfa0d27debf9565b16c63e5ff9d5d12859d99a67bbe30b6caf7",
+      "bytes": 20166,
+      "items": [
+        449,
+        451,
+        457,
+        466
+      ],
+      "output_sha256": [
+        "80fcff4f748d261ebdfd411b41146ce66f9da95927e9a2e65d5752f9e22dc89d",
+        "e005b79218237ca11477ec6661414ddd6afbd6f2dd97a682a5347896659e0ccb",
+        "2e6a698feccf630027862e8503ae4dee2f679e661e76bdf13b480819d5d947b3",
+        "bc0bdb6c95870afbea6f17992ecdd9493cbac5a51223319c00feb941dc72ea14"
+      ]
+    },
+    {
+      "group_index": 12,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-12-dense.json",
+      "sha256": "3a32c61835e1592e4ec8b444fc54c6621abd75365ad66fadd20748225061154f",
+      "bytes": 16341,
+      "items": [
+        469,
+        476,
+        501,
+        505
+      ],
+      "output_sha256": [
+        "c696259ed8416b960f3f576eef449128149512115819ecb4b79fb6495016b8cb",
+        "cbf913b5fa82de7632997b7c7ea4cc4c93e9a2ff22408a81bad12e30f9394340",
+        "f55626885a1390596c84abb075185898240e79615f157164802e5e13bd396d1f",
+        "2cfab8c6ec4f75357d3c56d5bae90fd24fbab22993b990e5c76e3c4147cd754f"
+      ]
+    },
+    {
+      "group_index": 12,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-12-s2.json",
+      "sha256": "1768c78d56683af953ce94afc67b8d5ab788f3e9ef46b870da441c952865ea30",
+      "bytes": 17543,
+      "items": [
+        469,
+        476,
+        501,
+        505
+      ],
+      "output_sha256": [
+        "c696259ed8416b960f3f576eef449128149512115819ecb4b79fb6495016b8cb",
+        "9c92f5f381616cb46ca180401b21f043070e8e420950e76d0bd13043350bd3b1",
+        "3520c8cdc30b353853bcb71075d7911f176bb4c25ba60afa9faed4ac4c5d2528",
+        "1b9909c8c783531b1c3e634f863278c1ce54be24d7857ab8211b38e4ec62ad71"
+      ]
+    },
+    {
+      "group_index": 13,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-13-dense.json",
+      "sha256": "edbac740e1670f565b1998934804540c5f97c0cbeaf119cbcc36f228a824de85",
+      "bytes": 20543,
+      "items": [
+        514,
+        538,
+        541,
+        542
+      ],
+      "output_sha256": [
+        "f8135aa4272d4b8a2c16cd9b39e08077058e37a3718f43b45c9a262525f2ab34",
+        "d38396ccd4f282a64524381c992d00a2c0f36665c1d2e6a78ed4c433e8acc6ff",
+        "05122d4aa56ec820dfb0e48f240fd04d48522ff7f4d1c77f75ee64c103a89dd2",
+        "670f8dc5386bb95fa52b38e1c648090f89bb5e5cfcba324d4ca5cf615b8cb0f9"
+      ]
+    },
+    {
+      "group_index": 13,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-13-s2.json",
+      "sha256": "cee89661eac1f00ecf9cfbc7e8041f2c70c96eaac97886e48c75a75446909066",
+      "bytes": 19991,
+      "items": [
+        514,
+        538,
+        541,
+        542
+      ],
+      "output_sha256": [
+        "1299cc831edd4d2b37e23cc4f5d09eecb75d3331ff097a29a06e16b56575ff70",
+        "cc5a4def385aa328ef6be36955ede3cd693578a9e38f510d5fb3b9b1c0c50695",
+        "4a75e4615983071b94e92033ef3c68224654c99c9b27586e5a0102d592b98fcc",
+        "e9c0a09e76cc503d5d49b20249821fdf561dcf81ca4cecf73e0759443ce02e57"
+      ]
+    },
+    {
+      "group_index": 14,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-14-dense.json",
+      "sha256": "cb2e0ce0b43c96f988e830ccaf98ae5c8767b36f303d4695efd3ef9529786f90",
+      "bytes": 20130,
+      "items": [
+        546,
+        548,
+        552,
+        563
+      ],
+      "output_sha256": [
+        "e8a92b3347120f259ca46799a989fe604d2728b09f1135e01c09e9ce4ef81d44",
+        "c78614f38c66ee809b0feba2772f7f3585173e89a29715e4a15e8f535483d54e",
+        "ec25b1ce0e206851301ed96cda8cc678bece0f23fe6efdbb2246c98f9a2e8980",
+        "f0ea22c8754f8834f794ded41803089e8f6bd5c17dd22d39dda215f6a2a29b79"
+      ]
+    },
+    {
+      "group_index": 14,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-14-s2.json",
+      "sha256": "2cba445a5a2abd5625c3919952c8d700f5fd1457325aa85881609dc89fe93f67",
+      "bytes": 20637,
+      "items": [
+        546,
+        548,
+        552,
+        563
+      ],
+      "output_sha256": [
+        "47324dde45bb1773c5c5156a94d6a64c402e9fcf80ea75554359b2316f237911",
+        "406fc4dff163669a88db64fff8a06157c5655d153dada11bf0793066de97d374",
+        "8f95e5ff62caca9309ed40db27e8600dabe2937569595482d76cf23b0b5952af",
+        "f9837c0e73da9cac33bfe89620883e6668500e5d88a58ea710c8f950d2862d09"
+      ]
+    },
+    {
+      "group_index": 15,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-15-dense.json",
+      "sha256": "84d8c9c2a9ab2d0913d30e06294dca3811eee850fefc0bbfb21a9d0045193ad1",
+      "bytes": 14636,
+      "items": [
+        569,
+        592,
+        600,
+        601
+      ],
+      "output_sha256": [
+        "c558c7e935032462b3e6c1a393d3073eae7c24aeaa2c7bb87cc917fa3af54173",
+        "9e521344ceb48d7e11571fc02558cd88638ebf7cf8ea015d17899b141a4bae2b",
+        "a4b8f17391c3035764fd3b54a12f2751f20a1ab959840ca7deab91b0c4219bbf",
+        "9461aa6b73b2d8d7bbaf781433fd0f43227fce1a78f1e827e26c90ff9fa6a2f5"
+      ]
+    },
+    {
+      "group_index": 15,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-15-s2.json",
+      "sha256": "12005b561075056b5c6b5e488b24341ea5500424cc231a65144842af0275c88b",
+      "bytes": 13653,
+      "items": [
+        569,
+        592,
+        600,
+        601
+      ],
+      "output_sha256": [
+        "28017bde870ba6f2f7f00de39b0452f4329f0bf4fc8f19bc1e1dedae55da187f",
+        "74b086c8d6e310036afaa2db26357028210d81b7c5fabff31d193a9d2a0027fa",
+        "27698bda9d1260c49b5c361faaca4ebd1fca2eb000a58c389783c18beb1c66f6",
+        "652da2a2daaddad7089c0eb567ccb2e9de8d48c33a09f7406c8f7355bb382450"
+      ]
+    },
+    {
+      "group_index": 16,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-16-dense.json",
+      "sha256": "dc20897fdb088ee9f6165c118c3bbbc0843c7f5780a84d6f25f7e75a60ecac5d",
+      "bytes": 21464,
+      "items": [
+        644,
+        646,
+        664,
+        689
+      ],
+      "output_sha256": [
+        "320d98b9eb1675a5ad49c655e0abe792af448b31317f485d17b779a4acb4e809",
+        "29bd77cac125e215c5b3f8379411a73101e389799d2d0c09551f87118aa8c7f5",
+        "7cd8a8761db81dba4402d4117d33078c688f9ba06258a6d460c16795cfa21ba7",
+        "289858007f648df362fd037205701f92824df1b5e95ef7364028913ad2fdad38"
+      ]
+    },
+    {
+      "group_index": 16,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-16-s2.json",
+      "sha256": "b79435c63f88e05eab243129507944a773677e5c4cc1fbfd3325cc8c6e3b0c72",
+      "bytes": 21792,
+      "items": [
+        644,
+        646,
+        664,
+        689
+      ],
+      "output_sha256": [
+        "320d98b9eb1675a5ad49c655e0abe792af448b31317f485d17b779a4acb4e809",
+        "41a539b9ab1552e3ed140c3a2d2814088f2757a6996fec76822f565eed14f828",
+        "b48020091ddbacf1276ca40f821607b5cd0713b9ff6660ec7a3e3e8064386ae7",
+        "30a1b8084d596593023a9359788ded80644e294c855bf2b85343473b19f824f5"
+      ]
+    },
+    {
+      "group_index": 17,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-17-dense.json",
+      "sha256": "647e5e7b4b7023a24702af051fa895de2686ca86338f27687cda033f0778f0d0",
+      "bytes": 25598,
+      "items": [
+        696,
+        704,
+        727,
+        735
+      ],
+      "output_sha256": [
+        "60f87dfda59cdb0083b8d130b46c213bb28bd2280f4e3f23e14b374129655b24",
+        "46bda5ac0d87103074db331dcb3e4214a7dd87605dadc193081415bcede687d2",
+        "001a5dbef629289fcb3482c28239efea5c3fab309b414b027cfe6ca01a9c6fb0",
+        "7d04ee2666829b2f6f9934e7806bc0eae765694e05b5c3c61caab435d064ce39"
+      ]
+    },
+    {
+      "group_index": 17,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-17-s2.json",
+      "sha256": "022017924ad4cdb131d479637e6fc1a54fd21255f619ff089c88fcd74aca8f7f",
+      "bytes": 27587,
+      "items": [
+        696,
+        704,
+        727,
+        735
+      ],
+      "output_sha256": [
+        "27cfb8c4529e23af683364a99980ec59a659c9866c5134595bc08aa16d78e326",
+        "269eaa1573a4afe9349eb16679fde0624997fa39dc372f4cec4e94f7eaf56332",
+        "e9cf4a68f9514f754889739d1ffedfec3d39654e3400242303daadbed118b76f",
+        "4f3da2256a3beb8d73febe5c8048031cf24729e2e39ac00b82edeb172df55ba4"
+      ]
+    },
+    {
+      "group_index": 18,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-18-dense.json",
+      "sha256": "fffa7d8b071bb887329b65bc3f723639c640c92ec0096baecf73da510e81ccbc",
+      "bytes": 16216,
+      "items": [
+        740,
+        741,
+        747,
+        758
+      ],
+      "output_sha256": [
+        "bfb76a393917c2335ff05dcfeae0b4cd8c7411fc483f782374444140fdfa2161",
+        "961ec65e040b43d8d72014dcb614bc92222280de3da379eff2a10b6e819080ee",
+        "c42cbd0cf1ff6b25b806f35d3c0c104456defd738b54578ad38cb106cee2c9cc",
+        "f697ddc75001e5c638817c80f2fd7b83d80a33da776466a0feeb3d778fe5f082"
+      ]
+    },
+    {
+      "group_index": 18,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-18-s2.json",
+      "sha256": "fe472cab6d72c337e4ce57de2ca25127edf715b6de8034e356e847c2ec559268",
+      "bytes": 19081,
+      "items": [
+        740,
+        741,
+        747,
+        758
+      ],
+      "output_sha256": [
+        "6af6cfd7beb48fd4b1708b88582d0a378c83514f6b312a0a90cc27a4e8481baa",
+        "ea068e5b746c1efb81d47156cd69e485440126d32b5e8bf2d2e5a58110b5d287",
+        "5cca24aeffcc4d8c51af5ec99236c8b5605568db2bbbee09762c72256d5c049c",
+        "70a67e1a5a5b617d034318f7d35174b0e77e645d43e97fcd676af12afcf6af5a"
+      ]
+    },
+    {
+      "group_index": 19,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-19-dense.json",
+      "sha256": "98bf861370a8d5935d4e5c0155a4536ac85724ce6427008f5c6cbcf72c59c41e",
+      "bytes": 19611,
+      "items": [
+        775,
+        777,
+        778,
+        781
+      ],
+      "output_sha256": [
+        "082a67298c657c5d61f0adfb18dfc08045d8252252c7a9230bfa9cd756e2ec6b",
+        "88f247a1dc2ada1bf13afe406cf970f5b9fe55251f7ab56e6e7ca181f822e299",
+        "b78e513ef92106c5cb61baba12f8b5715544372b5736b6f6192214663547ec9d",
+        "7c543328f67ddfac576333e2f20c9dabf23067b93e8da4f9c31b72e4d43d765e"
+      ]
+    },
+    {
+      "group_index": 19,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-19-s2.json",
+      "sha256": "6aff2aff790a0f200789448aa5225252dc4889c8b5985941ce60c26be9f93f91",
+      "bytes": 22275,
+      "items": [
+        775,
+        777,
+        778,
+        781
+      ],
+      "output_sha256": [
+        "8e42f561ecfbf12af214567fae0b5047339edf063be7d128b3a5789dcc6caf6c",
+        "ca8260157fb16c12fc65e20650de74ea84ba51cae731e2d2ac3d99ed9074d73b",
+        "32a5ad839da2676f9baa4305e37f726baf1b0a8815266023de083a8343515d4c",
+        "f0e98eb6390f7e802a1095ffe734b6510546dee7fa4abb36fac00b0ead39418b"
+      ]
+    },
+    {
+      "group_index": 20,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-20-dense.json",
+      "sha256": "373292fc410f77b2d0c69f7355ef1e3fe4aea83d766f26f46585136766b80e93",
+      "bytes": 16915,
+      "items": [
+        788,
+        810,
+        817,
+        821
+      ],
+      "output_sha256": [
+        "9d93d0c538560fc74b0394af46611306e64a3df1dc22ac4f464d072ef923580c",
+        "42764f0776d827e3f9cb4ff0b3bd7dd97a7e4052a75ec218173afee58577b6e3",
+        "e46cd45080e6887ecceab8bd3e9450c4323aceec022690c6dd8dc99e965e8213",
+        "1e844fb370a8bfc63cd4c2917329ba88627af0edf6447200699cc80b3a891657"
+      ]
+    },
+    {
+      "group_index": 20,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-20-s2.json",
+      "sha256": "57dfa1d43c7cf9d447d10d5e55bfc94e7e77b4d3a01d8a25a011f331e62a1cb8",
+      "bytes": 15603,
+      "items": [
+        788,
+        810,
+        817,
+        821
+      ],
+      "output_sha256": [
+        "9a0dc1097dfb8b87abdb42edd44c887584b934bafdb30de4590099c5250c8afa",
+        "4b2a48fd0fd48545d665b9e0aa48a6ad5a3cf09fc7f9b1e9e7dc7d03d0f17dc0",
+        "157020b990b49043da3d0744ca781ff432edecf8d04c34bbb07c5de6636088db",
+        "575e8d960abb828fe2b06dc4b924964655e6e8325463392b9c50b774c5ad7e45"
+      ]
+    },
+    {
+      "group_index": 21,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-21-dense.json",
+      "sha256": "7979b9eb3733c7c90869fa0c9696dc238fe61e767e9b024da5216da489b144ed",
+      "bytes": 13638,
+      "items": [
+        859,
+        864,
+        865,
+        877
+      ],
+      "output_sha256": [
+        "cb53d840af5a6836fc0eb387c30207222afd03c8d6c17ab4ca90c05f449e7337",
+        "2879c282efc0aef3bd95a0005aa3a2ea27c64364c3193e296a8521fcbd9941ba",
+        "5bbe36c2c02c5bd256d672565f7f6650f0410c4d9c3a7be2ec0d370c510bc19b",
+        "c456ba6bc48fe640628dc79279e6e9694af5e4244db7f8a7c6ae7355728e92b3"
+      ]
+    },
+    {
+      "group_index": 21,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-21-s2.json",
+      "sha256": "1a2c18a2d8c835edfc00d1c5d1d2f114087af5465b04da401640b75fda505d5a",
+      "bytes": 13733,
+      "items": [
+        859,
+        864,
+        865,
+        877
+      ],
+      "output_sha256": [
+        "41be212777ec6e0113608b7b37ff47df2466d9c686502a73ebb6e7c27497061f",
+        "9075ba62533d8b6b08bb160fd7ead6d2ea6a24443f0b7ee94f6bfc28545a1cc5",
+        "8f013fbff55ef2a1adaade7e4652e9a1fd31b064d7c23b342bedab0178376364",
+        "57845ec889a0c6309e124b78f05ed3d44eee7fd20400a8859c49c531e94c492e"
+      ]
+    },
+    {
+      "group_index": 22,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-22-dense.json",
+      "sha256": "a9d058534d439e923d208c2cd9e0a62f97cb2dfcb5883e0a9f77055e977336d8",
+      "bytes": 18895,
+      "items": [
+        919,
+        928,
+        939,
+        940
+      ],
+      "output_sha256": [
+        "94dfee6b6c80a50bdb44efd99b808614838c1ae06f03dc58c6fe1417f635ad8d",
+        "71255e1ba7a68e564c2fbf9270f286b013e8a8d56f533df86cef3b44076e69cd",
+        "28d4448d6d30702216ab40ab59d392358496f59416bb515e5f389d24246bdf9d",
+        "9ee3f6c24689b2000a184edf9b00a21cda8916f07219c4800ad642c9be56131b"
+      ]
+    },
+    {
+      "group_index": 22,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-22-s2.json",
+      "sha256": "3c250e6dca5ad12a1f592517437c46e65da162441d49629522f9ec4c4590c735",
+      "bytes": 18967,
+      "items": [
+        919,
+        928,
+        939,
+        940
+      ],
+      "output_sha256": [
+        "c61aa7516b8281014f70ce3d09d48c3d2e0b8b2d2ccd679c029931b422fb2c71",
+        "b6dc7ec908f171565eaf3746e1248808eb52ef212e1211a15e2f852a6ef22fad",
+        "d2981edf82015ca2f2626f5754e7148f49c25265434c12d95566db07c12373c8",
+        "5b2f71d9a554da85caa2b7c62f2a74a57bc6877f5674f564cd7f0aeb91704a13"
+      ]
+    },
+    {
+      "group_index": 23,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-23-dense.json",
+      "sha256": "c0dc984dbf1665effcc3a9004d826f9649adbd4b665def5c4bf39307496b4664",
+      "bytes": 17979,
+      "items": [
+        946,
+        958,
+        1010,
+        1022
+      ],
+      "output_sha256": [
+        "80e62cb232b6faadbfc39706e8b2a0d955fbd9d43e9716a3e4172335b95a79ec",
+        "1a789027006d329dec74b28e40f89c4394ea3777408b74d7f986da782e836e8f",
+        "690a374e6967025843cecba3c3e8aa76117972bacf486fe0e0764f85bd01d164",
+        "69e0a68961da0de4757687d3b07fe0ba0d30daf3a46a7dcc286b167a4c32f72c"
+      ]
+    },
+    {
+      "group_index": 23,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-23-s2.json",
+      "sha256": "000f4717215d4fa029c7543e6f259e733bbe33e0f361dfbd83679d03d5519309",
+      "bytes": 17735,
+      "items": [
+        946,
+        958,
+        1010,
+        1022
+      ],
+      "output_sha256": [
+        "f5aafd25733da5a70c5f9d12d5fd48ed06825314d835434a6f0f23b11fdb7c2c",
+        "7a7e3980e15dd867220e19dc64a48f71bb7d199f1f54614c70b2115413b8b656",
+        "690a374e6967025843cecba3c3e8aa76117972bacf486fe0e0764f85bd01d164",
+        "1c24392f40d4cbf2234aac863b072fd5a410ee64c74e7b82b0b47fb61631b79e"
+      ]
+    },
+    {
+      "group_index": 24,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-24-dense.json",
+      "sha256": "836d6dc9974f42bf810d6a777d2952853264b25925e32c6f2d1199f610a5f547",
+      "bytes": 15194,
+      "items": [
+        1034,
+        1043,
+        1083,
+        1093
+      ],
+      "output_sha256": [
+        "6c7950ad71f15bf1ab5f1e4efb8c48170e1e3016ccfd7ecae843d8ef21205e47",
+        "d3611e866f4eb75f28e821feeeb0cd16da085db0c1008feae2d1e277f9646c41",
+        "d31735172d108feb375f9d3f761a12ed4021fbf136fbd7cc0754db0d152b6e7a",
+        "54760c6208e2a474bd0d563f665ae3e8433b7a7feecd0957303b447becb42da8"
+      ]
+    },
+    {
+      "group_index": 24,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-24-s2.json",
+      "sha256": "df096529fe01210b1ae8119115e30f235fc4dca9811a1cc10d962714bca7dfd2",
+      "bytes": 16470,
+      "items": [
+        1034,
+        1043,
+        1083,
+        1093
+      ],
+      "output_sha256": [
+        "00cb8c27d7917685e7cefa55b0ee61a179f64e96de5d7fcbfa645549f4521056",
+        "6d8a1f2f004b628c30512749b8a8057c4630a49cbbfcefc442a734edc1c94c99",
+        "10bccd01c372b4bbe35a3706242d6ca1af6bacc49952fc6450909b5769183cfc",
+        "573531d67a44b44ab3da53bcee6e76aa8ec6bee05d7298d3b395e4f977d93375"
+      ]
+    },
+    {
+      "group_index": 25,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-25-dense.json",
+      "sha256": "cf6276820f497c6658a400f8503575711320a0ba971ac2aa3cf9c74800d277b1",
+      "bytes": 16390,
+      "items": [
+        1098,
+        1099,
+        1103,
+        1116
+      ],
+      "output_sha256": [
+        "c070cd5b68e67575e92a14a030b68d33e5527971a58e03768edf912a544995fc",
+        "226be7445a3031e91e70da1fce6dc402d5f25205206919b1459db5fefe5e0d9b",
+        "bed5d7625850efd7e19d1ca96656b6325f2bd854fc72b4af05c8316bac4c6d6e",
+        "505511bed3c9539438e62998e66cbce2becb1557bfcf52a0c3d52286b7325206"
+      ]
+    },
+    {
+      "group_index": 25,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-25-s2.json",
+      "sha256": "9f8aa8a3ca94064651cc5ee5b5f72bcb1a450f60c1005cff23cace2b93042263",
+      "bytes": 20500,
+      "items": [
+        1098,
+        1099,
+        1103,
+        1116
+      ],
+      "output_sha256": [
+        "a32e1bce612791a42261f42f0a38b78335a2a3fbbc405cdc6f641c591087ab98",
+        "e34465be0affccb3dee6e8a199f032e341002d91c74f9addc2b2336363af2001",
+        "8c6cbb6b656f3e84b56d6b5e92e7783f9eae5cd301c69980be34a1c60288028e",
+        "2c16cb69caad7f4634d4b39e15f6e2ffa1dca7373509d7e638ba7bd1ff3c7fa0"
+      ]
+    },
+    {
+      "group_index": 26,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-26-dense.json",
+      "sha256": "bae14dab0ff2a11851562e058f4a5cd1dc5df5e52fd62294733338873daa543b",
+      "bytes": 20308,
+      "items": [
+        1130,
+        1133,
+        1140,
+        1149
+      ],
+      "output_sha256": [
+        "ca5f334798becbae7bd1ee6bcc45b702b7eaeecd92459a5d3c2ce8486f60f414",
+        "6caa01076215e739ef43ef584dec3e0294852f9f735bb3801f6c7343013f397b",
+        "ece28769b04f8e56fbfa5351d6c043717ac2ac462b88b43d1a0d744a431f0ebc",
+        "ba27dedff8aa0bf06546a74290eead84f5c12bdf8989338693e1cb11c964dd89"
+      ]
+    },
+    {
+      "group_index": 26,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-26-s2.json",
+      "sha256": "b35ec2009ccb8afdd073595287c995070cd0b364db6a5a4b00de419acfd4784a",
+      "bytes": 24235,
+      "items": [
+        1130,
+        1133,
+        1140,
+        1149
+      ],
+      "output_sha256": [
+        "262652a5b4b74ca8fc99db0cadd7d3f19ab8d1a2e028564c588d9c1fd2380313",
+        "8c59a50e41b7ea103613e91faf1dd57b24bf3e5671a76bca695f35661afff144",
+        "65696b7deb74d1419636327820deedf91dbedc7190ddbd74b1d71a410c00a62b",
+        "6a92180df1786bc60f364ebeb54b83719c491981ae386794b61d6b09fd8279f4"
+      ]
+    },
+    {
+      "group_index": 27,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-27-dense.json",
+      "sha256": "a82d1965d3ef773270687866832372c254403d9a72c5a7eabcd6a507e3fedae2",
+      "bytes": 20879,
+      "items": [
+        1161,
+        1182,
+        1195,
+        1197
+      ],
+      "output_sha256": [
+        "e3cb81d42847af2b10379fe9f96b4cd38396e70a8bbf352990a8fb29100ea293",
+        "27213fe6e3fec83ee5fda38f93b33408388a8a2901205456f9a71a3a5f8a1614",
+        "901cd8ee96185d982fb6b711cbe5fcb93c21c1502e5f2ef77c4fdcd13aae89ff",
+        "f7333bcf33ba6e969f70eeffd0a41f40645588f403cfabeee1442c5926a2e1e0"
+      ]
+    },
+    {
+      "group_index": 27,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-27-s2.json",
+      "sha256": "e1dbf172f5a9f0e8857a14e653a71e20da4fa56ecd3502235eab933aa95d3ab5",
+      "bytes": 20673,
+      "items": [
+        1161,
+        1182,
+        1195,
+        1197
+      ],
+      "output_sha256": [
+        "97db18dcca121adc32fe15166f336d0e848fc431e01fe16719a5abadec59caf6",
+        "25509a08a8a666816faed049b14c0ead4a30556294a023f5bb9ca7ec3fd21d4a",
+        "93bcbb3247d6b1607e29e8e5472f30b95fcf96c21d66fd08230b6aa319590be8",
+        "27399f02429f7c3857df1820e6e3885a5d61238080bba3215f52ab5d011aa81e"
+      ]
+    },
+    {
+      "group_index": 28,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-28-dense.json",
+      "sha256": "b2211f232f5746bab7332078f645693be948f6f860dfd292ceffe15ef80df240",
+      "bytes": 18798,
+      "items": [
+        1206,
+        1209,
+        1220,
+        1221
+      ],
+      "output_sha256": [
+        "8a903db34899a1a4e532285d9f8a0d2bd2ae694c07db0d83dccbfab445cd8589",
+        "4917c1d043c1221768280d9abcc94f7f62035b5524cdc1fb53512c3c50034c75",
+        "765a9fab6dbb77c13e61bbad78719cef52425fa8a58ea4ec637c28f268c638cf",
+        "256fde72f87c0d764efa593d62e29159158be7dc26c21cb99e245e550fd85a7a"
+      ]
+    },
+    {
+      "group_index": 28,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-28-s2.json",
+      "sha256": "bac29d629b9b0ba890f71498d52e36fc2b80d6d3e428676a2ac1f5564c504f82",
+      "bytes": 20092,
+      "items": [
+        1206,
+        1209,
+        1220,
+        1221
+      ],
+      "output_sha256": [
+        "b7f0f8d2954cc21dd252537c3e61b25f888a164680cccb40a041a2a91f8e1667",
+        "40cedd31f575746f9d94aa5e447f638a449f356589bbb776ad8009ab190f4d1c",
+        "4d3c088b67db19c5852f38960c467810cb70bbb4fdd9e709c1c924e05298aefe",
+        "c228d24e101f71e2e85174e1a1dcb280755f08580cea8108e99d8f0a2148bdd8"
+      ]
+    },
+    {
+      "group_index": 29,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-29-dense.json",
+      "sha256": "e67842e540ea11a37d69c930d79f38ff36e26a9f1cc3547209bb4033d7548ade",
+      "bytes": 13931,
+      "items": [
+        1232,
+        1236,
+        1247,
+        1266
+      ],
+      "output_sha256": [
+        "30faa515bbfc1ab78890cb8101cfb7a39b80583909139a30dcf45c9fa83857fa",
+        "fa89057ae2cbcb3b99e8a9f630abad38f1dee21b25afc4ae72f4270cea30b2b0",
+        "455f0bfc68cecf85dfcf63096bc58c93e1dbd77bcc7bdeeffb1495effab7540f",
+        "de19b507db1bfa56740dde747adaad1fcd465b2e1869303ecd44e8a39688fede"
+      ]
+    },
+    {
+      "group_index": 29,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-29-s2.json",
+      "sha256": "9a9ce24760d2cef0eab2f3b950817c3466fe0a485c4660bc2a907b40b5543734",
+      "bytes": 13399,
+      "items": [
+        1232,
+        1236,
+        1247,
+        1266
+      ],
+      "output_sha256": [
+        "808d6aa190306334ea2b7b4f2419c4d08df0a774c19f6de4f976507afd1bd616",
+        "a3db02fb323f74242a80ee267e409cac23e75ea0b2223588d6f25735bde340a9",
+        "b5f52b740332f8cebf4a258483f93ecce0790bbc6fcda436c9507839d85bb82b",
+        "a54b6faecffb3ae16f4b86806bc935818fd41ebf194a7d5e057597ae7cf83eb7"
+      ]
+    },
+    {
+      "group_index": 30,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-30-dense.json",
+      "sha256": "c1b24a81df2849db5846e1e09e4fa6eb557e014157d670a787fd98dce547adfe",
+      "bytes": 19029,
+      "items": [
+        1285,
+        1287,
+        1300,
+        1301
+      ],
+      "output_sha256": [
+        "a58f97e88a85e304c593a1633e7443c2bcdcb27bd71996890c39e329b257f142",
+        "a9c9636701241d078d7414e23d44d79d3b61f7d0d106c21b733ab7365ac70fdf",
+        "2d227c8528d80fcb7faa51c3ddc898d104b9a2738f0bf9d160a4c07947587a29",
+        "7ad1da172d6dde25fb9c8f8e5d19f1c0239e5d22e40f5ea828cf9588a2c70ccd"
+      ]
+    },
+    {
+      "group_index": 30,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-30-s2.json",
+      "sha256": "3cf47a0201516e33bb6ca43a1ba7e205c63f77825689bde877419735894adeaa",
+      "bytes": 18726,
+      "items": [
+        1285,
+        1287,
+        1300,
+        1301
+      ],
+      "output_sha256": [
+        "4012140008b91a9b53346d82182400c58a22440b29d056c211b09ed1ca99b124",
+        "75e0c882fe09b9b45ee654131a450e6b8da5e7b4e8a933987c182f2f2068264f",
+        "aea9ee45433377cc769662d00ee9e3b4497dffe5f99d10088a40f043b04e873e",
+        "ba4477c1332356ca5a7ee2274c1600839fa1fe18de62dccd94c73ce2a7b251a7"
+      ]
+    },
+    {
+      "group_index": 31,
+      "condition": "dense",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-31-dense.json",
+      "sha256": "6f68d6976fe84626ec739c9b46c7e1fbf2e1de4769048f6f6138fd3042939e0f",
+      "bytes": 23622,
+      "items": [
+        1309,
+        1310,
+        1312,
+        1316
+      ],
+      "output_sha256": [
+        "e81b66a88d7b0eb16c477ac8669174cdc0c987c76ffffec0fa7497787c85efb2",
+        "ca4509e9d18dafa814c6b84350d781ffb5035210f53d91088d52dad46d5637fa",
+        "eff38616dee8ca49b0a06f80dc3e56e8435471bc104510e8aec092864a6c46c8",
+        "1fa21e041da50f18c17400e98761759675493f91c27fcacf1be5264da61add23"
+      ]
+    },
+    {
+      "group_index": 31,
+      "condition": "s2",
+      "relpath": "runs/flashblock-20261023-quality/raw/group-31-s2.json",
+      "sha256": "1e4fb4c2d2602c9826b5bd449cd3e23165f8aeb735774ae9c24054583c0e69ae",
+      "bytes": 21878,
+      "items": [
+        1309,
+        1310,
+        1312,
+        1316
+      ],
+      "output_sha256": [
+        "8e28e28449632a82910f98dcbb3d4cb988b8a7f9fe8567d9f0247c3d3f5acee5",
+        "bb0194229a24886b123928aeaf64987e8664f86edfd4391f32146cfa5013e9f7",
+        "3c226ed60f2f27dff9df8b7be800aee58444045cfdc91b89f3f07952694c3027",
+        "d338895ea84bc2d925facca4ab3fdbab55c23e072fad7c0ab47031674a2fdad2"
+      ]
+    }
+  ],
+  "compact_raw_generated_outputs": {
+    "relpath": "runs/flashblock-20261023-quality/raw-generated-outputs.json",
+    "sha256": "6db51f03fef997c055af2759de21b5dabb0b64a65674cab083f829f9bf5999d1",
+    "bytes": 586715,
+    "rows": 256
+  }
+}

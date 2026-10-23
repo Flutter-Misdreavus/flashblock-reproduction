@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "created_at": "2026-10-23T04:41:12Z",
+  "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+  "n": 128,
+  "conditions": {
+    "dense": {
+      "correct": 118,
+      "n": 128,
+      "em_percent": 92.1875,
+      "new_tokens_mean": 223.9453125,
+      "new_tokens_median": 203.5,
+      "new_tokens_p95": 410.65,
+      "new_tokens_max": 501,
+      "truncated": 0,
+      "eos_stops": 128,
+      "other_stops": 0,
+      "empty_outputs": 0,
+      "extraction_failures": 1,
+      "extraction_method_counts": {
+        "boxed": 128
+      },
+      "by_method": {
+        "boxed": {
+          "n": 128,
+          "correct": 118
+        }
+      },
+      "stop_reason_counts": {
+        "eos": 128
+      },
+      "contains_mask_token": 0,
+      "out_of_vocab": 0
+    },
+    "s2": {
+      "correct": 119,
+      "n": 128,
+      "em_percent": 92.96875,
+      "new_tokens_mean": 227.4921875,
+      "new_tokens_median": 208.5,
+      "new_tokens_p95": 417.59999999999997,
+      "new_tokens_max": 577,
+      "truncated": 0,
+      "eos_stops": 128,
+      "other_stops": 0,
+      "empty_outputs": 0,
+      "extraction_failures": 1,
+      "extraction_method_counts": {
+        "boxed": 127,
+        "last_number_fallback": 1
+      },
+      "by_method": {
+        "boxed": {
+          "n": 127,
+          "correct": 118
+        },
+        "last_number_fallback": {
+          "n": 1,
+          "correct": 1
+        }
+      },
+      "stop_reason_counts": {
+        "eos": 128
+      },
+      "contains_mask_token": 0,
+      "out_of_vocab": 0
+    }
+  },
+  "paired_delta_pp": 0.78125,
+  "paired_bootstrap_ci95_pp": [
+    -3.90625,
+    5.46875
+  ],
+  "bootstrap": {
+    "seed": 20261023,
+    "reps": 10000,
+    "confidence": 0.95,
+    "method": "paired item resampling of {-1,0,+1} delta"
+  },
+  "exact_paired_bootstrap_ci95_pp": [
+    -3.90625,
+    5.46875
+  ],
+  "exact_bootstrap_method": "128-fold convolution of the empirical paired delta distribution; inverse-CDF quantiles",
+  "discordance": {
+    "both_correct": 114,
+    "dense_only": 4,
+    "s2_only": 5,
+    "neither": 5
+  },
+  "mcnemar_exact_p": 1.0,
+  "more_than_5pp_loss": false,
+  "execution_commits": [
+    "0b39fb9253818ac30e651230564e24bc89187bc1"
+  ],
+  "mixed_execution_commits": false,
+  "group_wall_seconds_sum": 1383.256,
+  "validation": {
+    "all_256_rows": true,
+    "unique_pairs": true,
+    "all_128_ids": true,
+    "dense_n": true,
+    "s2_n": true,
+    "no_mask_tokens": true,
+    "all_ids_in_vocab": true,
+    "truncation_consistent": true,
+    "prompt_hashes_match": true
+  },
+  "limitation": "fixed 128 heldout items, one seed, original undistilled TraDo-4B; this is exploratory and does not establish equivalence for losses <=5pp or reproduce a paper distilled-table result",
+  "status": "SUCCEEDED"
+}

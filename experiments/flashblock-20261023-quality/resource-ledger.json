@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "created_at": "2026-10-23T04:41:28Z",
+  "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+  "attempts": [
+    {
+      "schema_version": 1,
+      "stage": "environment_probe",
+      "status": "SUCCEEDED",
+      "wall_seconds": 2.117,
+      "started": "2026-10-23T04:11:47Z",
+      "finished": "2026-10-23T04:11:49Z",
+      "git_head": "979b43b5cc8952bb688ed09c2729bf987b3d2b84"
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "status": "FAILED",
+      "wall_seconds": 10.307,
+      "started": "2026-10-23T04:12:19Z",
+      "finished": "2026-10-23T04:12:29Z",
+      "git_head": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "execution_commit": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84"
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "status": "SUCCEEDED",
+      "wall_seconds": 41.44,
+      "started": "2026-10-23T04:14:19Z",
+      "finished": "2026-10-23T04:15:00Z",
+      "git_head": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "execution_commit": "0373d21123d236aa8dbbdfaf1d44a91092201f05"
+    },
+    {
+      "schema_version": 1,
+      "stage": "train_smoke",
+      "status": "SUCCEEDED",
+      "wall_seconds": 42.28,
+      "started": "2026-10-23T04:16:43Z",
+      "finished": "2026-10-23T04:17:26Z",
+      "git_head": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c",
+      "execution_commit": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c"
+    },
+    {
+      "schema_version": 1,
+      "stage": "quality_generation",
+      "status": "SUCCEEDED",
+      "wall_seconds": 1395.492,
+      "started": "2026-10-23T04:17:46Z",
+      "finished": "2026-10-23T04:41:02Z",
+      "git_head": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "execution_commit": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "error": null
+    }
+  ],
+  "gpu_command_wall_seconds_sum": 1491.636,
+  "stage_gpu_hours": 0.414343,
+  "campaign_before_gpu_hours": 1.9,
+  "campaign_after_upper_gpu_hours": 2.314343,
+  "campaign_limit_gpu_hours": 8.0,
+  "stage_limit_gpu_hours": 5.0,
+  "reserve_gpu_hours": 1.1,
+  "generation": {
+    "wall_seconds": 1395.492,
+    "status": "SUCCEEDED",
+    "completed_group_conditions": 64,
+    "kv_cache": {
+      "blocks": 93,
+      "cal_blocks": 4,
+      "free_data_blocks": 89,
+      "needed_data_blocks_worst_group": 68
+    },
+    "peak_allocated_mib": 11963.6,
+    "sampler": {
+      "samples": 2783,
+      "mem_free_min_mib": 7679.1,
+      "mem_used_max_mib": 16896.9,
+      "util_gpu_mean_pct": 68.7,
+      "util_gpu_max_pct": 100,
+      "sample_first": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 4589.5625,
+        "mem_free_mib": 19986.4375,
+        "util_gpu_pct": 12,
+        "t": 1792729066.7710319
+      },
+      "sample_last": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 16896.875,
+        "mem_free_mib": 7679.125,
+        "util_gpu_pct": 67,
+        "t": 1792730461.2314801
+      },
+      "end_query": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 16896.875,
+        "mem_free_mib": 7679.125,
+        "util_gpu_pct": 63
+      },
+      "breach": null,
+      "limits": {
+        "min_free_mib": 3072.0,
+        "max_allocated_mib": 16384.0
+      },
+      "note": "physical NVML memory/util sampled identically both conditions; shared GPU"
+    },
+    "sampler_breach": null
+  },
+  "note": "conservative sum of measured GPU-command walls including smoke and failed attempts; includes probes that initialized CUDA; CPU freeze/scorer/summary not charged",
+  "within_stage_limit": true,
+  "within_campaign_limit_with_reserve": true
+}

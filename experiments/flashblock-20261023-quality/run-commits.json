@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "repository": "Flutter-Misdreavus/flashblock-reproduction",
+  "visibility": "private",
+  "branch": "exp/flashblock-20261023",
+  "run_commits": [
+    {
+      "stage": "driver_config_scorer",
+      "sha": "cbe44ad8d0bdd6071105c481930824d4579957df",
+      "note": "frozen exact scorer, authored tests, config and group driver; resolved GPT scorer review"
+    },
+    {
+      "stage": "scorer_tests",
+      "sha": "0a88a425b3609a027b72c12e92e794a2799cbeeb",
+      "note": "61 authored CPU scorer cases passed; re-pinned at 979b43b5"
+    },
+    {
+      "stage": "input_manifest",
+      "sha": "3601ec67f1c1890f560640749cd417b5c7eaf01c",
+      "note": "model/dataset/ID/prompt/hash manifest; resolved GPT driver review"
+    },
+    {
+      "stage": "environment",
+      "sha": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "note": "environment and pre-smoke headroom; smoke1 later failed at this SHA"
+    },
+    {
+      "stage": "smoke_attempt1_failed",
+      "sha": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "note": "physical-free guard during validation; no generated rows used"
+    },
+    {
+      "stage": "resource_repair_2a",
+      "sha": "fe95b28a9b8ca6aeb43e1571e7dc455d46b3b723",
+      "note": "GPU global target 0.80 -> 0.72; preserve failed smoke"
+    },
+    {
+      "stage": "smoke_attempt2_passed",
+      "sha": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "note": "passed at pre-chunking code; superseded, preserved"
+    },
+    {
+      "stage": "resource_repair_2b",
+      "sha": "c732e1beaf1b30be589f66e1ea4b285695f0c713",
+      "note": "chunked bounded finite scan and pre-generation peak reporting"
+    },
+    {
+      "stage": "smoke_attempt3_passed",
+      "sha": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c",
+      "note": "final code; s2 reuse 40/251; frozen manifest c4bb9f1e"
+    },
+    {
+      "stage": "quality_generation_execution",
+      "sha": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "note": "64/64 group-condition calls; 15,086 finite logit calls; no breach"
+    },
+    {
+      "stage": "summary_and_report",
+      "sha": null,
+      "note": "summary commit; its SHA is the report head_commit"
+    }
+  ],
+  "commits": [
+    {
+      "sha": "0b39fb9253818ac30e651230564e24bc89187bc1",
+      "subject": "flashblock-20261023-quality: commit passing train-only ordinary-EOS smoke at chunked-scan code (s2 reuse 40/251, no resource breach)"
+    },
+    {
+      "sha": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c",
+      "subject": "flashblock-20261023-quality: re-freeze manifest/config hash for chunked scan and 0.72 target"
+    },
+    {
+      "sha": "c732e1beaf1b30be589f66e1ea4b285695f0c713",
+      "subject": "flashblock-20261023-quality: chunked bounded finite scan, report init/validation peaks, release audit closure; preserve passing smoke2 evidence (continuation of resource repair cycle 2)"
+    },
+    {
+      "sha": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "subject": "flashblock-20261023-quality: re-freeze manifest/config hash after resource-only GPU target change"
+    },
+    {
+      "sha": "ff3079a13b06330034b332fda3831a8f74fb0b9b",
+      "subject": "flashblock-20261023-quality: preserve failed smoke attempt 1 (shared-GPU free-memory breach at 0.80 target; no rows used)"
+    },
+    {
+      "sha": "fe95b28a9b8ca6aeb43e1571e7dc455d46b3b723",
+      "subject": "flashblock-20261023-quality: resource repair cycle 2 - lower global GPU memory target to 0.72 after shared-load free-memory breach; preserve failed smoke and stop on a failed condition"
+    },
+    {
+      "sha": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "subject": "flashblock-20261023-quality: record frozen environment and pre-smoke GPU headroom (19.99 GiB free)"
+    },
+    {
+      "sha": "979b43b5cc8952bb688ed09c2729bf987b3d2b84",
+      "subject": "flashblock-20261023-quality: re-pin passing scorer tests at post-review HEAD before GPU smoke"
+    },
+    {
+      "sha": "3601ec67f1c1890f560640749cd417b5c7eaf01c",
+      "subject": "flashblock-20261023-quality: freeze verified input manifest and resolve GPT pre-GPU driver review (hard nonfinite stop, live budget deadline, frozen execution SHA, full resume validation)"
+    },
+    {
+      "sha": "0d30eac5bc43a0ad5bd3fa81faf74b9b3fd9039b",
+      "subject": "flashblock-20261023-quality: fix prompt placeholder rendering (repair cycle 1; no GPU work yet)"
+    },
+    {
+      "sha": "0a88a425b3609a027b72c12e92e794a2799cbeeb",
+      "subject": "flashblock-20261023-quality: pin passing authored scorer tests before any heldout generation"
+    },
+    {
+      "sha": "cbe44ad8d0bdd6071105c481930824d4579957df",
+      "subject": "flashblock-20261023-quality: freeze exact scorer, authored tests, config and group driver; resolve GPT pre-generation scorer review"
+    }
+  ],
+  "push_mode": "relay",
+  "push_status": "pending",
+  "push_error": "relay mode: executor commits locally only; GPT pulls the private repository objects and verifies/pushes"
+}

@@ -29,6 +29,7 @@ import sys
 import time
 import traceback
 from collections import Counter
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -1469,6 +1470,13 @@ def cmd_finalize(args):
         "report-summary.md", "run-commits.json", "generation.json",
     ]
     artifacts = [name for name in whitelist if (RUN_DIR / name).is_file()]
+    wall_seconds = fields.get("wall_seconds")
+    try:
+        started = _load_json(RUN_DIR / "started.json")
+        started_at = datetime.fromisoformat(started["started_at"].replace("Z", "+00:00"))
+        wall_seconds = round(time.time() - started_at.timestamp(), 1)
+    except Exception:
+        pass
     report = {
         "schema_version": 1,
         "run_id": RUN_ID,
@@ -1480,7 +1488,7 @@ def cmd_finalize(args):
         "deviations": fields.get("deviations", []),
         "failures": fields.get("failures", []),
         "resource_usage": {
-            "wall_seconds": fields.get("wall_seconds"),
+            "wall_seconds": wall_seconds,
             "gpu_hours": ledger["stage_gpu_hours"],
             "gpu_command_wall_seconds": ledger["gpu_command_wall_seconds_sum"],
             "campaign_after_upper_gpu_hours": ledger["campaign_after_upper_gpu_hours"],

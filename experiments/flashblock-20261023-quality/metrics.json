@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "primary_metric": "paired numeric exact-match difference (s2 minus dense), percentage points",
+  "split": "GSM8K test fixed128 frozen IDs; no tuning",
+  "seed": 42,
+  "dense_em_percent": 92.1875,
+  "s2_em_percent": 92.96875,
+  "dense_correct": 118,
+  "s2_correct": 119,
+  "paired_delta_pp": 0.78125,
+  "paired_bootstrap_ci95_pp": [
+    -3.90625,
+    5.46875
+  ],
+  "discordance": {
+    "both_correct": 114,
+    "dense_only": 4,
+    "s2_only": 5,
+    "neither": 5
+  },
+  "more_than_5pp_loss": false,
+  "n": 128
+}

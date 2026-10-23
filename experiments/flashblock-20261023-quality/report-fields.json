@@ -1,0 +1,44 @@
+{
+  "status": "SUCCEEDED",
+  "summary": "Fixed 32x2 GSM8K heldout comparison on the original TraDo-4B BF16 model: dense 118/128 (92.1875%) vs s2/tau2 119/128 (92.96875%), paired delta +0.78125 pp, paired-bootstrap 95% CI [-3.90625,+5.46875] pp; discordance 114 both/4 dense-only/5 s2-only/5 neither; exact McNemar p=1.0. All 256 outputs were valid, untruncated, EOS-terminated and persisted once; 15,086 audited logit calls were finite and there was no resource breach. The pre-set >5pp loss warning was not triggered, but this single-seed fixed-128 result does not establish equivalence, superiority or paper-table reproduction; GPT should independently recompute and decide on any new frozen confirmation.",
+  "executed_commands": [
+    "cd /data/research/flashblock-reproduction",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py scorer-tests",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py freeze",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py probe",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py smoke --manifest-sha adaf7f60e16904673a3367ede7f0b11789d832795a8fd2388f3f5cdcfdf98e76",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py smoke --manifest-sha 5f5952bfc1e184938b01b89846382bdadcd2b2803bcd64d04ffddce44921780d",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py smoke --manifest-sha c4bb9f1e02db4c41d0f9f8d7686f82d996c0ea19e2fd41367d26c8122114c5cd",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py generate",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py summarize",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py ledger",
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/quality_cli.py commands"
+  ],
+  "deviations": [
+    "Global GPU memory target reduced 0.80 -> 0.72 (resource-only) after smoke1 physical-free breach; identical both conditions; KV 93 blocks (89 free data) covers worst-group 68 data pages. No scientific control changed.",
+    "Whole-parameter finite scan replaced by the proven 1 Mi-element chunked scan; this removed several GiB of retained caching-allocator temporaries and is a resource/implementation fix, not a scientific change.",
+    "Sequential prefill (add one request, run its PREFILL, then add the next; defer decode) is used identically in both conditions because the scheduler does not enforce max_num_batched_tokens.",
+    "Smoke was run three times within the committed resource-repair cycle: attempt 1 failed on the free-memory guard, attempt 2 passed at pre-chunking code, attempt 3 passed final code. All are preserved; no heldout rows were generated before final smoke.",
+    "One strict-box extraction failure in each condition (same item index 206) was counted incorrect; one s2 last-number fallback (index 788) was correct and is flagged by extraction_method. No fallback from an invalid last complete box and no gold-aware selection.",
+    "The optional GPT independent_quality.py plotting script was not run in the frozen venv because matplotlib is not installed; an independent re-score from raw token IDs/text and exact statistics was run separately and matched the committed summary."
+  ],
+  "failures": [
+    {
+      "stage": "freeze_attempt1_cpu",
+      "status": "FAILED",
+      "execution_commit": "0a88a425b3609a027b72c12e92e794a2799cbeeb",
+      "error": "IndexError in prompt template .format() because literal \\boxed{} braces were interpreted as placeholders; no GPU work and no heldout output read; fixed by replace(\"{problem}\", question) and committed before any GPU"
+    },
+    {
+      "stage": "smoke_attempt1",
+      "status": "FAILED",
+      "execution_commit": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+      "wall_seconds": 10.307,
+      "gpu_command_wall_seconds": 10.307,
+      "physical_free_min_mib": 2469.1,
+      "error": "physical-free guard breached during validation before any generated row; own reserved 17202 MiB driven mainly by whole-parameter finite-scan temporaries (now chunked); preserved, no rows used; secondary reset-with-live-requests was a consequence of stopping the failed condition"
+    }
+  ],
+  "wall_seconds": 2504.1,
+  "next_recommendation": "GPT should independently recompute dense/s2 EM, the paired delta and both bootstrap intervals from experiments/flashblock-20261023-quality/quality-per-item.json, inspect the nine discordant items and the strict-box failure at item 206, and decide whether the +0.78 pp exploratory delta with no truncation justifies a new, separately frozen multi-seed confirmation. Do not tune scorer, prompt, tau or inference parameters on these answers; this run is stopped for review."
+}
