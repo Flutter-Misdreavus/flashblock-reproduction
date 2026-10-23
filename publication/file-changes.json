@@ -11,13 +11,13 @@
       "path": "AGENTS.md",
       "action": "sanitized_or_documented",
       "original_sha256": "000bcaa89efdc582defb5e8c5bfef658372c014b0cb474962a26dcd37f666659",
-      "public_sha256": "83ee16ffc7e997097906fcc881d619db6f74f73ded3fbabb1a13ac8dfe0e5a42"
+      "public_sha256": "9b4ec6d114270103dcd19c103605e0a3a2be70d84d09882e2eee4915d27da696"
     },
     {
       "path": "FINAL_PROVENANCE.json",
       "action": "sanitized_or_documented",
       "original_sha256": "0c839b81e0736ae054b1ce5c11fa8111a27199422465423e19940f5eb0db3a50",
-      "public_sha256": "da5fc3af38031027e2d06d2a0557305c2b84047b6b1f49530ab005acbbc0e82d"
+      "public_sha256": "6d31b1e43c19c15f601f21b37ac61cd7553099f7cec9c9099274bfef8cf083a3"
     },
     {
       "path": "PROTOCOL.md",

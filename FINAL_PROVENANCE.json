@@ -89,6 +89,7 @@
     "commit_mapping": "publication/commit-map.tsv",
     "file_changes": "publication/file-changes.json",
     "security_audit": "publication/security-audit.json",
-    "original_history_retention": "private archive; not reachable from public Git history"
+    "original_history_retention": "Local private backup and original execution environment only; no additional GitHub repository. GitHub unreachable-object/cache retention is separate from branch-history cleanup.",
+    "publishing_strategy": "User-authorized force-with-lease to original repository"
   }
 }
