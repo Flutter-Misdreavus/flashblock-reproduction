@@ -1677,10 +1677,13 @@ def cmd_summarize(args):
             "status": res.get("status"),
             "wall_seconds": res.get("wall_seconds"),
         })
+    reconstructed = dev_probes.get("reconstructed_commands", {})
     for probe in dev_probes.get("probes", []):
+        name = probe.get("name", "unknown")
         commands.append({
-            "stage": "development_probe:" + probe.get("name", "unknown"),
-            "command": "uncommitted worktree probe (see development-probes.json)",
+            "stage": "development_probe:" + name,
+            "command": reconstructed.get(
+                name, "uncommitted worktree probe (see development-probes.json)"),
             "execution_commit": probe.get("base_commit"),
             "status": probe.get("status"),
             "wall_seconds": probe.get("wall_seconds"),
@@ -1781,6 +1784,7 @@ def cmd_summarize(args):
             "exports/mechanism-per-prompt.json", "exports/mechanism-summary.json",
             "exports/bounded-small-trace.json", "exports/resource-ledger.json",
             "exports/commands-and-provenance.json", "exports/mechanism-figure-data.csv",
+            "exports/report-body.json", "exports/run-commits.json",
         ],
         "deviations": [
             "matplotlib is not installed; exact CSV plotting data is provided instead of PNG/PDF "
@@ -1860,11 +1864,18 @@ def cmd_finalize(args):
         if subj.startswith(RUN_ID) or subj.startswith("flashblock-20261023-prep-r3"):
             commits.append({"sha": sha, "subject": subj})
     run_commits = _read_optional(out_dir / "run-commits.json") or {}
+    rc_list = list(run_commits.get("run_commits", []))
+    if not any(x.get("sha") == head for x in rc_list):
+        rc_list.append({
+            "stage": "summaries_and_report_body",
+            "sha": head,
+            "note": "commit containing the mechanism exports and report-body; report.json is generated after this commit",
+        })
     vc = {
         "repository": "Flutter-Misdreavus/flashblock-reproduction",
         "visibility": "private",
         "branch": "exp/flashblock-20261023",
-        "run_commits": run_commits.get("run_commits", []),
+        "run_commits": rc_list,
         "head_commit": head,
         "commits": commits,
         "push_status": "pending",
@@ -1872,7 +1883,7 @@ def cmd_finalize(args):
         "push_mode": "relay",
     }
     body["version_control"] = vc
-    body["run_commits"] = run_commits
+    body["run_commits"] = rc_list
     _atomic_json(run_dir / "report.json", body)
     print(json.dumps({"status": body.get("status"), "head_commit": head,
                       "report": str(run_dir / "report.json")}))

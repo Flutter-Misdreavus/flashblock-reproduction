@@ -92,6 +92,15 @@
       "accepted_evidence": false
     }
   ],
+  "reconstructed_commands": {
+    "dev_unit_1": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit.json",
+    "dev_unit_2": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit2.json",
+    "dev_hook_keyerror": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+    "dev_hook_ninja": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+    "dev_hook_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+    "dev_nohook_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 0 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100-nohook.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw-nohook --allow-dirty",
+    "dev_hardstop_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hardstop/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hardstop/raw --allow-dirty"
+  },
   "total_conservative_wall_seconds": 130.0,
   "note": "Charged 130s conservatively for all development probes, including failed/overwritten ones."
 }
