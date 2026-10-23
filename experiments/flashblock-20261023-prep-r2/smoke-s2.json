@@ -1,0 +1,28 @@
+{
+  "condition": "s2",
+  "sparsity_ratio": 2.0,
+  "indices": [
+    100,
+    101
+  ],
+  "max_tokens": 64,
+  "status": "FAILED",
+  "error": "ModuleNotFoundError(\"No module named 'xxhash'\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/data/research/flashblock-reproduction/repro/flashblock_prep_cli.py\", line 414, in cmd_smoke\n    from jetengine_ext.llm import LLM\n  File \"/data/research/flashblock-reproduction/dllm/sample/jetengine_ext/__init__.py\", line 1, in <module>\n    from jetengine_ext.llm import LLM\n  File \"/data/research/flashblock-reproduction/dllm/sample/jetengine_ext/llm.py\", line 1, in <module>\n    from jetengine_ext.engine.llm_engine import LLMEngine\n  File \"/data/research/flashblock-reproduction/dllm/sample/jetengine_ext/engine/llm_engine.py\", line 17, in <module>\n    from jetengine_ext.engine.scheduler import Scheduler\n  File \"/data/research/flashblock-reproduction/dllm/sample/jetengine_ext/engine/scheduler.py\", line 10, in <module>\n    from jetengine_ext.engine.block_manager import BlockManager\n  File \"/data/research/flashblock-reproduction/dllm/sample/jetengine_ext/engine/block_manager.py\", line 2, in <module>\n    import xxhash\nModuleNotFoundError: No module named 'xxhash'\n",
+  "min_free_mb_sampled": 19729.1,
+  "free_mb_start": 19729.1,
+  "free_mb_end": 19729.1,
+  "peak_allocated_mb": 0.0,
+  "peak_reserved_mb": 0.0,
+  "wall_seconds": 1.716,
+  "gpu_mem_total_mb": 24134.2,
+  "gpu_mem_free_mb_end": 19729.1,
+  "torch_version": "2.4.1+cu121",
+  "cuda_version": "12.1",
+  "reuse_counts": {
+    "need_update": 0,
+    "no_update": 0,
+    "steps": 0,
+    "dirty_hist": []
+  }
+}

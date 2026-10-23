@@ -1,0 +1,8 @@
+{
+  "run_id": "flashblock-20261023-prep-r2",
+  "active_gpu_hours_upper_charge": 0.08,
+  "measurement": "Conservative supervisor charge; no continuous power or GPU time log. Correctness ~77s; smoke failures before model load.",
+  "campaign_gpu_hours_charged": 0.1,
+  "wall_seconds": 2329.538,
+  "status": "CANCELLED"
+}

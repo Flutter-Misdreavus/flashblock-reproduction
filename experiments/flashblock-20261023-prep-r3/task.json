@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r3",
+  "parent_run_id": "flashblock-20261023-prep-r2",
+  "ready": true,
+  "hypothesis": "Preparation gate only: real custom kernels and original TraDo4B support correct no-reuse decomposition and finite real generation on allocated RTX3090.",
+  "baseline": "Original TraDo4B BF16 dense optimized attention, same decoder.",
+  "intervention": "Official FlashBlock s2 tau2 plus no-reuse decomposition control; no training.",
+  "dataset": "Gen-Verse/TraDo-4B-Instruct original checkpoint and openai/gsm8k main; resolve/freeze revisions and hashes before run.",
+  "split": "Only train100..101 smoke; freeze train100..115 mechanism and 128 seeded test IDs without evaluating test.",
+  "primary_metric": "Independent correctness parity, actual custom kernel execution, valid smoke generation and resource fit.",
+  "decision_rule": "Pass only if custom implementation is loaded and validated with independent reference plus real model smoke; otherwise report precise blocking layer. Stop for supervisor review.",
+  "controls": [
+    "Read AGENTS.md and PROTOCOL.md first; all limits mandatory.",
+    "Use isolated runtime; own existing environments may be read-only dependencies.",
+    "GPU UUID fixed; process<=16GiB, physical headroom>=3GiB; CPU<=8; build jobs2; new total disk<=30GiB, filesystem free>=40GiB.",
+    "No full quality/performance/mechanism stage yet. No training or quantization.",
+    "Commit code/config before tests or inference and after fixes; record each SHA and explicit staging; relay push by GPT.",
+    "No detached jobs or nested agents. Execute under existing systemd cgroup.",
+    "Inspect source build for torch/FlashInfer ABI and GPU support. A generic pip flash-attn wheel is NOT the custom kernel. Pin dependencies; avoid installing video stack.",
+    "Long commands FOREGROUND via managed bash job facility; never nohup/ampersand/setsid. Track job IDs.",
+    "No monkey patches pretending missing torch dtypes exist. Install coherent pristine packages.",
+    "Cumulative update count and dirty-query masking must be audited; preserve and document upstream semantics.",
+    "Read experiments/flashblock-20261023-prep-r2/review.md and supervisor-review.txt FIRST. Address all seven findings explicitly.",
+    "No dependency/environment exploration loop. Existing .so imports and passes no-reuse tests. Preserve failed results, no overwriting old runs.",
+    "This is final bounded preparation repair: at most two implementation/run repair iterations, no later than02:59:38Z; return precise blocker if not accepted."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Start from committed r3 supervisor review/task; record actual SHA before each validation and inference. Previous artifacts are evidence, not new successful runs.",
+  "environment": "Existing isolated Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9, compiled customFA; DO NOT reinstall. xxhash3.5.0 pinned; verify/install only missing requirements.",
+  "experiment_commands": [
+    "Read parent review and seven-item supervisor note. Verify old service inactive. Model files/locks now complete; verify checksums against existing frozen locks, do NOT redownload. Record current env, GPU, disk and initial SHA.",
+    "Fix missing xxhash (pinned), seed random/NumPy/torch/CUDA before init and reset paired sampling seed. Audit prompt against original upstream chat template. Replace hardcoded finite claims with logits checks/valid IDs/nonempty output/no masks; fail on nonfinite parameters/logits and resource breach. Correct memory finally and engine exit cleanup. Clear run-specific scheduler trace files before a fresh run. Record seed and actual run SHA.",
+    "Add direct cached custom-kernel tests: same persistent A/L buffers, unchanged Q exact reference parity, changed Q independent stale-history log-space composition; compare LSE and recomposition, dirty mask documented and matched to actual upstream semantics. Verify reset and batch-slot reorder preserve intended cache identity, actual model GQA32/8 hd128/block4. Keep fixed original tolerances for exact tests, report approximation error separately. Commit before running tests.",
+    "Inspect and if confirmed repair the upstream prefill store_kvcache_kernel stub (unconditional assert and missing load/store) using standard vectorized Triton scatter, preserving slot_mapping and numerical semantics. Independently test noncontiguous paged scatter vs PyTorch indexing; no hidden Python-loop fallback. This is an implementation compatibility fix, document it. Do not modify custom reuse mathematics to pass tests.",
+    "Memory: gpu_memory_utilization controls TOTAL device memory target including other processes in upstream allocate_kv_cache. 0.50 may leave no KV after8.22GiB weights +4.1GiB competitor. Use measured planning e.g.0.65 for smoke (our~11GiB), max_model_len>=512, enough pages for two real prompts+64; keep own peak<=16GiB and physicalfree>=3GiB. Log actual capacity and guard before inference; no other process interference.",
+    "Run committed correctness extension and two real train prompts100,101 dense/s2 each max64 new tokens, original parameters from PROTOCOL.md. Both conditions must produce finite valid nonempty output and s2 must log actual reuse across multiple blocks; save raw text outside Git and small diagnostic evidence. max64 is smoke only, no answer accuracy claims.",
+    "Write report.json plus locks/environment/correctness/smoke/resourceledger in run directory for manifest hashing, copy small sanitized evidence to experiments/run_id, commit explicit paths. Include parent failures and per-attempt SHA/elapsed/GPU accounting. Stop for GPT review, no mechanism/performance/test stage."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 0.4,
+    "wall_seconds": 3300,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only, one bounded headless session; no paid API purchases/top-ups."
+  },
+  "stop_conditions": [
+    "Hard stop before2026-10-23T02:59:38Z, wrapper3300s/systemd3360s. Prep total conservatively<=0.50GPUh, thisstage<=0.40GPUh; campaign<=8GPUh.",
+    "At most two repair iterations, preserve each failure and commit fix before rerun. No reinstall/rebuild except a precisely diagnosed and bounded correction.",
+    "OOM/NaN/resourcebreach/provenancemismatch: stop affected execution, record cause. No repeated test-driven changes. No heldout evaluation."
+  ],
+  "required_outputs": [
+    "report.json",
+    "environment.json",
+    "locks.json",
+    "correctness.json",
+    "smoke.json",
+    "resource-ledger.json",
+    "Versioned setup/build scripts, focused validation CLI, formal-test-ids.json and actual run commits."
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}
