@@ -1,0 +1,43 @@
+# Local access material and raw execution evidence
+.tmp/
+runs/
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.credentials*
+.dsh/
+.codex/
+
+# Large experiment artifacts stay on the data volume
+data/
+datasets/
+checkpoints/
+outputs/
+wandb/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+
+# Generated environments and caches
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+
+# Project runtime and builds
+runtime/
+*.so
+*.o
+*.a
+*.egg-info/
+build/
+dist/
+*.log
+dllm/trado_eval/
+dllm/logs/

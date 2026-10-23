@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/Caesarhhh/Flash_Block",
+  "commit": "a322fb80f29df0d4cc842fbc011929bc85ba8f36",
+  "included": [
+    "dllm source excluding datasets",
+    "flash-attention source with bundled licenses"
+  ],
+  "excluded": [
+    "assets",
+    "video",
+    "raw datasets",
+    "weights"
+  ],
+  "paper": "arXiv:2602.05305v3 2026-07-03"
+}

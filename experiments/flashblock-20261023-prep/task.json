@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep",
+  "parent_run_id": null,
+  "ready": true,
+  "hypothesis": "Preparation gate only: real custom kernels and original TraDo4B support correct no-reuse decomposition and finite real generation on allocated RTX3090.",
+  "baseline": "Original TraDo4B BF16 dense optimized attention, same decoder.",
+  "intervention": "Official FlashBlock s2 tau2 plus no-reuse decomposition control; no training.",
+  "dataset": "Gen-Verse/TraDo-4B-Instruct original checkpoint and openai/gsm8k main; resolve/freeze revisions and hashes before run.",
+  "split": "Only train100..101 smoke; freeze train100..115 mechanism and 128 seeded test IDs without evaluating test.",
+  "primary_metric": "Independent correctness parity, actual custom kernel execution, valid smoke generation and resource fit.",
+  "decision_rule": "Pass only if custom implementation is loaded and validated with independent reference plus real model smoke; otherwise report precise blocking layer. Stop for supervisor review.",
+  "controls": [
+    "Read AGENTS.md and PROTOCOL.md first; all limits mandatory.",
+    "Use isolated runtime; own existing environments may be read-only dependencies.",
+    "GPU UUID fixed; process<=16GiB, physical headroom>=3GiB; CPU<=8; build jobs2; new total disk<=30GiB, filesystem free>=40GiB.",
+    "No full quality/performance/mechanism stage yet. No training or quantization.",
+    "Commit code/config before tests or inference and after fixes; record each SHA and explicit staging; relay push by GPT.",
+    "No detached jobs or nested agents. Execute under existing systemd cgroup.",
+    "Inspect source build for torch/FlashInfer ABI and GPU support. A generic pip flash-attn wheel is NOT the custom kernel. Pin dependencies; avoid installing video stack.",
+    "Within 2h diagnose/install/build; report actionable failure if unavailable. At most two bounded fixes in gate; preserve failures."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Resolve initial committed HEAD at start; upstream a322fb80f29df0d4cc842fbc011929bc85ba8f36. Commit new implementation before every run.",
+  "environment": "Remote Python3.10, driver570.211.01, CUDA toolkit12.8, RTX3090 UUID ending347af81ed7a4; current torch2.2.2+cu121 in own MemLoop venv read-only; select coherent isolated pinned stack. DSH0.2.1-rc.2 under Node22.23.3.",
+  "experiment_commands": [
+    "Inspect resource ownership, current processes and disk. Record sanitized environment, actual package versions and device; no secret dumps.",
+    "Prepare minimal isolated environment and original vendored custom FlashAttention/FlashInfer. Freeze exact dependency versions and build flags. Download only pinned 4B BF16 model into runtime; freeze/verify provenance and hashes; datasets may use existing own GSM8K cache read-only after validation.",
+    "Implement focused correctness and genuine smoke CLI under repro/. Audit paper/code semantics and baseline parity. Commit before running. Ensure proper zero-shot template and baseline/s2 consistency.",
+    "Run independent small-tensor numerical tests and model smoke on train100..101 with max64 new tokens for baseline/s2; record generated text, true tokens, finite checks, actual run commit, memory, timing and cache reuse counts. Two smoke prompts may not finish answers; do not score as scientific accuracy.",
+    "Freeze IDs and write locks.json, correctness.json, smoke.json, environment.json, resource-ledger.json and report.json; commit sanitized artifacts under experiments/current_run. Stop and return report for GPT review."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 0.5,
+    "wall_seconds": 7200,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only, one bounded headless session; no paid API purchases/top-ups."
+  },
+  "stop_conditions": [
+    "Stage wrapper7200s and systemd7260s hard limit. GPU<=0.5h for this prep; total campaign<=8h.",
+    "Stop on OOM, NaN, provenance mismatch, resource contention preventing headroom, disk limits; preserve evidence.",
+    "Two bounded routine repair attempts maximum, each committed before rerun. No scientific scope changes.",
+    "No heldout test evaluation or next stage without new GPT task."
+  ],
+  "required_outputs": [
+    "report.json",
+    "environment.json",
+    "locks.json",
+    "correctness.json",
+    "smoke.json",
+    "resource-ledger.json",
+    "Versioned setup/build scripts, focused validation CLI, formal-test-ids.json and actual run commits."
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}
