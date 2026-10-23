@@ -367,10 +367,13 @@ def run_unit_tests(cfg):
         v_ok = bool(torch.equal(v_cache, direct_v))
         # a slot that no positive index targets must remain the sentinel; together
         # with the exact direct-index comparison this proves negative slots are skipped
+        slot_last_block, slot_last_off = 1023 // page, 1023 % page
         neg_ok = bool(torch.equal(
-            k_cache[0, 4], torch.full((nkv, d), 7.0, device="cuda", dtype=torch.bfloat16)))
+            k_cache[slot_last_block, slot_last_off],
+            torch.full((nkv, d), 7.0, device="cuda", dtype=torch.bfloat16)))
         neg_ok = neg_ok and bool(torch.equal(
-            v_cache[0, 4], torch.full((nkv, d), -3.0, device="cuda", dtype=torch.bfloat16)))
+            v_cache[slot_last_block, slot_last_off],
+            torch.full((nkv, d), -3.0, device="cuda", dtype=torch.bfloat16)))
         results["paged_kv_scatter"] = {
             "slots": [int(x) for x in slots.tolist()],
             "bitwise_k": k_ok, "bitwise_v": v_ok, "negative_slot_untouched": neg_ok,
@@ -894,8 +897,14 @@ def install_scheduler_capture(llm):
                 reuse = _has01(nnu)
                 kv_write = _has01(nu)
                 al_store = _has01(ns)
+                # read the dirty count actually used by the policy after schedule();
+                # schedule() resets the count at a new block, so the pre-snapshot value
+                # would otherwise be stale at step 0.
+                dirty_after = int(sp.get("dirty_token_count",
+                                         len(sp.get("dirty_tokens", []))))
             else:
                 reuse, kv_write, al_store = False, True, False
+                dirty_after = 0
             meta = {
                 "seq_id": snap["seq_id"], "status": snap["status"],
                 "block_start": snap["num_tokens"],
@@ -903,7 +912,7 @@ def install_scheduler_capture(llm):
                 "token_ids": snap["intermediate"],
                 "step": snap["current_denoising_step"],
                 "global_step": snap["global_denoising_step"],
-                "dirty_count": snap["dirty_count"],
+                "dirty_count": dirty_after,
                 "reuse": bool(reuse), "kv_write": bool(kv_write),
                 "al_store": bool(al_store), "cache_age": None,
                 "run_type": run_type.name if run_type is not None else None,
@@ -1372,6 +1381,33 @@ def _summarize_condition(cfg, res, label):
         for k, v in p.get("steps", {}).items():
             steps[k] += int(v)
 
+    def _lh_n(metric):
+        out = {}
+        for p in prompts:
+            for lh, st in p.get("per_layer_head", {}).items():
+                s = st.get(metric)
+                if s and s.get("n") is not None:
+                    out[lh] = out.get(lh, 0) + int(s["n"])
+        return out
+
+    gap_n = _lh_n("gap")
+    af_reuse_n = _lh_n("actual_full_reuse")
+    sm_reuse_n = _lh_n("stale_merge_rel")
+    denominators = {
+        "bootstrap_units": "prompts (not query rows or tokens)",
+        "n_prompt_units_for_primary": int(sum(1 for x in gap if x is not None and np.isfinite(x))),
+        "gap_aligned_row_observations_sum_over_layer_heads": int(sum(gap_n.values())),
+        "gap_observations_per_layer_head": gap_n,
+        "reuse_steps_total": int(steps.get("reuse_steps", 0)),
+        "actual_full_reuse_row_observations_sum_over_layer_heads": int(sum(af_reuse_n.values())),
+        "actual_full_reuse_observations_per_layer_head": af_reuse_n,
+        "stale_merge_reuse_row_observations_sum_over_layer_heads": int(sum(sm_reuse_n.values())),
+        "stale_merge_reuse_observations_per_layer_head": sm_reuse_n,
+        "denominator_note": "cosine/LSE/error means are equal-weight over selected layer/head means; "
+                            "the n fields are raw aligned row observations and are never treated as "
+                            "independent bootstrap units.",
+    }
+
     out = {
         "condition": label,
         "n_prompts": len(prompts),
@@ -1392,6 +1428,7 @@ def _summarize_condition(cfg, res, label):
         "max_cache_label_rel_l2": max([x for x in cl_rel_max if x is not None], default=None),
         "max_cache_label_lse_abs": max([x for x in cl_lse_max if x is not None], default=None),
         "steps": dict(steps),
+        "denominators": denominators,
         "gap_by_layer_head": lh_gap,
         "cos_out_by_layer_head": lh_cos_out,
         "cos_in_by_layer_head": lh_cos_in,
@@ -1579,6 +1616,10 @@ def cmd_summarize(args):
         if s.get("max_cache_label_rel_l2") is not None and s["max_cache_label_rel_l2"] > cfg["tolerances"]["cache_label_rel_l2_hard_max"]:
             status = "FAILED"
             reasons.append(f"{name} cache-label reference mismatch")
+        af = s.get("mean_actual_full_rel_l2_refresh", {}).get("mean")
+        if af is not None and af > 0.05:
+            status = "FAILED"
+            reasons.append(f"{name} fresh reference does not match model refresh output (relL2={af})")
     metrics = []
 
     def _add_metric(config, metric, value, unit, **extra):
