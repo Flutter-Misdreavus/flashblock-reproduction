@@ -62,3 +62,9 @@ preserved here with this resolution. No frozen scientific parameter changed.
     warmups and 30 B4 rows with the frozen order/seed, and stamps its own
     execution commit. B1 is not rerun. The unintended full restart at `6d5ac288`
     was cancelled by root; its ~30 s wall is charged and no rows are used.
+
+11. **Profile extraction attempt 1 empty (diagnostic only).** Torch 2.4 exposes
+    per-kernel device time as `self_device_time_total`; `self_cuda_time_total` is
+    `None`, so the first profile wrote zero kernels. The matrix and all 60 timed
+    rows are unaffected. Extract device time first (CUDA field fallback), preserve
+    the empty profile as `profile-attempt1-empty.json`, and rerun profile only.

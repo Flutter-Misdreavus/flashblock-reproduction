@@ -636,7 +636,9 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         ev = prof.key_averages()
         rows = []
         for e in ev:
-            us = float(getattr(e, "self_cuda_time_total", 0.0) or 0.0)
+            us = float(getattr(e, "self_device_time_total", 0.0) or 0.0)
+            if us == 0.0:
+                us = float(getattr(e, "self_cuda_time_total", 0.0) or 0.0)
             if us <= 0:
                 continue
             rows.append({"key": e.key, "self_cuda_us": us, "count": int(e.count)})
