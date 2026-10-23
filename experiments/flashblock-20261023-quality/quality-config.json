@@ -229,7 +229,7 @@
     "min_free_mib": 3072,
     "max_new_disk_gib": 30,
     "min_free_disk_gib": 40,
-    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after the first committed smoke hit the shared-GPU physical-free guard (2.47 GiB < 3.07 GiB) before generating; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
+    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after smoke1 hit the physical-free guard; the primary own-footprint cause was retained caching-allocator temporaries from the whole-parameter finite scan (now replaced by the proven 1Mi-element chunked scan), not an assumed co-tenant increase; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
   },
   "groups": {
     "count": 32,

@@ -482,7 +482,15 @@ def cmd_probe(args):
 # ---------------------------------------------------------------------------
 # one group-condition generation
 # ---------------------------------------------------------------------------
-def _params_finite(module):
+def _params_finite(module, chunk=1 << 20):
+    """Chunked full-parameter finiteness scan with bounded temporaries.
+
+    The earlier whole-parameter `(~isfinite(flat)).sum()` allocated large
+    int64 reduction/cast temporaries (retained by the caching allocator), which
+    could consume several GiB during validation.  This proven chunked form
+    scans 1 Mi elements at a time and never materialises a whole-parameter
+    reduction.
+    """
     import torch
     total = 0
     nonfinite_tensors = []
@@ -490,7 +498,13 @@ def _params_finite(module):
     for name, p in module.named_parameters():
         total += p.numel()
         flat = p.detach().view(-1)
-        bad = int((~torch.isfinite(flat)).sum().item())
+        bad = 0
+        for i in range(0, flat.numel(), chunk):
+            part = flat[i:i + chunk]
+            finite = torch.isfinite(part)
+            if not bool(finite.all().item()):
+                bad += int((~finite).sum().item())
+            del finite, part
         if bad:
             nonfinite_tensors.append({"name": name, "nonfinite": bad})
             nonfinite_elems += bad
@@ -515,6 +529,44 @@ def _install_finite_hook(h, audit):
         return logits
 
     mr.run_model = wrapped
+    h["orig_run_model"] = orig
+
+
+def _release_finite_hook(h):
+    """Drop the audited-run_model closure before engine teardown."""
+    mr = h.get("model_runner")
+    orig = h.pop("orig_run_model", None)
+    if mr is not None and orig is not None:
+        try:
+            mr.run_model = orig
+        except Exception:
+            pass
+
+
+def _memory_pre_generation(torch):
+    """Snapshot true init/validation peaks after chunked finite scanning."""
+    import torch as T
+    stats = {
+        "init_peak_allocated_mib": round(float(T.cuda.max_memory_allocated() / 2**20), 1),
+        "init_peak_reserved_mib": round(float(T.cuda.max_memory_reserved() / 2**20), 1),
+    }
+    return stats
+
+
+def _finish_memory_scan(torch, stats):
+    import torch as T
+    stats["scan_peak_allocated_mib"] = round(float(T.cuda.max_memory_allocated() / 2**20), 1)
+    stats["scan_peak_reserved_mib"] = round(float(T.cuda.max_memory_reserved() / 2**20), 1)
+    stats["pre_generation_peak_allocated_mib"] = max(
+        stats["init_peak_allocated_mib"], stats["scan_peak_allocated_mib"])
+    stats["pre_generation_peak_reserved_mib"] = max(
+        stats["init_peak_reserved_mib"], stats["scan_peak_reserved_mib"])
+    T.cuda.empty_cache()
+    stats["allocated_after_empty_cache_mib"] = round(
+        float(T.cuda.memory_allocated() / 2**20), 1)
+    stats["reserved_after_empty_cache_mib"] = round(
+        float(T.cuda.memory_reserved() / 2**20), 1)
+    return stats
 
 
 def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
@@ -716,7 +768,7 @@ def cmd_smoke(args):
     # Preserve any previous failed smoke attempt instead of overwriting it.
     preserved = []
     if (RUN_DIR / "train-smoke.json").exists():
-        fail_dir = RUN_DIR / "failed"
+        fail_dir = RUN_DIR / "smoke-attempts"
         fail_dir.mkdir(parents=True, exist_ok=True)
         stamp = int(time.time())
         for name in ("train-smoke.json", "train-smoke-dense.json", "train-smoke-s2.json"):
@@ -759,7 +811,10 @@ def cmd_smoke(args):
                               "needed_data_blocks": need}
         if kv - cal < need:
             raise RuntimeError(f"KV capacity {kv - cal} < {need}")
+        memory_pre = _memory_pre_generation(torch)
         result["finite_parameters"] = _params_finite(h["model_runner"].model)
+        memory_pre = _finish_memory_scan(torch, memory_pre)
+        result["memory_pre_generation"] = memory_pre
         if result["finite_parameters"]["nonfinite_elements"] != 0:
             raise RuntimeError("nonfinite model parameters")
         audit = {"calls": 0, "nonfinite_calls": 0, "max_numel": 0}
@@ -813,6 +868,7 @@ def cmd_smoke(args):
         if h is not None:
             result["engine_allocated_after_release_mib"] = None
             try:
+                _release_finite_hook(h)
                 eff._release_engine(h)
                 torch.cuda.synchronize()
                 result["engine_allocated_after_release_mib"] = round(
@@ -985,7 +1041,10 @@ def cmd_generate(args):
                                 "needed_data_blocks_worst_group": need}
         if kv - cal < need:
             raise RuntimeError(f"KV capacity {kv - cal} < worst group need {need}")
+        memory_pre = _memory_pre_generation(torch)
         progress["finite_parameters"] = _params_finite(h["model_runner"].model)
+        memory_pre = _finish_memory_scan(torch, memory_pre)
+        progress["memory_pre_generation"] = memory_pre
         if progress["finite_parameters"]["nonfinite_elements"] != 0:
             raise RuntimeError("nonfinite model parameters before generation")
         audit = {"calls": 0, "nonfinite_calls": 0, "max_numel": 0}
@@ -1061,6 +1120,7 @@ def cmd_generate(args):
             error = f"resource guard breach: {sampler.breach}"
         if h is not None:
             try:
+                _release_finite_hook(h)
                 eff._release_engine(h)
                 torch.cuda.synchronize()
                 progress["engine_allocated_after_release_mib"] = round(

@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "stage": "train_smoke",
+  "scope": "GSM8K train prompts 100,101; ordinary EOS; max 256 new tokens; smoke only, no accuracy claim",
+  "execution_commit": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+  "status": "SUCCEEDED",
+  "config_sha256": "94d9fa42c0cf736d12255badddad416be773d64b82cab7cc3e399624adb86bb5",
+  "manifest_sha256": "5f5952bfc1e184938b01b89846382bdadcd2b2803bcd64d04ffddce44921780d",
+  "budget_deadline": {
+    "base_prior_seconds": 12.424,
+    "stage_left_seconds": 17987.576,
+    "campaign_left_seconds": 17987.576,
+    "deadline_margin_seconds": 120.0
+  },
+  "commands": [
+    "smoke train100..101 both conditions ordinary EOS max256"
+  ],
+  "preserved_previous_attempts": [
+    "/data/research/flashblock-reproduction/runs/flashblock-20261023-quality/failed/train-smoke-attempt-1792728859.json",
+    "/data/research/flashblock-reproduction/runs/flashblock-20261023-quality/failed/train-smoke-dense-attempt-1792728859.json"
+  ],
+  "preconstruction": {
+    "mem_total_mib": 24576.0,
+    "mem_used_mib": 4589.5625,
+    "mem_free_mib": 19986.4375,
+    "util_gpu_pct": 12
+  },
+  "kv_cache": {
+    "blocks": 92,
+    "cal_blocks": 2,
+    "free_data_blocks": 90,
+    "needed_data_blocks": 66
+  },
+  "finite_parameters": {
+    "tensors": 291,
+    "elements": 4411424256,
+    "nonfinite_elements": 0,
+    "nonfinite_tensors": []
+  },
+  "logits_audit": {
+    "calls": 365,
+    "nonfinite_calls": 0,
+    "max_numel": 1215488
+  },
+  "validation": {
+    "both_conditions_valid": true,
+    "logits_finite": true,
+    "parameters_finite": true,
+    "raw_ids_and_counts_valid": true,
+    "s2_reuse_observed": true,
+    "dense_no_reuse": true
+  },
+  "sampler": {
+    "samples": 81,
+    "mem_free_min_mib": 4399.1,
+    "mem_used_max_mib": 20176.9,
+    "util_gpu_mean_pct": 60.47,
+    "util_gpu_max_pct": 100,
+    "sample_first": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 4589.5625,
+      "mem_free_mib": 19986.4375,
+      "util_gpu_pct": 12,
+      "t": 1792728859.538753
+    },
+    "sample_last": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 20176.875,
+      "mem_free_mib": 4399.125,
+      "util_gpu_pct": 58,
+      "t": 1792728899.8575363
+    },
+    "end_query": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 20176.875,
+      "mem_free_mib": 4399.125,
+      "util_gpu_pct": 66
+    },
+    "breach": null,
+    "limits": {
+      "min_free_mib": 3072.0,
+      "max_allocated_mib": 16384.0
+    },
+    "note": "physical NVML memory/util sampled identically both conditions; shared GPU"
+  },
+  "engine_allocated_after_release_mib": 169.1,
+  "wall_seconds": 41.44,
+  "finished_at": "2026-10-23T04:15:00Z",
+  "conditions": {
+    "dense": {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-quality",
+      "group_index": -1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "group_condition_order": 0,
+      "execution_commit": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "config_sha256": "94d9fa42c0cf736d12255badddad416be773d64b82cab7cc3e399624adb86bb5",
+      "manifest_sha256": "5f5952bfc1e184938b01b89846382bdadcd2b2803bcd64d04ffddce44921780d",
+      "scorer_sha256": "7f9225c8aef0018ace2d4f81f2f6bbfb4c2be10305c11b9afd21d58b47e21f8a",
+      "eos_token_id": 151643,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "batch_size": 2,
+      "prefill_seconds": 0.1875,
+      "decode_seconds": 15.6296,
+      "wall_seconds": 15.833,
+      "counters": {
+        "decode_rows": 259,
+        "decode_steps": 182,
+        "prefill_steps": 2,
+        "reuse_rows": 0,
+        "saving_rows": 92,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "peak_allocated_mib": 11913.2,
+      "peak_reserved_mib": 15270.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 20166.875,
+        "mem_free_mib": 4409.125,
+        "util_gpu_pct": 100
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 20174.875,
+        "mem_free_mib": 4401.125,
+        "util_gpu_pct": 51
+      },
+      "problems": [],
+      "status": "SUCCEEDED",
+      "error": null,
+      "items": [
+        {
+          "index": 100,
+          "prompt_sha256": "d4eae6cb5815feba83ee80f0c0c5731a12533b6334cbd7eb1b7ef8a197fcd831",
+          "prompt_tokens": 75,
+          "output_sha256": "fcab59b4bb27828af2e1c989d46d1c32ba4ddf087559e0b6dac78634617a8fb1",
+          "new_tokens": 256,
+          "finish_reason": "max_tokens",
+          "eos_present": false,
+          "truncated": true,
+          "empty_output": false,
+          "ids_in_vocab": true,
+          "contains_mask_token": false,
+          "seq_id": 1
+        },
+        {
+          "index": 101,
+          "prompt_sha256": "264b3a5060b50571fd1f73c067e8f3b30bc736433629864123dfc642c8c3d6ff",
+          "prompt_tokens": 128,
+          "output_sha256": "8cc9a7bd9ba640892508ce59f5b2e7c9607bd838da88d67810a46e67b25c1f88",
+          "new_tokens": 105,
+          "finish_reason": "eos",
+          "eos_present": true,
+          "truncated": false,
+          "empty_output": false,
+          "ids_in_vocab": true,
+          "contains_mask_token": false,
+          "seq_id": 2
+        }
+      ]
+    },
+    "s2": {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-quality",
+      "group_index": -1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "group_condition_order": 1,
+      "execution_commit": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+      "config_sha256": "94d9fa42c0cf736d12255badddad416be773d64b82cab7cc3e399624adb86bb5",
+      "manifest_sha256": "5f5952bfc1e184938b01b89846382bdadcd2b2803bcd64d04ffddce44921780d",
+      "scorer_sha256": "7f9225c8aef0018ace2d4f81f2f6bbfb4c2be10305c11b9afd21d58b47e21f8a",
+      "eos_token_id": 151643,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "batch_size": 2,
+      "prefill_seconds": 0.1642,
+      "decode_seconds": 15.2511,
+      "wall_seconds": 15.429,
+      "counters": {
+        "decode_rows": 251,
+        "decode_steps": 179,
+        "prefill_steps": 2,
+        "reuse_rows": 40,
+        "saving_rows": 89,
+        "store_rows": 113,
+        "update_rows": 211
+      },
+      "peak_allocated_mib": 11914.2,
+      "peak_reserved_mib": 15270.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 20174.875,
+        "mem_free_mib": 4401.125,
+        "util_gpu_pct": 51
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 20176.875,
+        "mem_free_mib": 4399.125,
+        "util_gpu_pct": 66
+      },
+      "problems": [],
+      "status": "SUCCEEDED",
+      "error": null,
+      "items": [
+        {
+          "index": 100,
+          "prompt_sha256": "d4eae6cb5815feba83ee80f0c0c5731a12533b6334cbd7eb1b7ef8a197fcd831",
+          "prompt_tokens": 75,
+          "output_sha256": "96c5e41a8c3cc1a2e13b5209cd44290e1b7d8c8dcaa55bbbeba1961a0e80c10e",
+          "new_tokens": 256,
+          "finish_reason": "max_tokens",
+          "eos_present": false,
+          "truncated": true,
+          "empty_output": false,
+          "ids_in_vocab": true,
+          "contains_mask_token": false,
+          "seq_id": 3
+        },
+        {
+          "index": 101,
+          "prompt_sha256": "264b3a5060b50571fd1f73c067e8f3b30bc736433629864123dfc642c8c3d6ff",
+          "prompt_tokens": 128,
+          "output_sha256": "c17eac6329cdc0f8684039efdbb1920d5a7fe36d342f632397c727a036fea68a",
+          "new_tokens": 96,
+          "finish_reason": "eos",
+          "eos_present": true,
+          "truncated": false,
+          "empty_output": false,
+          "ids_in_vocab": true,
+          "contains_mask_token": false,
+          "seq_id": 4
+        }
+      ]
+    }
+  }
+}

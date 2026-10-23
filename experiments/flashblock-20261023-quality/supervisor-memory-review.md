@@ -1,0 +1,9 @@
+# GPT diagnosis of smoke1 resource breach (before heldout)
+
+I inspected preserved smoke1 at actualSHAe9ca4f37411f5078a3c8d5948418c0589b6e5e84: no logit calls/no generated rows. Free2469MiB, torchallocated13842.8MiB but RESERVED17202MiB immediately after full parameterfinite scan. Otherprocess total remains~4148MiB before/after. Do NOT diagnose this as increased sharedGPU load without evidence. Full-tensor `(~torch.isfinite(flat)).sum()` can allocate large reduction/casttemporaries (embeddinghundredsmillions elements), retained by cachingallocator; this explains ownreserved excess more directly.
+
+Before nextGPUcall, replace own `_params_finite` with the already-proven CHUNKED finite scan from prep/mechanism (e.g1M elements perchunk, no whole-parameter int64reduction). Check resources during scan and release temporarycachedblocks outsidegeneration aftervalidation. Preserve/report truepeak before _run_batch reset_peak_memory_stats; batch peak alone hidesinit/validation peak. Existing staticfix lowering globalmemorytarget0.80->0.72 is acceptable resource-only change BEFOREheldout if KVpagecapacity still covers allfour(prompt+4096)+calc; all scientificcontrols/IDs/template/scorer stay unchanged and samepoolbothconditions. Freeze updatedconfig/manifest and commit chunking before retry, no new exploratoryGPUprobes.
+
+Smoke1 also attempted secondcondition after firstFAILED, yielding secondary 'reset with live requests'; make firstfailure stop immediately (alreadyapparentlyfixed). Release finite-hook/orig_run_model references before _release_engine so cleanup actuallyfrees; commandexitstillcleansbutdo notclaimhelperreleased13.8GiB ifreportedunchanged.
+
+This is allowed continuation of currently committed resource repaircycle2, not authorization for additional GPUrepaircycles. Preserveallfailedsnapshots and firstcause; if nextsmoke fails, stopforGPTreport. No test outputs existed, so no test-driven parameterchanges.
