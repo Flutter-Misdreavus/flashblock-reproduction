@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "git_head": "7a9b87fbb0d76063168aedc7e6b7c67d799a602f",
+  "git_status": "",
+  "branch": "exp/flashblock-20261023",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-6.8.0-111-generic-x86_64-with-glibc2.35",
+  "packages": {
+    "torch": "2.4.1",
+    "triton": "3.0.0",
+    "numpy": "1.26.4",
+    "transformers": "4.52.4",
+    "tokenizers": "0.21.4",
+    "huggingface-hub": "0.34.4",
+    "safetensors": "0.5.3",
+    "sentencepiece": "0.2.0",
+    "accelerate": "1.9.0",
+    "pyarrow": "18.1.0",
+    "flashinfer-python": "0.2.9",
+    "flash-attn": "2.7.3",
+    "xxhash": "3.5.0"
+  },
+  "torch": {
+    "version": "2.4.1+cu121",
+    "cuda": "12.1",
+    "cudnn": 90100,
+    "device_name": "NVIDIA GeForce RTX 3090",
+    "capability": [
+      8,
+      6
+    ]
+  },
+  "gpu": {
+    "mem_total_mib": 24576.0,
+    "mem_used_mib": 4589.5625,
+    "mem_free_mib": 19986.4375,
+    "util_gpu_pct": 21
+  },
+  "gpu_uuid": "GPU-REDACTED",
+  "compute_apps_before": {
+    "count": 13,
+    "apps": [
+      {
+        "pid": 23762,
+        "used_memory": "320 MiB"
+      },
+      {
+        "pid": 963685,
+        "used_memory": "320 MiB"
+      },
+      {
+        "pid": 2096694,
+        "used_memory": "620 MiB"
+      },
+      {
+        "pid": 1929118,
+        "used_memory": "478 MiB"
+      },
+      {
+        "pid": 1930277,
+        "used_memory": "1660 MiB"
+      },
+      {
+        "pid": 1931852,
+        "used_memory": "1660 MiB"
+      },
+      {
+        "pid": 2057537,
+        "used_memory": "7138 MiB"
+      },
+      {
+        "pid": 2239758,
+        "used_memory": "496 MiB"
+      },
+      {
+        "pid": 2064720,
+        "used_memory": "1660 MiB"
+      },
+      {
+        "pid": 2203000,
+        "used_memory": "5432 MiB"
+      },
+      {
+        "pid": 4009851,
+        "used_memory": "814 MiB"
+      },
+      {
+        "pid": 1932774,
+        "used_memory": "1660 MiB"
+      },
+      {
+        "pid": 1933545,
+        "used_memory": "1660 MiB"
+      }
+    ]
+  },
+  "cpu_count": 40,
+  "disk_free_gib": 64.992,
+  "disk_total_gib": 5543.877,
+  "probed_at_utc": "2026-10-23T03:13:06Z"
+}
