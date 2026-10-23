@@ -23,11 +23,13 @@ def _staircase_attn_fwd_kernel_varlen_v2(
     stride_ot, stride_oh, stride_ok,
     n_heads, n_kv_heads,
     q_scale,
-    BLOCK_M: tl.constexpr,
-    BLOCK_N: tl.constexpr,
     BLOCK_DMODEL: tl.constexpr,
     LOG2_STAIRS: tl.constexpr,
     NUM_HEADS_PER_KV_GROUP: tl.constexpr,
+    # Triton 3.0 autotune keys are resolved against positional arguments, so the
+    # keyed constexprs must precede the config-supplied BLOCK_M/BLOCK_N kwargs.
+    BLOCK_M: tl.constexpr,
+    BLOCK_N: tl.constexpr,
 ):
     seq_idx = tl.program_id(0)
     head_idx = tl.program_id(1)
