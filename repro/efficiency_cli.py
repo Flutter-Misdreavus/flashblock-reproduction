@@ -933,7 +933,7 @@ def _prior_gpu_wall(include_current_matrix=False):
             total += w
         except Exception:
             pass
-    for name in ("matrix.json", "profile.json"):
+    for name in ("smoke.json", "matrix.json", "profile.json"):
         p = RUN_DIR / name
         if p.exists() and (include_current_matrix or name != "matrix.json"):
             try:
@@ -1430,7 +1430,7 @@ def cmd_ledger(args):
     for name, w in details.items():
         files[name] = {"wall_seconds": round(w, 3)}
     for p in sorted(RUN_DIR.glob("*.json")):
-        if p.name not in ("preflight.json", "matrix.json", "profile.json"):
+        if p.name not in ("preflight.json", "smoke.json", "matrix.json", "profile.json"):
             continue
         try:
             d = _load(p)
@@ -1451,7 +1451,7 @@ def cmd_ledger(args):
               "note": "conservative sum of measured GPU-command walls including every "
                       "retained preflight attempt, matrix warmups/timed runs and profiles; "
                       "failed/aborted commands are charged too"}
-    for fname in ("preflight.json", "matrix.json", "profile.json"):
+    for fname in ("preflight.json", "smoke.json", "matrix.json", "profile.json"):
         p = RUN_DIR / fname
         if p.exists():
             d = _load(p)
