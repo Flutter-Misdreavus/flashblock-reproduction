@@ -933,7 +933,8 @@ def _prior_gpu_wall(include_current_matrix=False):
             total += w
         except Exception:
             pass
-    for name in ("smoke.json", "matrix.json", "profile.json"):
+    for name in ("smoke.json", "matrix-attempt1.json", "aborted-restart.json",
+                 "matrix.json", "profile.json"):
         p = RUN_DIR / name
         if p.exists() and (include_current_matrix or name != "matrix.json"):
             try:
@@ -1006,7 +1007,218 @@ def cmd_smoke(args):
     return 0 if res["status"] == "SUCCEEDED" else 1
 
 
+def _require_free_headroom(cfg, minimum_mib=17000, label="engine construction"):
+    probe = NvmlSampler(cfg["controls"]["gpu_uuid"], interval=99)
+    probe._init_nvml()
+    q = probe.query()
+    if q["mem_free_mib"] < minimum_mib:
+        raise RuntimeError(
+            f"insufficient physical free headroom before {label}: "
+            f"{q['mem_free_mib']:.1f} MiB < {minimum_mib} MiB")
+    return q
+
+
+B1_ATTEMPT_COMMIT = "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb"
+
+
+def _validate_b1_rows(cfg):
+    path = RUN_DIR / "timed-rows-attempt1.json"
+    meta_path = RUN_DIR / "matrix-attempt1.json"
+    with open(path, "r", encoding="utf-8") as f:
+        payload = json.load(f)
+    with open(meta_path, "r", encoding="utf-8") as f:
+        meta = json.load(f)
+    rows = payload["rows"]
+    if len(rows) != 30:
+        raise RuntimeError(f"B1 resume expected 30 retained rows, got {len(rows)}")
+    if meta.get("status") != "FAILED":
+        raise RuntimeError("matrix-attempt1 meta is not the retained FAILED attempt")
+    commits = {r.get("execution_commit") for r in rows}
+    if commits != {B1_ATTEMPT_COMMIT} or meta.get("execution_commit") != B1_ATTEMPT_COMMIT:
+        raise RuntimeError(f"unexpected B1 attempt commit(s): {commits}")
+    for r in rows:
+        if int(r["batch"]) != 1:
+            raise RuntimeError("retained attempt contains a non-B1 row")
+        if r["setting"] not in ("B1L1024", "B1L4096", "B1L8192"):
+            raise RuntimeError(f"unexpected B1 setting {r['setting']}")
+    seen = {(r["setting"], r["round"], r["condition"]) for r in rows}
+    expected = {(s["name"], rnd, c["name"]) for s in cfg["settings"] if s["batch"] == 1
+                for rnd in range(1, 6) for c in cfg["conditions"]}
+    if seen != expected:
+        raise RuntimeError("retained B1 matrix is incomplete or duplicated")
+    # frozen scientific controls must match the commit that produced B1 rows
+    old_txt = subprocess.check_output(
+        ["git", "-C", str(ROOT), "show",
+         f"{B1_ATTEMPT_COMMIT}:experiments/{RUN_ID}/efficiency-config.json"],
+        text=True)
+    old = json.loads(old_txt)
+    for key in ("controls", "settings", "conditions", "pair_rounds", "primary_setting",
+                "model", "dataset"):
+        if old[key] != cfg[key]:
+            raise RuntimeError(f"frozen config section changed since B1 attempt: {key}")
+    rows_sha = _sha256_bytes(json.dumps(rows, sort_keys=True).encode())
+    return (rows, {"timed_rows_sha256": _sha256(path),
+                   "matrix_meta_sha256": _sha256(meta_path),
+                   "rows_canonical_sha256": rows_sha,
+                   "b1_execution_commit": B1_ATTEMPT_COMMIT,
+                   "b1_meta_gpu_command_wall_seconds":
+                       meta.get("gpu_command_wall_seconds")})
+
+
+def cmd_matrix_b4(args):
+    cfg = load_config(args.config)
+    _configure_env(cfg)
+    _setup_paths()
+    _init_torch()
+    if _git_status():
+        raise SystemExit("refusing GPU matrix resume with dirty worktree")
+    commit = _git_head()
+    man, tokens = _load_manifest(cfg)
+    b1_rows, b1_evidence = _validate_b1_rows(cfg)
+    RUN_DIR.mkdir(parents=True, exist_ok=True)
+    t_start = time.perf_counter()
+    prior_wall, prior_detail = _prior_gpu_wall()
+    free_before = _require_free_headroom(cfg, 17000, "B4 resume engine construction")
+    all_rows = list(b1_rows)
+    rows_path = RUN_DIR / "timed-rows.json"
+    _atomic_json(rows_path, {"schema_version": 1, "run_id": RUN_ID,
+                             "status": "RUNNING", "rows": all_rows})
+    failures = []
+    current_h = None
+    sampler = NvmlSampler(cfg["controls"]["gpu_uuid"],
+                          min_free_mib=cfg["controls"]["min_free_mib"],
+                          max_alloc_mib=cfg["controls"]["peak_allocated_limit_mib"])
+    meta = {"schema_version": 1, "run_id": RUN_ID, "execution_commit": commit,
+            "mode": "resume_b4_only", "argv": [sys.executable] + sys.argv,
+            "started_at_utc": _now(),
+            "input_manifest_sha256": _sha256(EXP_DIR / "input-manifest.json"),
+            "config_sha256": _sha256(CONFIG_PATH), "warmups": [], "rows": [],
+            "failures": [], "status": "FAILED",
+            "b1_retained": b1_evidence,
+            "b1_rows_used_unchanged": True,
+            "free_before_engine_mib": free_before["mem_free_mib"],
+            "prior_gpu_wall_seconds": round(prior_wall, 3),
+            "prior_gpu_wall_detail": prior_detail,
+            "gpu_command_wall_limit_seconds": cfg["budget"]["gpu_command_wall_limit_seconds"]}
+    try:
+        sampler.start()
+        batch = 4
+        settings = [s for s in cfg["settings"] if int(s["batch"]) == batch]
+        current_h = {"cfg": cfg, "batch": batch, "llm": _make_engine(cfg, batch),
+                     "identity_layers": [], "expected": {}, "sampler": sampler}
+        current_h["model_runner"] = current_h["llm"].model_runner
+        _install_recorder(current_h, [])
+        kv = int(current_h["llm"].config.num_kvcache_blocks)
+        cal = len(current_h["llm"].scheduler.cal_blocks)
+        need = batch * math.ceil(cfg["controls"]["max_model_len"] / 256)
+        meta["kv_cache_B4"] = {"blocks": kv, "cal_blocks": cal,
+                               "free_data_blocks": kv - cal,
+                               "needed_data_blocks": need}
+        if kv - cal < need:
+            raise RuntimeError(f"B4 KV capacity {kv-cal} < {need}")
+        for setting in settings:
+            L = int(setting["length"])
+            prompts = tokens[L][:batch]
+            for cond in cfg["conditions"]:
+                rr = _run_once(current_h, prompts,
+                               [cfg["controls"]["max_new_tokens"]] * batch,
+                               float(cond["ratio"]), identity=False, timeit=True)
+                w = {"stage": "warmup", "setting": setting["name"],
+                     "condition": cond["name"], "decode_seconds": rr["decode_seconds"],
+                     "prefill_seconds": rr["prefill_seconds"],
+                     "wall_seconds": rr["wall_seconds"],
+                     "total_output_tokens": rr["total_output_tokens"],
+                     "peak_allocated_mib": rr["peak_allocated_mib"],
+                     "problems": rr["problems"], "execution_commit": commit,
+                     "ended_at_utc": _now()}
+                meta["warmups"].append(w)
+                if rr["problems"]:
+                    raise RuntimeError(f"warmup {setting['name']} {cond['name']}: "
+                                       f"{rr['problems'][:3]}")
+            for ri, order in enumerate(cfg["pair_rounds"]):
+                for cname in order:
+                    cond = next(c for c in cfg["conditions"] if c["name"] == cname)
+                    cumulative = prior_wall + (time.perf_counter() - t_start)
+                    if cumulative > cfg["budget"]["gpu_command_wall_limit_seconds"]:
+                        raise RuntimeError(f"cumulative GPU-command wall budget exhausted: "
+                                           f"{cumulative:.1f}s")
+                    rr = _run_once(current_h, prompts,
+                                   [cfg["controls"]["max_new_tokens"]] * batch,
+                                   float(cond["ratio"]), identity=False, timeit=True)
+                    row = {"schema_version": 1, "run_id": RUN_ID,
+                           "setting": setting["name"], "batch": batch, "length": L,
+                           "round": ri + 1, "order_index": order.index(cname),
+                           "condition": cname, "ratio": float(cond["ratio"]),
+                           "seed": cfg["controls"]["seed"],
+                           "max_new_tokens": cfg["controls"]["max_new_tokens"],
+                           "ignore_eos": True,
+                           "prefill_seconds": rr["prefill_seconds"],
+                           "decode_seconds": rr["decode_seconds"],
+                           "e2e_seconds": rr["e2e_seconds"],
+                           "wall_seconds": rr["wall_seconds"],
+                           "decode_tps": (rr["total_output_tokens"] / rr["decode_seconds"]
+                                          if rr["decode_seconds"] else None),
+                           "total_output_tokens": rr["total_output_tokens"],
+                           "output_token_counts": rr["output_token_counts"],
+                           "output_concat_sha256": rr["output_concat_sha256"],
+                           "counters": rr["counters"],
+                           "per_seq_global_denoise_steps": rr["per_seq_global_denoise_steps"],
+                           "per_seq_completion_tokens": rr["per_seq_completion_tokens"],
+                           "peak_allocated_mib": rr["peak_allocated_mib"],
+                           "peak_reserved_mib": rr["peak_reserved_mib"],
+                           "load_start": rr["load_start"], "load_end": rr["load_end"],
+                           "problems": rr["problems"],
+                           "execution_commit": commit, "ended_at_utc": _now()}
+                    if not math.isfinite(row["decode_seconds"]) or row["decode_seconds"] <= 0:
+                        raise RuntimeError("nonpositive/nonfinite decode time")
+                    if rr["total_output_tokens"] != batch * cfg["controls"]["max_new_tokens"]:
+                        raise RuntimeError("B4 output count mismatch")
+                    if rr["problems"]:
+                        raise RuntimeError(f"row problems: {rr['problems'][:3]}")
+                    meta["rows"].append(row)
+                    all_rows.append(row)
+                    _atomic_json(rows_path, {"schema_version": 1, "run_id": RUN_ID,
+                                             "status": "RUNNING", "rows": all_rows})
+                    print(json.dumps({"setting": setting["name"], "round": ri + 1,
+                                      "condition": cname,
+                                      "decode_s": round(row["decode_seconds"], 3),
+                                      "prefill_s": round(row["prefill_seconds"], 3),
+                                      "tokens": row["total_output_tokens"]}), flush=True)
+        if len(all_rows) != 60:
+            raise RuntimeError(f"expected 60 combined rows, got {len(all_rows)}")
+        meta["status"] = "SUCCEEDED"
+    except Exception as e:
+        import traceback
+        failures.append({"error": repr(e), "traceback": traceback.format_exc()[-5000:],
+                         "at_utc": _now(), "completed_b4_rows": len(meta["rows"])})
+        meta["failures"] = failures
+        meta["status"] = "FAILED"
+    finally:
+        try:
+            _release_engine(current_h)
+        except Exception as e:
+            failures.append({"engine_exit": "error", "error": repr(e)})
+        meta["resources"] = sampler.summary()
+        meta["gpu_command_wall_seconds"] = round(time.perf_counter() - t_start, 3)
+        meta["cumulative_gpu_wall_seconds"] = round(
+            prior_wall + meta["gpu_command_wall_seconds"], 3)
+        meta["ended_at_utc"] = _now()
+        _atomic_json(rows_path, {"schema_version": 1, "run_id": RUN_ID,
+                                 "status": meta["status"], "rows": all_rows,
+                                 "b1_execution_commit": B1_ATTEMPT_COMMIT,
+                                 "b4_execution_commit": commit})
+        _atomic_json(RUN_DIR / "matrix.json", meta)
+    print(json.dumps({"status": meta["status"], "rows": len(all_rows),
+                      "b4_rows": len(meta["rows"]),
+                      "gpu_wall_seconds": meta["gpu_command_wall_seconds"],
+                      "cumulative_gpu_wall_seconds": meta["cumulative_gpu_wall_seconds"],
+                      "failures": failures[:1]}))
+    return 0 if meta["status"] == "SUCCEEDED" else 1
+
+
 def cmd_matrix(args):
+    if getattr(args, "resume_b4", False):
+        return cmd_matrix_b4(args)
     cfg = load_config(args.config)
     _configure_env(cfg)
     _setup_paths()
@@ -1191,6 +1403,8 @@ def cmd_profile(args):
     h = None
     try:
         sampler.start()
+        res["free_before_engine_mib"] = _require_free_headroom(
+            cfg, 17000, "profile engine construction")["mem_free_mib"]
         h = {"cfg": cfg, "batch": 4, "llm": _make_engine(cfg, 4),
              "identity_layers": [], "expected": {}, "sampler": sampler}
         h["model_runner"] = h["llm"].model_runner
@@ -1312,8 +1526,17 @@ def cmd_summarize(args):
     for r in rows:
         by.setdefault(r["setting"], {}).setdefault(r["round"], {})[r["condition"]] = r
     bcfg = cfg["bootstrap"]
+    b1_commits = {r["execution_commit"] for r in rows if int(r["batch"]) == 1}
+    b4_commits = {r["execution_commit"] for r in rows if int(r["batch"]) == 4}
+    if b1_commits != {B1_ATTEMPT_COMMIT}:
+        raise SystemExit(f"unexpected B1 execution commits: {b1_commits}")
+    if len(b4_commits) != 1:
+        raise SystemExit(f"expected one B4 execution commit, got {b4_commits}")
+    execution_commits = {"B1_retained_attempt": sorted(b1_commits)[0],
+                        "B4_resume_attempt": sorted(b4_commits)[0]}
     summary = {"schema_version": 1, "run_id": RUN_ID,
-               "execution_commit": payload.get("execution_commit"),
+               "execution_commits": execution_commits,
+               "b1_rows_retained_unchanged": True,
                "primary_setting": cfg["primary_setting"],
                "decision_rule": cfg["decision_rule"],
                "bootstrap": bcfg, "settings": {}, "primary": {}, "all_rows": len(rows)}
@@ -1363,6 +1586,9 @@ def cmd_summarize(args):
                 if conds[cname]["decode_rows"] else None)
         summary["settings"][name] = {
             "batch": s["batch"], "length": s["length"], "pairs": pairs,
+            "execution_commit": sorted({by[name][rnd][c]["execution_commit"]
+                                        for rnd in range(1, 6)
+                                        for c in ("dense", "s2")})[0],
             "paired_speedup_mean": _mean(ratios), "paired_speedup_median": _median(ratios),
             "paired_speedup_ci95": _bootstrap_ci(
                 ratios, bcfg["reps"], bcfg["seed"], bcfg["confidence"]),
@@ -1400,7 +1626,8 @@ def cmd_summarize(args):
     (EXP_DIR / "efficiency-speedup-table.csv").write_text("\n".join(table) + "\n")
     _atomic_json(EXP_DIR / "efficiency-paired-runs.json",
                  {"schema_version": 1, "run_id": RUN_ID,
-                  "execution_commit": payload.get("execution_commit"),
+                  "execution_commits": summary["execution_commits"],
+                  "b1_rows_retained_unchanged": True,
                   "rows": rows})
     _atomic_json(EXP_DIR / "efficiency-summary.json", summary)
     metrics = [{"config": name, "seed": 42, "split": "train-only synthetic workload",
@@ -1514,17 +1741,54 @@ def cmd_finalize(args):
     status = "SUCCEEDED" if (summary and preflight.get("status") == "SUCCEEDED"
                              and profile.get("status") == "SUCCEEDED"
                              and summary.get("all_rows") == 60) else "FAILED"
+    b4_commit = summary.get("execution_commits", {}).get("B4_resume_attempt")
     run_commits = [
         {"stage": "driver_config_manifest", "sha": args.driver_commit,
          "note": "frozen config, input recipe, driver"},
         {"stage": "input_manifest", "sha": args.manifest_commit,
          "note": "deterministic token manifest hashes"},
-        {"stage": "preflight_execution", "sha": preflight.get("execution_commit"),
-         "note": "actual cached-slot identity preflight execution commit"},
-        {"stage": "matrix_execution", "sha": rows[0].get("execution_commit") if rows else None,
-         "note": "actual 60-row timing execution commit"},
+        {"stage": "preflight_failed_attempt", "sha": "fd94c13f",
+         "note": "vocabulary-bound preflight failure; preserved, not used"},
+        {"stage": "preflight_passed_execution", "sha": preflight.get("execution_commit"),
+         "note": "actual A/L cached-slot identity preflight execution commit"},
+        {"stage": "matrix_B1_retained_execution", "sha": B1_ATTEMPT_COMMIT,
+         "note": "30 B1 rows retained unchanged; attempt OOM at B4 engine construction"},
+        {"stage": "matrix_B4_resume_execution", "sha": b4_commit,
+         "note": "30 B4 rows appended by B4-only resume; no B1 rerun"},
         {"stage": "profile_execution", "sha": profile.get("execution_commit"),
          "note": "separate profiler execution commit"},
+    ]
+    b1_meta = {}
+    try:
+        b1_meta = _load(RUN_DIR / "matrix-attempt1.json")
+    except Exception:
+        pass
+    aborted = {}
+    try:
+        aborted = _load(RUN_DIR / "aborted-restart.json")
+    except Exception:
+        pass
+    failures = [
+        {"stage": "preflight_attempt1", "status": "FAILED",
+         "execution_commit": "fd94c13f",
+         "error": "vocabulary bound used tokenizer.vocab_size (151643) instead of "
+                  "len(tokenizer) (151670); output-id check false-positive",
+         "wall_seconds": 15.146},
+        {"stage": "preflight_attempt2_dirty_guard", "status": "REFUSED",
+         "execution_commit": "8bf31186",
+         "error": "clean-worktree guard refused after an untracked external supervisor "
+                  "review file appeared; no GPU work started"},
+        {"stage": "matrix_attempt1_B1_only", "status": "FAILED_OOM",
+         "execution_commit": B1_ATTEMPT_COMMIT,
+         "error": "B4 engine construction OOM because the recorder closure retained the B1 "
+                  "model_runner; 30 valid B1 rows retained unchanged",
+         "gpu_command_wall_seconds": b1_meta.get("gpu_command_wall_seconds"),
+         "own_process_allocated_gib": 19.18, "physical_free_mib": 7.12},
+        {"stage": "matrix_full_restart_aborted", "status": "CANCELLED",
+         "execution_commit": aborted.get("execution_commit", "6d5ac288"),
+         "error": "unintended full-matrix restart; root terminated only this worker PID to "
+                  "preserve accepted B1 rows; no rows used",
+         "gpu_command_wall_seconds": aborted.get("gpu_command_wall_seconds", 30.0)},
     ]
     report = {
         "schema_version": 1, "run_id": RUN_ID, "status": status,
@@ -1535,15 +1799,21 @@ def cmd_finalize(args):
             f"(descriptive 95% CI {summary['primary']['paired_bootstrap_ci95'][0]:.4f}-"
             f"{summary['primary']['paired_bootstrap_ci95'][1]:.4f}); "
             f"frozen >=1.10 target met={summary['primary']['meets_1_10']}. "
-            f"All 60 rows retained, no reruns/dropouts. Prefill+decode only for pretokenized "
-            f"requests; model init/tokenization/detokenization excluded. Shared-GPU load noise "
-            f"is reported descriptively, not corrected. No heldout QA or training."),
+            f"All 60 rows retained: 30 B1 rows from the committed attempt "
+            f"{B1_ATTEMPT_COMMIT} (OOM stopped it before B4) plus 30 B4 rows from the strict "
+            f"B4-only resume {b4_commit}. Prefill+decode only for pretokenized requests; model "
+            f"init/tokenization/detokenization excluded. Shared-GPU load noise is reported "
+            f"descriptively, not corrected. Primary timed rows check output IDs/counts/masks and "
+            f"boundary resources but not every logit; separate profile warmups carry the real "
+            f"finite-logit audit. No heldout QA or training."),
         "executed_commands": [
             "cd /data/research/flashblock-reproduction",
             "runtime/venv/bin/python repro/efficiency_cli.py probe --out experiments/" + RUN_ID + "/environment.json",
             "runtime/venv/bin/python repro/efficiency_cli.py freeze",
             "runtime/venv/bin/python repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json",
             "runtime/venv/bin/python repro/efficiency_cli.py matrix",
+            "runtime/venv/bin/python repro/efficiency_cli.py smoke --out runs/" + RUN_ID + "/smoke.json",
+            "runtime/venv/bin/python repro/efficiency_cli.py matrix --resume-b4",
             "runtime/venv/bin/python repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json",
             "runtime/venv/bin/python repro/efficiency_cli.py summarize",
             "runtime/venv/bin/python repro/efficiency_cli.py ledger",
@@ -1568,9 +1838,11 @@ def cmd_finalize(args):
             "decode) implemented identically both conditions because Scheduler.schedule does "
             "not enforce max_num_batched_tokens; documented scheduling choice.",
             "Profiler latencies are separate and excluded from the 60 primary rows.",
+            "B1 and B4 rows have different execution commits: B1 from the retained OOM "
+            "attempt, B4 from the strict B4-only resume; no B1 rerun or cherry-picking.",
             "This is an engineering efficiency measurement, not a paper-table replication."
         ],
-        "failures": [],
+        "failures": failures,
         "resource_usage": {
             "wall_seconds": ledger["gpu_command_wall_seconds_sum"],
             "gpu_hours": ledger["gpu_command_wall_hours"],
@@ -1596,6 +1868,19 @@ def cmd_finalize(args):
                           "repository objects and verifies/pushes",
         },
     }
+    artifact_names = ["metrics.json", "environment.json", "input-manifest.json",
+                      "preflight.json", "efficiency-paired-runs.json",
+                      "efficiency-summary.json", "efficiency-speedup-table.csv",
+                      "separate-profile.json", "resource-ledger.json",
+                      "commands-and-provenance.json", "report-summary.md"]
+    for name in artifact_names:
+        src = EXP_DIR / name
+        if src.exists():
+            import shutil
+            tmp = RUN_DIR / (name + ".tmp")
+            shutil.copyfile(src, tmp)
+            os.replace(tmp, RUN_DIR / name)
+    report["artifacts"] = [name for name in artifact_names if (RUN_DIR / name).exists()]
     _atomic_json(RUN_DIR / "report.json", report)
     print(json.dumps({"status": status, "out": str(RUN_DIR / "report.json"),
                       "head": head}))
@@ -1609,7 +1894,7 @@ def main():
     p = sub.add_parser("probe"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_probe)
     p = sub.add_parser("preflight"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_preflight)
     p = sub.add_parser("smoke"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_smoke)
-    p = sub.add_parser("matrix"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_matrix)
+    p = sub.add_parser("matrix"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--resume-b4", action="store_true"); p.set_defaults(func=cmd_matrix)
     p = sub.add_parser("profile"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_profile)
     p = sub.add_parser("summarize"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_summarize)
     p = sub.add_parser("ledger"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_ledger)

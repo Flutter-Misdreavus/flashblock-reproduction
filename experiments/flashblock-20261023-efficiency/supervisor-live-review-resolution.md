@@ -52,3 +52,13 @@ preserved here with this resolution. No frozen scientific parameter changed.
    calls. The complete per-kernel CUDA table is saved, not only top-60, and
    generic `softmax` is treated as other/ambiguous rather than assumed attention.
    This does not change the frozen 60-row timed code.
+
+10. **Strict B4-only continuation (GPT recovery review).** The 30 retained B1 rows
+    at `0d33c9340c1971b6f44e9d9eb1b8f192997edbcb` are validated against that
+    commit's frozen config, checked for completeness/uniqueness, copied unchanged
+    into the final 60-row file, and hashed before/after (the raw attempt file is
+    never rewritten). A new `matrix --resume-b4` command builds only the B4 engine
+    after a pre-init physical-free check of at least 17000 MiB, runs the six B4
+    warmups and 30 B4 rows with the frozen order/seed, and stamps its own
+    execution commit. B1 is not rerun. The unintended full restart at `6d5ac288`
+    was cancelled by root; its ~30 s wall is charged and no rows are used.
