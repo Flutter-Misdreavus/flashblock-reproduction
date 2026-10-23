@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "parent_run_id": "flashblock-20261023-prep-r3",
+  "frozen_before_preflight": true,
+  "model": {
+    "model_id": "Gen-Verse/TraDo-4B-Instruct",
+    "revision": "d350259d64abf9219362ccb1435d68910744eea7",
+    "local_path": "/data/research/flashblock-reproduction-runtime/models/TraDo-4B-Instruct",
+    "config_sha256": "69cf6d55e2cc92e864a72c5b9a14ad214f0529f5da793ed066be9cb5286e90d0"
+  },
+  "dataset": {
+    "dataset": "openai/gsm8k",
+    "config": "main",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "train_parquet": "/data/research/minicache-reproduction-runtime/data/gsm8k/main/train-00000-of-00001.parquet",
+    "train_sha256": "ea82612ea9582142387730c793eb67d3b12849002bc0b7fa6f8efafa7351419d",
+    "indices": [100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115],
+    "no_heldout_test": true
+  },
+  "controls": {
+    "seed": 42,
+    "block_length": 4,
+    "denoising_steps": 8,
+    "dynamic_threshold": 0.9,
+    "remasking_strategy": "low_confidence_dynamic",
+    "temperature": 1.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "consistent_sampling_params_env": "1",
+    "max_new_tokens": 512,
+    "ignore_eos": false,
+    "sparsity_ratio_s2": 2.0,
+    "batch_size": 1,
+    "max_active": 1,
+    "max_num_seqs": 1,
+    "gpu_memory_utilization": 0.65,
+    "max_model_len": 768,
+    "max_num_batched_tokens": 768,
+    "warmup_model_len": 512,
+    "gpu_uuid": "GPU-REDACTED",
+    "cpu_threads": 8,
+    "peak_allocated_limit_mib": 16384,
+    "min_free_mib": 3072
+  },
+  "instrumentation": {
+    "layers": [0, 2, 17, 35],
+    "heads": [0, 8, 16, 24],
+    "num_attention_heads": 32,
+    "num_kv_heads": 8,
+    "head_dim": 128,
+    "kv_page_size": 256,
+    "exclude_status": ["SAVING"],
+    "adjacent_requires_same_block_start_and_step_plus_one": true,
+    "primary_rows": "all aligned query positions",
+    "strata": ["changed_input_token_row", "unchanged_input_token_row"]
+  },
+  "tolerances": {
+    "prefill_bf16_rel_l2_max": 0.01,
+    "prefill_bf16_max_abs_max": 0.05,
+    "fp32_split_recombine_rel_l2_max": 1e-05,
+    "fp32_split_recombine_max_abs_max": 1e-05,
+    "cache_label_rel_l2_hard_max": 0.01,
+    "cache_label_lse_abs_hard_max": 0.01,
+    "zero_norm_eps": 1e-12
+  },
+  "bootstrap": {
+    "seed": 20261023,
+    "reps": 10000,
+    "confidence": 0.95
+  },
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours_this_stage": 1.0,
+    "campaign_gpu_hours_before": 0.4,
+    "campaign_gpu_hours_limit": 8.0,
+    "wall_seconds": 7200,
+    "max_preflight_attempts": 2
+  }
+}
