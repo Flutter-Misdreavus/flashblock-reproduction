@@ -172,10 +172,12 @@ class SparseAttentionVarlenFunctionV2(torch.autograd.Function):
             v.stride(0), v.stride(1), v.stride(2),
             o.stride(0), o.stride(1), o.stride(2),
             n_heads, n_kv_heads,
-            q_scale=1.0 / math.sqrt(head_dim) * 1.44269504,
-            BLOCK_DMODEL=BLOCK_DMODEL,
-            LOG2_STAIRS=log2_stairs,
-            NUM_HEADS_PER_KV_GROUP=num_heads_per_kv_group,
+            # Triton 3.0 autotune builds key indices from positional args only;
+            # pass the key/constexpr arguments positionally (same values as before).
+            1.0 / math.sqrt(head_dim) * 1.44269504,
+            BLOCK_DMODEL,
+            log2_stairs,
+            num_heads_per_kv_group,
         )
         return o
 
