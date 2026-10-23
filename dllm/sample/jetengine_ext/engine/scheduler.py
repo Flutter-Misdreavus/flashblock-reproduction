@@ -157,6 +157,8 @@ class Scheduler:
                             "seq_id": int(seq.seq_id),
                             "status": seq.status.name,
                             "current_denoising_step": int(sp["current_denoising_step"]),
+                            "block_index": int(seq.num_tokens // max(1, seq.block_length)),
+                            "num_tokens": int(seq.num_tokens),
                             "dirty_count": int(dirty_count),
                             "sparsity_ratio": int(sp["sparsity_ratio"]),
                             "need_update": not bool(no_update_cache),

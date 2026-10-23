@@ -102,16 +102,21 @@ def store_kvcache_kernel(
     slot_mapping_ptr,
     D: tl.constexpr,
 ):
-    assert 1==0
+    # Vectorized paged scatter: one program writes one token's full KV head
+    # vector.  key/value are [N, num_kv_heads, head_dim] and contiguous, so the
+    # flat token stride is D = num_kv_heads * head_dim; slot_mapping indexes the
+    # flattened [num_blocks * block_size, num_kv_heads, head_dim] cache.
     idx = tl.program_id(0)
-    key_offsets = idx * key_stride + tl.arange(0, D)
-    value_offsets = idx * value_stride + tl.arange(0, D)
+    offs = tl.arange(0, D)
+    key_offsets = idx * key_stride + offs
+    value_offsets = idx * value_stride + offs
     key = tl.load(key_ptr + key_offsets)
     value = tl.load(value_ptr + value_offsets)
     slot = tl.load(slot_mapping_ptr + idx)
-    cache_offsets = slot * D + tl.arange(0, D)
-    tl.store(k_cache_ptr + cache_offsets, key)
-    tl.store(v_cache_ptr + cache_offsets, value)
+    if slot >= 0:
+        cache_offsets = slot * D + offs
+        tl.store(k_cache_ptr + cache_offsets, key)
+        tl.store(v_cache_ptr + cache_offsets, value)
 
 def store_kvcache_python(key, value, k_cache, v_cache, slot_mapping):
     """
