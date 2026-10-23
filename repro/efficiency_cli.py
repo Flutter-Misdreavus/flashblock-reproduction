@@ -645,13 +645,17 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         pats = [p.lower() for p in h["cfg"]["profiling"]["attention_name_patterns"]]
         attn = sum(x["self_cuda_us"] for x in rows
                    if any(p in x["key"].lower() for p in pats))
-        profile_rows = rows[:60]
+        profile_rows = rows
         profile_totals = {"total_cuda_us": total, "attention_cuda_us": attn,
                           "other_cuda_us": total - attn,
                           "attention_fraction": (attn / total) if total else None,
                           "distinct_kernels": len(rows),
-                          "classification_note": "attention keys contain one of "
-                          + ",".join(pats) + "; approximate kernel-name classification"}
+                          "attention_name_patterns": pats,
+                          "ambiguous_name_patterns": h["cfg"]["profiling"].get(
+                              "ambiguous_name_patterns", []),
+                          "classification_note": "approximate kernel-name classification; "
+                          "generic softmax kernels are kept in other/ambiguous unless "
+                          "attributable to a specific attention kernel"}
     load_end = load_probe.query()
     peak_alloc = float(T.cuda.max_memory_allocated() / 2**20)
     peak_res = float(T.cuda.max_memory_reserved() / 2**20)
@@ -1192,9 +1196,29 @@ def cmd_profile(args):
         h["model_runner"] = h["llm"].model_runner
         _install_recorder(h, [])
         prompts = tokens[8192][:4]
+        res["warmup_logits_audit"] = []
         for cond in cfg["conditions"]:
-            rr = _run_once(h, prompts, [256] * 4, float(cond["ratio"]),
-                           identity=False, timeit=True, profile=False)
+            audit = {"condition": cond["name"], "calls": 0, "nonfinite_calls": 0,
+                     "sync_per_call": True}
+            orig_run_model = h["model_runner"].run_model
+
+            def audited_run_model(*a, **k):
+                logits = orig_run_model(*a, **k)
+                audit["calls"] += 1
+                if not bool(torch.isfinite(logits).all().item()):
+                    audit["nonfinite_calls"] += 1
+                    raise RuntimeError(
+                        f"non-finite logits in profile warmup {cond['name']} "
+                        f"call {audit['calls']}")
+                return logits
+
+            h["model_runner"].run_model = audited_run_model
+            try:
+                rr = _run_once(h, prompts, [256] * 4, float(cond["ratio"]),
+                               identity=False, timeit=True, profile=False)
+            finally:
+                h["model_runner"].run_model = orig_run_model
+            res["warmup_logits_audit"].append(audit)
             res["warmups"].append({"condition": cond["name"],
                                    "decode_seconds": rr["decode_seconds"],
                                    "prefill_seconds": rr["prefill_seconds"],

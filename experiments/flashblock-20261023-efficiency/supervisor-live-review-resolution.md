@@ -43,3 +43,12 @@ preserved here with this resolution. No frozen scientific parameter changed.
    releases it, asserts process allocation <=1024 MiB, then constructs B4, before
    any full rerun. Attempt 1 raw rows/log are retained as `*-attempt1.*` and are
    not used in the 60-row summary.
+
+9. **Profile-only finite audit and kernel-table scope (GPT follow-up).** Primary
+   timed rows are not claimed to have per-logit finite auditing; they check output
+   IDs/counts/masks and boundary resources. The two untimed B4L8192 profile
+   warmups now install the real `torch.isfinite` hook, report call/nonfinite
+   counts and hard-stop on nonfinite, then remove the hook before the profiled
+   calls. The complete per-kernel CUDA table is saved, not only top-60, and
+   generic `softmax` is treated as other/ambiguous rather than assumed attention.
+   This does not change the frozen 60-row timed code.

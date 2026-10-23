@@ -21,7 +21,11 @@
     "field_recipe": "question + '\\n' + answer, rows joined with '\\n\\n', tokenizer.encode",
     "input_index_start": 400,
     "rows_per_input": 80,
-    "lengths": [1024, 4096, 8192],
+    "lengths": [
+      1024,
+      4096,
+      8192
+    ],
     "inputs_per_length": 4,
     "no_heldout_test": true
   },
@@ -50,39 +54,112 @@
     "max_new_disk_gib": 30
   },
   "settings": [
-    {"name": "B1L1024", "batch": 1, "length": 1024},
-    {"name": "B1L4096", "batch": 1, "length": 4096},
-    {"name": "B1L8192", "batch": 1, "length": 8192},
-    {"name": "B4L1024", "batch": 4, "length": 1024},
-    {"name": "B4L4096", "batch": 4, "length": 4096},
-    {"name": "B4L8192", "batch": 4, "length": 8192}
+    {
+      "name": "B1L1024",
+      "batch": 1,
+      "length": 1024
+    },
+    {
+      "name": "B1L4096",
+      "batch": 1,
+      "length": 4096
+    },
+    {
+      "name": "B1L8192",
+      "batch": 1,
+      "length": 8192
+    },
+    {
+      "name": "B4L1024",
+      "batch": 4,
+      "length": 1024
+    },
+    {
+      "name": "B4L4096",
+      "batch": 4,
+      "length": 4096
+    },
+    {
+      "name": "B4L8192",
+      "batch": 4,
+      "length": 8192
+    }
   ],
   "conditions": [
-    {"name": "dense", "ratio": 0.0},
-    {"name": "s2", "ratio": 2.0}
+    {
+      "name": "dense",
+      "ratio": 0.0
+    },
+    {
+      "name": "s2",
+      "ratio": 2.0
+    }
   ],
   "pair_rounds": [
-    ["dense", "s2"],
-    ["s2", "dense"],
-    ["dense", "s2"],
-    ["s2", "dense"],
-    ["dense", "s2"]
+    [
+      "dense",
+      "s2"
+    ],
+    [
+      "s2",
+      "dense"
+    ],
+    [
+      "dense",
+      "s2"
+    ],
+    [
+      "s2",
+      "dense"
+    ],
+    [
+      "dense",
+      "s2"
+    ]
   ],
   "primary_setting": "B4L8192",
   "preflight": {
     "batch": 4,
     "max_active": 4,
-    "indices": [100, 101, 102, 103, 104, 105],
-    "max_tokens": [16, 32, 48, 64, 16, 32],
-    "identity_layers": [0, 35],
+    "indices": [
+      100,
+      101,
+      102,
+      103,
+      104,
+      105
+    ],
+    "max_tokens": [
+      16,
+      32,
+      48,
+      64,
+      16,
+      32
+    ],
+    "identity_layers": [
+      0,
+      35
+    ],
     "tiny_batch": 4,
     "tiny_length": 1024,
     "tiny_max_tokens": 16
   },
   "profiling": {
     "setting": "B4L8192",
-    "activities": ["CUDA"],
-    "attention_name_patterns": ["flash", "attn", "attention", "fmha", "softmax"]
+    "activities": [
+      "CUDA"
+    ],
+    "attention_name_patterns": [
+      "flash",
+      "attn",
+      "attention",
+      "fmha"
+    ],
+    "ambiguous_name_patterns": [
+      "softmax"
+    ],
+    "classification_note": "approximate kernel-name classification; generic softmax kernels are kept in other/ambiguous unless attributable to a specific attention kernel"
   },
   "bootstrap": {
     "seed": 20261023,

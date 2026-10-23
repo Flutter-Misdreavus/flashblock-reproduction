@@ -1,0 +1,9 @@
+# GPT follow-up: preserve running matrix, clarify finite audit scope
+
+Accepted preflight at6131651c has44 finite-logit checks on the short partial-completion run; tiny timing and primary60runs do NOT have that hook. Do not claim every primary logit was audited from output-ID checks. Preserve the running frozen matrix unchanged; do not interrupt/rerun or change timed code based solely on this audit-scope limitation.
+
+Before separate profiles, add the actual finite-logit hook to the two UNTIMED exact B4L8192 warmups in cmd_profile (count calls/nonfinite, hard-stop on nonfinite). Remove hook before profiled calls so no additional per-call sync pollutes kernel breakdown. Commit this profile-only diagnostic change before GPU launch, preserve actual matrixSHA0d33c934. Explicitly record that long-context finite checks cover separate representative warmups and not every timed repetition. Numerical failure blocks acceptance; valid negative timings do not.
+
+Also ensure report lists first retained preflight failure + its actualSHA and dirty-guard refusal, avoids 'failures=[]', and profiles/ledger preserve all commands. This is a diagnostic coverage fix, not a change to model/sampler or frozen timing matrix.
+
+Profile interpretation: generic 'softmax' kernels may be SAMPLER vocabulary softmax, not attention. Save the COMPLETE per-kernel table (not only top60) in a small artifact so GPT can classify documented custom FlashAttention/FlashInfer attention and FP32 A/L merge kernels independently. Report kernel-name classification as approximate and explicitly keep generic sampling softmax in other/ambiguous unless attributable. If using events/scopes for precise attention attribution, keep strictly in separate profiles and disclose synchronization/overhead. Do not change primary timing code.
