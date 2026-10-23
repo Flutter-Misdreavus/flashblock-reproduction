@@ -68,3 +68,11 @@ preserved here with this resolution. No frozen scientific parameter changed.
     `None`, so the first profile wrote zero kernels. The matrix and all 60 timed
     rows are unaffected. Extract device time first (CUDA field fallback), preserve
     the empty profile as `profile-attempt1-empty.json`, and rerun profile only.
+
+12. **Finalize artifact-copy overwrite.** The first finalize copied the compact
+    committed `preflight.json` over the raw passed-preflight file in the run dir,
+    so `evidence-manifest.json` briefly disagreed. The compact file retains
+    identity, logit-audit, tiny-timing and resource-summary fields but not the raw
+    load samples/output-id hashes. The manifest now hashes the compact file with a
+    note; finalize no longer overwrites an existing run-dir artifact. This is a
+    packaging deviation, not a change to any metric or GPU result.

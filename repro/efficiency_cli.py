@@ -1910,11 +1910,12 @@ def cmd_finalize(args):
                       "commands-and-provenance.json", "report-summary.md"]
     for name in artifact_names:
         src = EXP_DIR / name
-        if src.exists():
+        dst = RUN_DIR / name
+        if src.exists() and not dst.exists():
             import shutil
             tmp = RUN_DIR / (name + ".tmp")
             shutil.copyfile(src, tmp)
-            os.replace(tmp, RUN_DIR / name)
+            os.replace(tmp, dst)
     evidence_names = ["timed-rows.json", "timed-rows-attempt1.json",
                       "matrix-attempt1.json", "matrix.json", "smoke.json",
                       "aborted-restart.json", "profile-attempt1-empty.json",

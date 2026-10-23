@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "run_id": "flashblock-20261023-efficiency",
-  "note": "small sanitized evidence retained in run dir (outside Git); hashes for provenance",
+  "note": "small sanitized evidence retained in run dir (outside Git); hashes for provenance; preflight.json is the compact committed copy (see its note)",
   "files": {
     "timed-rows.json": {
       "sha256": "35a3512b0561d4b26e2fdf0ec5a6eba848c5a291c9b709bd616340164e1f2bc1",
@@ -40,8 +40,9 @@
       "bytes": 5470
     },
     "preflight.json": {
-      "sha256": "350d4a5a0c2e437b1220d72b02f2b817774b8e0facc63d77a0fc134ad41a3572",
-      "bytes": 6350
+      "sha256": "903e51b183eed73b0a6ad59d50ea0237a27a644e3bf5fb5ffce612aaa3b2cd76",
+      "bytes": 5435,
+      "note": "compact committed copy; the raw load-sample/output-hash fields were overwritten by the first finalize artifact copy. Identity, logit-audit, tiny-timing and resource-summary evidence are retained."
     }
   }
 }
