@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-quality",
+  "created_at": "2026-10-23T04:11:49Z",
+  "git_head": "979b43b5cc8952bb688ed09c2729bf987b3d2b84",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "torch": "2.4.1+cu121",
+  "cuda": "12.1",
+  "cuda_available": true,
+  "device_count": 1,
+  "device_name": "NVIDIA GeForce RTX 3090",
+  "capability": [
+    8,
+    6
+  ],
+  "visible_devices_env": "GPU-REDACTED",
+  "gpu": {
+    "mem_total_mib": 24576.0,
+    "mem_used_mib": 4589.5625,
+    "mem_free_mib": 19986.4375,
+    "util_gpu_pct": 8
+  },
+  "disk_free_bytes": 69381742592,
+  "cpu_count": 40,
+  "packages": {
+    "torch": "2.4.1",
+    "triton": "3.0.0",
+    "numpy": "1.26.4",
+    "transformers": "4.52.4",
+    "tokenizers": "0.21.4",
+    "flashinfer-python": "0.2.9",
+    "flash-attn": "2.7.3",
+    "xxhash": "3.5.0",
+    "pyarrow": "18.1.0",
+    "pynvml": "13.0.1",
+    "matplotlib": null
+  },
+  "nvidia_smi": "GPU-REDACTED, 0, 24576 MiB, 5082 MiB, 19053 MiB, 4 %\nGPU-REDACTED, 1, 24576 MiB, 7645 MiB, 16490 MiB, 87 %\nGPU-REDACTED, 2, 24576 MiB, 7103 MiB, 17032 MiB, 83 %\nGPU-REDACTED, 3, 24576 MiB, 4148 MiB, 19987 MiB, 8 %"
+}
