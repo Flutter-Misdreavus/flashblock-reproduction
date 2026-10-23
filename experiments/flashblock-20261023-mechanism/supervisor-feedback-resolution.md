@@ -33,3 +33,22 @@ JIT. Both were fixed in the driver; a same-seed s2 train-100 max-16 run then
 produced identical 16-token IDs with hooks enabled and disabled, cache-label
 relL2 0.00242, and finite logits. No numerical method was altered to make these
 checks pass.
+
+## Addendum: hard stops and development-probe accounting
+
+5. **Runtime hard stops enforced.** `audited_run` now raises immediately on any
+   non-finite logits instead of only incrementing a counter. `observe_step` raises
+   on a hard cache-label identity mismatch (`relL2 > 0.01` or `|dLSE| > 0.01`);
+   approximate stale-vs-full errors are never hard-failed. `ResourceSampler`
+   raises through `warped_schedule`/`sampler.check()` when allocated memory exceeds
+   16384 MiB or observed physical free memory falls below 3072 MiB. A successful
+   generation exit now requires zero non-finite logits and zero capture errors.
+   A `--allow-dirty` development probe (`dev-hardstop`) verified the guarded code
+   path; it is not accepted evidence.
+6. **Development-probe accounting.** `development-probes.json` records the known
+   `--allow-dirty` probes, their wall time, status, and the source snapshot hash
+   where available. The supervisor checkpoint `08ba307f` is identified only as a
+   content-identical snapshot, not the original commit of earlier probes; early
+   failed dev outputs that were overwritten before the preserve policy are noted
+   as such. The stage ledger charges a conservative 130 s for development probes
+   plus the accepted preflight and formal runs.

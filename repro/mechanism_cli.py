@@ -453,11 +453,28 @@ def run_unit_tests(cfg):
 # resource sampler
 # ---------------------------------------------------------------------------
 class ResourceSampler:
-    def __init__(self, interval=0.5):
+    def __init__(self, interval=0.5, min_free_mib=3072, max_alloc_mib=16384):
         self.interval = interval
+        self.min_free_mib = float(min_free_mib)
+        self.max_alloc_mib = float(max_alloc_mib)
         self.stop = threading.Event()
         self.free = []
+        self.breach = None
         self.thread = None
+
+    def _record_breach(self, kind, value, limit):
+        if self.breach is None:
+            self.breach = {"kind": kind, "value": float(value), "limit": float(limit),
+                           "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
+
+    def check(self):
+        _init_torch()
+        if self.breach is not None:
+            raise RuntimeError(f"resource guard breach: {self.breach}")
+        peak = torch.cuda.max_memory_allocated() / 2**20
+        if peak > self.max_alloc_mib:
+            self._record_breach("peak_allocated_mib", peak, self.max_alloc_mib)
+            raise RuntimeError(f"resource guard breach: {self.breach}")
 
     def start(self):
         _init_torch()
@@ -468,7 +485,12 @@ class ResourceSampler:
             while not self.stop.is_set():
                 try:
                     free, _ = _free_mem_mib()
+                    alloc = torch.cuda.memory_allocated() / 2**20
                     self.free.append(float(free))
+                    if free < self.min_free_mib:
+                        self._record_breach("free_mib", free, self.min_free_mib)
+                    if alloc > self.max_alloc_mib:
+                        self._record_breach("allocated_mib", alloc, self.max_alloc_mib)
                 except Exception:
                     pass
                 time.sleep(self.interval)
@@ -494,6 +516,9 @@ class ResourceSampler:
             "free_mib_end": round(free_end, 1) if free_end is not None else None,
             "gpu_total_mib": round(total, 1) if total is not None else None,
             "samples": len(self.free),
+            "breach": self.breach,
+            "limits": {"min_free_mib": self.min_free_mib,
+                       "max_allocated_mib": self.max_alloc_mib},
         }
         return out
 
@@ -645,12 +670,14 @@ class PromptCollector:
             hard = self.cfg["tolerances"]["cache_label_rel_l2_hard_max"]
             hard_lse = self.cfg["tolerances"]["cache_label_lse_abs_hard_max"]
             if float(np.nanmax(cl_rel)) > hard or float(np.nanmax(cl_lse)) > hard_lse:
-                CAPTURE["errors"].append({
+                detail = {
                     "type": "cache_label_mismatch", "layer": layer,
                     "max_rel_l2": float(np.nanmax(cl_rel)),
                     "max_lse_abs": float(np.nanmax(cl_lse)),
                     "step": meta["step"], "block_start": meta["block_start"],
-                })
+                }
+                CAPTURE["errors"].append(detail)
+                raise RuntimeError(f"hard cache-label identity failure: {detail}")
 
         prev = self.prev.get(layer)
         if prev is not None and prev["block_start"] != meta["block_start"]:
@@ -872,6 +899,9 @@ def install_scheduler_capture(llm):
     orig = sched.schedule
 
     def wrapped_schedule():
+        guard = CAPTURE.get("resource_guard")
+        if guard is not None:
+            guard.check()
         pre = {id(s): _snapshot_seq(s) for s in sched.running}
         scheduled, run_type = orig()
         info = {"run_type": run_type.name if run_type is not None else None,
@@ -1086,7 +1116,9 @@ def cmd_generate(args):
         remasking_strategy=controls["remasking_strategy"],
     )
 
-    sampler = ResourceSampler()
+    sampler = ResourceSampler(min_free_mib=controls["min_free_mib"],
+                              max_alloc_mib=controls["peak_allocated_limit_mib"])
+    CAPTURE["resource_guard"] = sampler
     llm = None
     t0 = time.time()
     prompt_results = []
@@ -1118,6 +1150,9 @@ def cmd_generate(args):
             audit["max_numel"] = max(audit["max_numel"], int(logits.numel()))
             if not bool(torch.isfinite(logits).all().item()):
                 audit["nonfinite_calls"] += 1
+                raise RuntimeError(
+                    f"non-finite logits at audited call {audit['calls']} "
+                    f"(numel={int(logits.numel())}); hard stop")
             return logits
 
         llm.model_runner.run_model = audited_run
@@ -1179,6 +1214,13 @@ def cmd_generate(args):
         result["generation_seconds_total"] = round(time.time() - t0, 3)
         result["hook_counts"] = {str(k): int(v) for k, v in sorted(CAPTURE["hook_counts"].items())}
         result["capture_errors"] = list(CAPTURE["errors"])
+        sampler.check()
+        if audit["nonfinite_calls"] != 0:
+            raise RuntimeError(f"non-finite logits observed ({audit['nonfinite_calls']} calls)")
+        if CAPTURE["errors"]:
+            raise RuntimeError(f"capture errors observed: {CAPTURE['errors'][:3]}")
+        if len(prompt_results) != len(args.indices):
+            raise RuntimeError("not all requested prompts produced a trajectory")
         result["status"] = "SUCCEEDED" if all(
             p["output"]["ids_in_vocab"] and p["output"]["text_nonempty"]
             and p["output"]["new_tokens"] > 0 and not p["output"]["contains_mask_token"]
@@ -1195,6 +1237,20 @@ def cmd_generate(args):
             result["resources"] = sampler.stop_and_summary()
         except Exception as e:
             result["resources"] = {"error": repr(e)}
+        res = result["resources"]
+        limits = {"peak_allocated_mib": controls["peak_allocated_limit_mib"],
+                  "min_free_mib": controls["min_free_mib"]}
+        if (res.get("breach") is not None
+                or (res.get("peak_allocated_mib") is not None
+                    and res["peak_allocated_mib"] > limits["peak_allocated_mib"])
+                or (res.get("min_free_mib_sampled") is not None
+                    and res["min_free_mib_sampled"] < limits["min_free_mib"])):
+            result["status"] = "FAILED"
+            result["resource_guard_violation"] = {
+                "breach": res.get("breach"), "limits": limits,
+                "peak_allocated_mib": res.get("peak_allocated_mib"),
+                "min_free_mib_sampled": res.get("min_free_mib_sampled"),
+            }
         result["wall_seconds"] = round(time.time() - t0, 3)
         result["ended_at_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         result["prompts"] = prompt_results
@@ -1250,6 +1306,7 @@ def cmd_preflight(args):
            "execution_commit": _git_head(), "attempt": int(args.attempt),
            "started_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
            "unit": None, "neutrality": None, "attempts": []}
+    t0 = time.time()
     ok = True
     try:
         unit_path = pf_dir / "unit.json"
@@ -1313,6 +1370,7 @@ def cmd_preflight(args):
         out["traceback"] = traceback.format_exc()[-4000:]
         out["status"] = "FAILED"
     out["ended_at_utc"] = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    out["wall_seconds"] = round(time.time() - t0, 3)
     _atomic_json(Path(args.out).resolve(), out)
     print(json.dumps({"status": out["status"], "out": args.out}))
     return 0 if out["status"] == "SUCCEEDED" else 1
@@ -1543,42 +1601,88 @@ def cmd_summarize(args):
     # resource ledger
     def _res(x):
         return x.get("resources", {})
-    wall_total = (dense.get("wall_seconds") or 0) + (s2.get("wall_seconds") or 0)
+
+    preflight = _read_optional(run_dir / "preflight.json") or {}
+    dev_probes = _read_optional(CONFIG_PATH.parent / "development-probes.json") or {}
+    formal_wall = (dense.get("wall_seconds") or 0) + (s2.get("wall_seconds") or 0)
+    preflight_wall = preflight.get("wall_seconds") or 0
+    dev_wall = dev_probes.get("total_conservative_wall_seconds") or 0
+    stage_wall = float(formal_wall) + float(preflight_wall) + float(dev_wall)
+    peaks = [x for x in (
+        _res(dense).get("peak_allocated_mib"), _res(s2).get("peak_allocated_mib"),
+        ((preflight.get("neutrality") or {}).get("hook_resources") or {}).get("peak_allocated_mib"),
+        ((preflight.get("neutrality") or {}).get("nohook_resources") or {}).get("peak_allocated_mib"),
+    ) if x is not None]
+    frees = [x for x in (
+        _res(dense).get("min_free_mib_sampled"), _res(s2).get("min_free_mib_sampled"),
+        ((preflight.get("neutrality") or {}).get("hook_resources") or {}).get("min_free_mib_sampled"),
+        ((preflight.get("neutrality") or {}).get("nohook_resources") or {}).get("min_free_mib_sampled"),
+    ) if x is not None]
     ledger = {
         "schema_version": 1, "run_id": RUN_ID,
-        "preflight": _read_optional(run_dir / "preflight.json"),
+        "accepted_preflight": {
+            "status": preflight.get("status"), "attempt": preflight.get("attempt"),
+            "wall_seconds": preflight.get("wall_seconds"),
+            "execution_commit": preflight.get("execution_commit"),
+        },
+        "development_probes": dev_probes,
         "dense": {"wall_seconds": dense.get("wall_seconds"), "resources": _res(dense),
                   "execution_commit": dense.get("execution_commit"),
                   "status": dense.get("status")},
         "s2": {"wall_seconds": s2.get("wall_seconds"), "resources": _res(s2),
                "execution_commit": s2.get("execution_commit"),
                "status": s2.get("status")},
-        "formal_wall_seconds": round(wall_total, 3),
-        "conservative_gpu_hours_this_stage": round(wall_total / 3600.0, 6),
+        "formal_wall_seconds": round(formal_wall, 3),
+        "accepted_preflight_wall_seconds": round(float(preflight_wall), 3),
+        "development_probe_wall_seconds_charged": round(float(dev_wall), 3),
+        "total_stage_wall_seconds_conservative": round(stage_wall, 3),
+        "conservative_gpu_hours_this_stage": round(stage_wall / 3600.0, 6),
         "campaign_gpu_hours_before": cfg["budget"]["campaign_gpu_hours_before"],
         "campaign_gpu_hours_after_conservative": round(
-            cfg["budget"]["campaign_gpu_hours_before"] + wall_total / 3600.0, 6),
-        "peak_allocated_mib_max": max(
-            [x for x in (_res(dense).get("peak_allocated_mib"), _res(s2).get("peak_allocated_mib"))
-             if x is not None] or [None]),
-        "min_free_mib_sampled_min": min(
-            [x for x in (_res(dense).get("min_free_mib_sampled"),
-                         _res(s2).get("min_free_mib_sampled")) if x is not None] or [None]),
-        "note": "GPU hours charged conservatively as whole-stage wall time on one GPU; failed attempts included when present.",
+            cfg["budget"]["campaign_gpu_hours_before"] + stage_wall / 3600.0, 6),
+        "peak_allocated_mib_max": max(peaks) if peaks else None,
+        "min_free_mib_sampled_min": min(frees) if frees else None,
+        "note": "GPU hours charged conservatively as whole-stage wall time on one GPU; "
+                "includes failed/unaccepted development probes and the accepted preflight, "
+                "not only final dense/s2 runs.",
     }
     _atomic_json(out_dir / "resource-ledger.json", ledger)
 
+    def _cmd_from_argv(res, fallback):
+        argv = res.get("argv")
+        if argv:
+            return " ".join(str(x) for x in argv)
+        return fallback
+
     commands = []
     for name, res in (("dense", dense), ("s2", s2)):
+        fallback = (f"{{venv_python}} repro/mechanism_cli.py generate --condition {res.get('condition')} "
+                    f"--ratio {res.get('ratio')} --hooks {int(bool(res.get('hooks')))} "
+                    f"--indices {' '.join(str(x) for x in res.get('indices', []))} "
+                    f"--max-tokens {res.get('max_tokens')} --out <run_dir>/{name}/generate-result.json")
         commands.append({
             "stage": "formal_" + name,
-            "command": f"{{venv_python}} repro/mechanism_cli.py generate --condition {res.get('condition')} "
-                       f"--ratio {res.get('ratio')} --hooks {int(bool(res.get('hooks')))} "
-                       f"--indices {' '.join(str(x) for x in res.get('indices', []))} "
-                       f"--max-tokens {res.get('max_tokens')} --out <run_dir>/{name}/generate-result.json",
+            "command": _cmd_from_argv(res, fallback),
             "execution_commit": res.get("execution_commit"),
             "status": res.get("status"),
             "wall_seconds": res.get("wall_seconds"),
+        })
+    for stage, res in (("accepted_preflight", preflight),):
+        commands.append({
+            "stage": stage,
+            "command": _cmd_from_argv(res, "{venv_python} repro/mechanism_cli.py preflight"),
+            "execution_commit": res.get("execution_commit"),
+            "status": res.get("status"),
+            "wall_seconds": res.get("wall_seconds"),
+        })
+    for probe in dev_probes.get("probes", []):
+        commands.append({
+            "stage": "development_probe:" + probe.get("name", "unknown"),
+            "command": "uncommitted worktree probe (see development-probes.json)",
+            "execution_commit": probe.get("base_commit"),
+            "status": probe.get("status"),
+            "wall_seconds": probe.get("wall_seconds"),
+            "accepted_evidence": False,
         })
     provenance = {
         "schema_version": 1, "run_id": RUN_ID,
@@ -1674,11 +1778,23 @@ def cmd_summarize(args):
             "(task explicitly permits this; no environment reinstall).",
             "Formal runs were executed as two sequential batch-1 processes (dense then s2) to keep "
             "the frozen batch-1 control and preserve per-condition evidence.",
+            "Development probes were marked --allow-dirty and are not accepted scientific evidence; "
+            "their conservative wall time is charged in the stage ledger.",
         ] + reasons,
-        "failures": [],
+        "failures": [
+            "Development probe: KeyError('kv_heads') in initial hook registration; fixed before "
+            "accepted preflight, raw output overwritten at the same dev path.",
+            "Development probe: missing ninja executable in PATH for flashinfer JIT; fixed before "
+            "accepted preflight, raw output overwritten at the same dev path.",
+            "Development probe: initial paged-scatter negative-slot assertion targeted a written slot; "
+            "assertion fixed, scatter implementation unchanged.",
+        ],
         "resource_usage": {
-            "wall_seconds": round(wall_total, 3),
-            "gpu_hours": round(wall_total / 3600.0, 6),
+            "wall_seconds": round(stage_wall, 3),
+            "gpu_hours": round(stage_wall / 3600.0, 6),
+            "formal_wall_seconds": round(formal_wall, 3),
+            "accepted_preflight_wall_seconds": round(float(preflight_wall), 3),
+            "development_probe_wall_seconds_charged": round(float(dev_wall), 3),
             "peak_allocated_mib_max": ledger["peak_allocated_mib_max"],
             "min_free_mib_sampled_min": ledger["min_free_mib_sampled_min"],
             "campaign_gpu_hours_before": cfg["budget"]["campaign_gpu_hours_before"],
