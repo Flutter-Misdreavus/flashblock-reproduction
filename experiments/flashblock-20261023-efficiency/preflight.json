@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "status": "SUCCEEDED",
+  "execution_commit": "6131651c22abf5b0b149a139e851dd483bbe698b",
+  "argv": [
+    "/data/research/flashblock-reproduction-runtime/venv/bin/python",
+    "repro/efficiency_cli.py",
+    "preflight",
+    "--out",
+    "runs/flashblock-20261023-efficiency/preflight.json"
+  ],
+  "started_at_utc": "2026-10-23T03:15:42Z",
+  "batch": 4,
+  "max_active": 4,
+  "kv_cache": {
+    "blocks": 146,
+    "cal_blocks": 4,
+    "block_size": 256,
+    "free_data_blocks": 142,
+    "needed_data_blocks": 132
+  },
+  "logits_audit": {
+    "calls": 44,
+    "nonfinite_calls": 0,
+    "sync_per_call": true
+  },
+  "identity_requirements": {
+    "A_reuse_checks_gt_0": true,
+    "L_reuse_checks_gt_0": true,
+    "reorder_checks_gt_0": true,
+    "new_request_inserted": true,
+    "new_request_reuse_after_store": true,
+    "all_outputs_exact": true,
+    "zero_A_identity_mismatch": true,
+    "zero_L_identity_mismatch": true,
+    "zero_reorder_A_mismatch": true,
+    "zero_reorder_L_mismatch": true
+  },
+  "tiny_timing": {
+    "batch": 4,
+    "length": 1024,
+    "max_tokens": 16,
+    "runs": [
+      {
+        "condition": "dense",
+        "ratio": 0.0,
+        "decode_seconds": 1.57502830773592,
+        "prefill_seconds": 0.7654856536537409,
+        "total_output_tokens": 64,
+        "problems": []
+      },
+      {
+        "condition": "s2",
+        "ratio": 2.0,
+        "decode_seconds": 1.6856423150748014,
+        "prefill_seconds": 0.7761679328978062,
+        "total_output_tokens": 64,
+        "problems": []
+      }
+    ]
+  },
+  "finite_parameters": {
+    "checked": false,
+    "note": "weights accepted by parent mechanism stage; every run_model logit tensor was checked with torch.isfinite in this untimed preflight (per-call sync disclosed)"
+  },
+  "resources": {
+    "samples": 40,
+    "mem_free_min_mib": 5659.1,
+    "mem_used_max_mib": 18916.9,
+    "util_gpu_mean_pct": 54.25,
+    "util_gpu_max_pct": 100,
+    "sample_first": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 4589.5625,
+      "mem_free_mib": 19986.4375,
+      "util_gpu_pct": 11,
+      "t": 1792725342.771388
+    },
+    "sample_last": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 18916.875,
+      "mem_free_mib": 5659.125,
+      "util_gpu_pct": 73,
+      "t": 1792725362.5433586
+    },
+    "end_query": {
+      "mem_total_mib": 24576.0,
+      "mem_used_mib": 18916.875,
+      "mem_free_mib": 5659.125,
+      "util_gpu_pct": 75
+    },
+    "breach": null,
+    "limits": {
+      "min_free_mib": 3072.0,
+      "max_allocated_mib": 16384.0
+    },
+    "note": "physical NVML memory/util sampled identically both conditions; shared GPU"
+  },
+  "wall_seconds": 20.315,
+  "gpu_command_wall_seconds": 20.315,
+  "headroom": {
+    "compute_apps_after": {
+      "count": 4,
+      "apps": [
+        {
+          "pid": 4009851,
+          "used_memory": "814 MiB"
+        },
+        {
+          "pid": 1932774,
+          "used_memory": "1660 MiB"
+        },
+        {
+          "pid": 1933545,
+          "used_memory": "1660 MiB"
+        },
+        {
+          "pid": 2241136,
+          "used_memory": "14324 MiB"
+        }
+      ]
+    }
+  },
+  "ended_at_utc": "2026-10-23T03:16:03Z",
+  "partial_completion": {
+    "prefill_seconds": null,
+    "decode_seconds": 3.7469493485987186,
+    "e2e_seconds": null,
+    "wall_seconds": 4.217,
+    "output_token_counts": [
+      16,
+      32,
+      48,
+      64,
+      16,
+      32
+    ],
+    "total_output_tokens": 208,
+    "output_concat_sha256": "b9a299c3d87a7c0bba1df1909d9adb4d82ca6f83683642634af283199b52ae27",
+    "max_output_token_id": 151645,
+    "tokenizer_len": 151670,
+    "tokenizer_vocab_size": 151643,
+    "problems": [],
+    "counters": {
+      "decode_rows": 124,
+      "decode_steps": 38,
+      "prefill_steps": 6,
+      "reuse_rows": 6,
+      "saving_rows": 56,
+      "store_rows": 57,
+      "update_rows": 118
+    },
+    "per_seq_global_denoise_steps": [
+      8,
+      10,
+      13,
+      20,
+      6,
+      11
+    ],
+    "per_seq_completion_tokens": [
+      16,
+      32,
+      48,
+      64,
+      16,
+      32
+    ],
+    "identity": {
+      "checks": 12,
+      "checks_a": 12,
+      "checks_l": 12,
+      "max_abs_a": 0.0,
+      "max_abs_l": 0.0,
+      "max_rel_l2_a": 0.0,
+      "max_rel_l2_l": 0.0,
+      "reorders": 6,
+      "reorder_checks": 24,
+      "max_reorder_abs_a": 0.0,
+      "max_reorder_abs_l": 0.0
+    },
+    "initial_seq_ids": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "inserted_seq_ids": [
+      5,
+      6
+    ],
+    "finished_order": [
+      1,
+      2,
+      5,
+      3,
+      4,
+      6
+    ],
+    "per_seq_identity": {
+      "1": {
+        "stores": 4,
+        "reuses": 1,
+        "reorder_checks": 0
+      },
+      "2": {
+        "stores": 8,
+        "reuses": 2,
+        "reorder_checks": 1
+      },
+      "3": {
+        "stores": 13,
+        "reuses": 0,
+        "reorder_checks": 3
+      },
+      "4": {
+        "stores": 18,
+        "reuses": 2,
+        "reorder_checks": 4
+      },
+      "5": {
+        "stores": 5,
+        "reuses": 0,
+        "reorder_checks": 1
+      },
+      "6": {
+        "stores": 9,
+        "reuses": 1,
+        "reorder_checks": 3
+      }
+    },
+    "newseq_reuse_after_store": [
+      6
+    ],
+    "survivors_with_reorder": [
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "peak_allocated_mib": 13886.0,
+    "peak_reserved_mib": 13910.0
+  }
+}
