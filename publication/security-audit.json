@@ -1,0 +1,32 @@
+{
+  "history_objects_checked": 7912,
+  "tracked_files": 7850,
+  "valid_json_files": 72,
+  "original_commits_mapped": 66,
+  "independent_reanalysis": "All scientific fields match for mechanism, efficiency, quality",
+  "changed_or_removed_files": 65,
+  "removed_internal_skill_files": 21,
+  "status": "PASSED_FOR_PUBLICATION_CANDIDATE",
+  "original_history_commits": 66,
+  "gitleaks_version": "8.30.1",
+  "gitleaks_default_findings_before": 74,
+  "gitleaks_default_findings_after": 74,
+  "reviewed_true_credentials": 0,
+  "false_positive_categories": {
+    "sha256_fingerprints": 56,
+    "cuda_kernel_names": 16,
+    "upstream_operation_names": 2
+  },
+  "private_infrastructure_pattern_matches_after": 0,
+  "original_private_head": "a3b8d01a4a5a564098218eade0693e96a0e0d056",
+  "sanitized_history_head": "88b1deeb649033e95a242d718aafda0d3db5bec6",
+  "repository_surface": {
+    "branches": 1,
+    "tags": 0,
+    "pull_requests": 0,
+    "releases": 0,
+    "actions_artifacts": 0,
+    "forks": 0
+  },
+  "scope_note": "Counts cover the sanitized experimental history before this publication-document commit. Final publication commit is scanned again before upload/visibility change. No raw matches or sensitive replacement values are included here."
+}

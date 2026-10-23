@@ -41,3 +41,10 @@ dist/
 *.log
 dllm/trado_eval/
 dllm/logs/
+
+# Internal deployment packages and private history backups
+skills/
+*.bundle
+.ssh/
+.netrc
+.publication-private/

@@ -1,5 +1,7 @@
 # FlashBlock 最小复现实验报告
 
+> 此为公开脱敏版本。原始执行 SHA 和历史哈希保留其原始含义；含路径的文件已脱敏，不应与原始哈希直接比较。见 [公开版本说明](PUBLICATION.md)。
+
 本实验检查论文的三个可分离主张：块外注意力输出相对稳定、缓存复用能减少解码成本、近似误差对答案质量的代价。环境是一张共享 RTX3090，原始未蒸馏 TraDo4B BF16；结论不外推为论文 8B、32k+、A100 或蒸馏模型表格的复现。
 
 | 检查 | 结果 | 判定 |
@@ -91,6 +93,6 @@
 |质量：独立统计分析|d56db2642209d0316d9daac81c939276d17b1463|
 |质量：原始证据CPU核验|94af9c77f19c96cd90b4a24bd6850c7900935018|
 
-本报告生成时HEAD为94af9c77f19c96cd90b4a24bd6850c7900935018，已验证服务端private并推送。报告与图表另行提交；最终交付HEAD和服务端分支一致性检查记录在本地 `runs/final-delivery.json` 及会话最终答复，不能把后续文档HEAD冒充上表的执行版本。[FINAL_PROVENANCE.json](FINAL_PROVENANCE.json)提供版本、锁和资源索引；[README.md](README.md)提供不运行GPU的重算命令。[私有仓库](https://github.com/Flutter-Misdreavus/flashblock-reproduction/tree/exp/flashblock-20261023)仅提交代码、配置、图和小型脱敏指标。
+本报告生成时HEAD为94af9c77f19c96cd90b4a24bd6850c7900935018，已验证服务端private并推送。报告与图表另行提交；最终交付HEAD和服务端分支一致性检查记录在本地 `runs/final-delivery.json` 及会话最终答复，不能把后续文档HEAD冒充上表的执行版本。[FINAL_PROVENANCE.json](FINAL_PROVENANCE.json)提供版本、锁和资源索引；[README.md](README.md)提供不运行GPU的重算命令。[项目仓库](https://github.com/Flutter-Misdreavus/flashblock-reproduction/tree/exp/flashblock-20261023)仅提交代码、配置、图和小型脱敏指标。
 
 当前证据足以结束本次最小复现：相对稳定性得到支持，但在这张共享3090、未蒸馏4B模型和固定设置上没有达到主要加速目标。没有开展论文的蒸馏训练、8B模型、32k+上下文或A100主表复现；后续结论必须保持这一范围。

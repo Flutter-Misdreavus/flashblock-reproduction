@@ -100,7 +100,7 @@ FlashBlock 将注意力分成两部分：
 
 ### 准备分析环境
 
-仓库为私有仓库，克隆需要相应访问权限：
+公开仓库可直接克隆：
 
 ```bash
 git clone --branch exp/flashblock-20261023 \
@@ -174,11 +174,13 @@ python repro/independent_quality.py \
 
 实际命令、运行提交和修复过程保存在各阶段的 `task.json`、`run-commits.json`、审查记录及可用的 `commands-and-provenance.json` 中。评分规则见 [quality_scorer.py](repro/quality_scorer.py)，其 [61 个自编用例](repro/quality_scorer_tests.py)在测试生成前通过。
 
-历史驱动包含固定 `run_id` 路径。重新实验应创建独立 checkout 和新的 `run_id`，冻结并提交配置，再依照 [research-orchestrator 工作流](skills/research-orchestrator/SKILL.md)检查实时资源并调度，保留已有实验记录。
+历史驱动包含固定 `run_id` 路径。重新实验应创建独立 checkout 和新的 `run_id`，冻结并提交配置，再依照 [公开版运行说明](PUBLICATION.md)检查实时资源并调度，保留已有实验记录。
 
-本次服务器环境位于 `/data/research/flashblock-reproduction-runtime/venv`，权重位于同一 runtime 下的 `models/TraDo-4B-Instruct`。这些路径是本次部署记录，环境和数据不随 Git 克隆提供。
+公开配置用 `/data/research/flashblock-reproduction-runtime/venv` 和 `models/TraDo-4B-Instruct` 示意环境及权重位置。真实部署路径和设备标识已脱敏，请替换为自己的配置；环境和数据不随 Git 克隆提供。
 
 </details>
+
+> **公开版本说明：** 全部历史已清理基础设施隐私信息；原始执行 SHA 与脱敏后提交分别记录。路径和 GPU 标识为占位值，见 [脱敏与证据说明](PUBLICATION.md)。
 
 ## 项目导航
 

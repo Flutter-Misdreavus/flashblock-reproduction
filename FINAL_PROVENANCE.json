@@ -83,5 +83,12 @@
     "failed resource-bound probes retained",
     "different real-text prompts across performance lengths",
     "no equivalence or positive quality-gain claim"
-  ]
+  ],
+  "publication": {
+    "notice": "Original execution and audit SHA/hash fields describe the private historical experiment. Sanitization changes Git commit IDs and path-containing files; see PUBLICATION.md.",
+    "commit_mapping": "publication/commit-map.tsv",
+    "file_changes": "publication/file-changes.json",
+    "security_audit": "publication/security-audit.json",
+    "original_history_retention": "private archive; not reachable from public Git history"
+  }
 }
