@@ -2,10 +2,10 @@
   "schema_version": 1,
   "run_id": "flashblock-20261023-quality",
   "parent_run_id": "flashblock-20261023-efficiency",
-  "created_at": "2026-10-23T04:10:24Z",
-  "git_head": "0d30eac5bc43a0ad5bd3fa81faf74b9b3fd9039b",
+  "created_at": "2026-10-23T04:14:11Z",
+  "git_head": "ff3079a13b06330034b332fda3831a8f74fb0b9b",
   "config_path": "experiments/flashblock-20261023-quality/quality-config.json",
-  "config_sha256": "a28464c94e6fc8d8eb7e071660e0c4c03ef59b13fc62121592a44f5ae003111e",
+  "config_sha256": "94d9fa42c0cf736d12255badddad416be773d64b82cab7cc3e399624adb86bb5",
   "model": {
     "model_id": "Gen-Verse/TraDo-4B-Instruct",
     "revision": "d350259d64abf9219362ccb1435d68910744eea7",
@@ -307,7 +307,7 @@
     "prefill_mode": "sequential_per_request: add one request, run only its PREFILL, then add next; defer decode; identical both conditions",
     "tensor_parallel_size": 1,
     "enforce_eager": true,
-    "gpu_memory_utilization": 0.8,
+    "gpu_memory_utilization": 0.72,
     "max_model_len": 8448,
     "max_num_batched_tokens": 8448,
     "warmup_model_len": 8448,
@@ -316,7 +316,8 @@
     "peak_allocated_limit_mib": 16384,
     "min_free_mib": 3072,
     "max_new_disk_gib": 30,
-    "min_free_disk_gib": 40
+    "min_free_disk_gib": 40,
+    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after the first committed smoke hit the shared-GPU physical-free guard (2.47 GiB < 3.07 GiB) before generating; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
   },
   "groups": {
     "count": 32,
