@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "status": "SUCCEEDED",
+  "summary": "Dense baseline on 16 fixed GSM8K train prompts: mean paired A_out-A_in cosine gap=0.2201034280865893, prompt-bootstrap 95% CI [0.2051146519586403, 0.2364192391284915]; mean cos_out=0.8998165754594794, mean cos_in=0.6797131474812478. 16/16 selected layer-head means are positive (range 0.05736238158623945..0.6009669155946664; heterogeneity retained), with changed-row stratum mean 0.2700946587927059 and unchanged-row stratum mean 0.18218164186190472. s2 reuse: mean actual-vs-fresh-full relL2=0.24298193062239143, mean stale-merge relL2=0.24260888439090483. Cache-label max relL2 dense/s2=n/a/0.003325978061184287. This run completed the fixed 16-prompt mechanism matrix with preflight and hard stops; it is descriptive mechanism evidence on a small frozen subset, with no efficiency, exactness, quality or heldout claim.",
+  "executed_commands": [
+    {
+      "stage": "formal_dense",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition dense --ratio 0.0 --hooks 1 --indices 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 --max-tokens 512 --out runs/flashblock-20261023-mechanism/dense/generate-result.json --raw-dir runs/flashblock-20261023-mechanism/dense/raw",
+      "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+      "status": "SUCCEEDED",
+      "wall_seconds": 240.449
+    },
+    {
+      "stage": "formal_s2",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 --max-tokens 512 --out runs/flashblock-20261023-mechanism/s2/generate-result.json --raw-dir runs/flashblock-20261023-mechanism/s2/raw",
+      "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+      "status": "SUCCEEDED",
+      "wall_seconds": 224.767
+    },
+    {
+      "stage": "accepted_preflight",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py preflight --run-dir runs/flashblock-20261023-mechanism --out runs/flashblock-20261023-mechanism/preflight.json --attempt 2",
+      "execution_commit": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
+      "status": "SUCCEEDED",
+      "wall_seconds": 37.166
+    },
+    {
+      "stage": "development_probe:dev_unit_1",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit.json",
+      "execution_commit": null,
+      "status": "FAILED",
+      "wall_seconds": 5.0,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_unit_2",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit2.json",
+      "execution_commit": null,
+      "status": "SUCCEEDED",
+      "wall_seconds": 5.0,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_hook_keyerror",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "execution_commit": null,
+      "status": "FAILED",
+      "wall_seconds": 6.796,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_hook_ninja",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "execution_commit": null,
+      "status": "FAILED",
+      "wall_seconds": 6.7,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_hook_success",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "execution_commit": "08ba307f (content-identical snapshot; not the original dev commit)",
+      "status": "SUCCEEDED",
+      "wall_seconds": 81.36,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_nohook_success",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 0 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100-nohook.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw-nohook --allow-dirty",
+      "execution_commit": "08ba307f plus uncommitted worktree edits",
+      "status": "SUCCEEDED",
+      "wall_seconds": 8.803,
+      "accepted_evidence": false
+    },
+    {
+      "stage": "development_probe:dev_hardstop_success",
+      "command": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hardstop/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hardstop/raw --allow-dirty",
+      "execution_commit": null,
+      "status": "SUCCEEDED",
+      "wall_seconds": 8.817,
+      "accepted_evidence": false
+    }
+  ],
+  "metrics": [
+    {
+      "config": "baseline_dense",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_paired_Aout_minus_Ain_cosine_gap",
+      "value": 0.2201034280865893,
+      "unit": "cosine",
+      "ci95_low": 0.2051146519586403,
+      "ci95_high": 0.2364192391284915
+    },
+    {
+      "config": "baseline_dense",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_Aout_cosine",
+      "value": 0.8998165754594794,
+      "unit": "cosine"
+    },
+    {
+      "config": "baseline_dense",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_Ain_cosine",
+      "value": 0.6797131474812478,
+      "unit": "cosine"
+    },
+    {
+      "config": "baseline_dense",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_aligned_Lout_absolute_drift",
+      "value": 0.6554495320799196,
+      "unit": "nats"
+    },
+    {
+      "config": "official_s2_tau2",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_actual_s2_vs_fresh_full_rel_l2_reuse_steps",
+      "value": 0.24298193062239143,
+      "unit": "relative_L2"
+    },
+    {
+      "config": "official_s2_tau2",
+      "seed": 42,
+      "split": "gsm8k_train_100_115",
+      "metric": "mean_independent_stale_merge_rel_l2_reuse_steps",
+      "value": 0.24260888439090483,
+      "unit": "relative_L2"
+    }
+  ],
+  "artifacts": [
+    "preflight.json",
+    "dense/generate-result.json",
+    "s2/generate-result.json",
+    "exports/mechanism-per-prompt.json",
+    "exports/mechanism-summary.json",
+    "exports/bounded-small-trace.json",
+    "exports/resource-ledger.json",
+    "exports/commands-and-provenance.json",
+    "exports/mechanism-figure-data.csv",
+    "exports/report-body.json",
+    "exports/run-commits.json"
+  ],
+  "deviations": [
+    "matplotlib is not installed; exact CSV plotting data is provided instead of PNG/PDF (task explicitly permits this; no environment reinstall).",
+    "Formal runs were executed as two sequential batch-1 processes (dense then s2) to keep the frozen batch-1 control and preserve per-condition evidence.",
+    "Development probes were marked --allow-dirty and are not accepted scientific evidence; their conservative wall time is charged in the stage ledger."
+  ],
+  "failures": [
+    "Development probe: KeyError('kv_heads') in initial hook registration; fixed before accepted preflight, raw output overwritten at the same dev path.",
+    "Development probe: missing ninja executable in PATH for flashinfer JIT; fixed before accepted preflight, raw output overwritten at the same dev path.",
+    "Development probe: initial paged-scatter negative-slot assertion targeted a written slot; assertion fixed, scatter implementation unchanged."
+  ],
+  "resource_usage": {
+    "wall_seconds": 632.382,
+    "gpu_hours": 0.175662,
+    "formal_wall_seconds": 465.216,
+    "accepted_preflight_wall_seconds": 37.166,
+    "development_probe_wall_seconds_charged": 130.0,
+    "peak_allocated_mib_max": 11068.6,
+    "min_free_mib_sampled_min": 8559.1,
+    "campaign_gpu_hours_before": 0.4,
+    "campaign_gpu_hours_after_conservative": 0.575662
+  },
+  "next_recommendation": "GPT should review the paired gap, heterogeneity and s2 residual before authorizing any efficiency/quality stage. If the mechanism claim is retained, the next gate should use the frozen mechanism code to design the efficiency workload; no speed or quality conclusion follows from this run."
+}

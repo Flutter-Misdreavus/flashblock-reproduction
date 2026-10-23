@@ -1,0 +1,830 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "primary_condition": "baseline_dense",
+  "primary_metric": "per-prompt mean aligned adjacent-step A_out cosine minus A_in cosine, equally averaged over layers/heads",
+  "primary": {
+    "n": 16,
+    "mean": 0.2201034280865893,
+    "ci_low": 0.2051146519586403,
+    "ci_high": 0.2364192391284915
+  },
+  "decision": {
+    "rule": "descriptive support if mean paired gap > 0; CI entirely > 0 adds evidence only on this small subset",
+    "mean_gap_positive": true,
+    "ci_entirely_positive": true,
+    "negative_gap_layer_heads_retained": 0,
+    "heterogeneity_reported": true,
+    "layer_head_gap_range": [
+      0.05736238158623945,
+      0.6009669155946664
+    ],
+    "no_exactness_or_quality_inferred_from_cosine": true
+  },
+  "dense": {
+    "condition": "baseline_dense",
+    "n_prompts": 16,
+    "n_prompts_expected": 16,
+    "primary_mean_gap": {
+      "n": 16,
+      "mean": 0.2201034280865893,
+      "ci_low": 0.2051146519586403,
+      "ci_high": 0.2364192391284915
+    },
+    "mean_cos_out": {
+      "n": 16,
+      "mean": 0.8998165754594794,
+      "ci_low": 0.894167519864707,
+      "ci_high": 0.9049273535841321
+    },
+    "mean_cos_in": {
+      "n": 16,
+      "mean": 0.6797131474812478,
+      "ci_low": 0.6585562701598896,
+      "ci_high": 0.6991432330669849
+    },
+    "mean_gap_changed_stratum": {
+      "n": 16,
+      "mean": 0.2700946587927059,
+      "ci_low": 0.2513487708696746,
+      "ci_high": 0.28901818466983387
+    },
+    "mean_gap_unchanged_stratum": {
+      "n": 16,
+      "mean": 0.18218164186190472,
+      "ci_low": 0.1723855609058351,
+      "ci_high": 0.19324541290799388
+    },
+    "mean_lse_out_abs_drift": {
+      "n": 16,
+      "mean": 0.6554495320799196,
+      "ci_low": 0.6248137472602765,
+      "ci_high": 0.688022754433418
+    },
+    "mean_lse_in_abs_drift": {
+      "n": 16,
+      "mean": 0.9996682316298591,
+      "ci_low": 0.954107267180007,
+      "ci_high": 1.0526819111802574
+    },
+    "mean_prev_step_stale_merge_rel_l2": {
+      "n": 16,
+      "mean": 0.3686008418820956,
+      "ci_low": 0.3544960405585845,
+      "ci_high": 0.38424522961884866
+    },
+    "mean_actual_full_rel_l2_refresh": {
+      "n": 16,
+      "mean": 0.001728464007608272,
+      "ci_low": 0.001720208780387609,
+      "ci_high": 0.0017367789757595682
+    },
+    "mean_actual_full_rel_l2_reuse": {
+      "n": 0,
+      "mean": null,
+      "ci_low": null,
+      "ci_high": null
+    },
+    "mean_stale_merge_rel_l2_reuse": {
+      "n": 0,
+      "mean": null,
+      "ci_low": null,
+      "ci_high": null
+    },
+    "mean_stale_vs_actual_rel_l2": {
+      "n": 0,
+      "mean": null,
+      "ci_low": null,
+      "ci_high": null
+    },
+    "mean_cache_label_rel_l2": {
+      "n": 0,
+      "mean": null,
+      "ci_low": null,
+      "ci_high": null
+    },
+    "max_cache_label_rel_l2": null,
+    "max_cache_label_lse_abs": null,
+    "steps": {
+      "denoise_total": 2225,
+      "denoise_steps": 1401,
+      "refresh_steps": 2225,
+      "kv_write_steps": 2225,
+      "saving_steps": 824
+    },
+    "denominators": {
+      "bootstrap_units": "prompts (not query rows or tokens)",
+      "n_prompt_units_for_primary": 16,
+      "gap_aligned_row_observations_sum_over_layer_heads": 36928,
+      "gap_observations_per_layer_head": {
+        "0:0": 2308,
+        "0:8": 2308,
+        "0:16": 2308,
+        "0:24": 2308,
+        "2:0": 2308,
+        "2:8": 2308,
+        "2:16": 2308,
+        "2:24": 2308,
+        "17:0": 2308,
+        "17:8": 2308,
+        "17:16": 2308,
+        "17:24": 2308,
+        "35:0": 2308,
+        "35:8": 2308,
+        "35:16": 2308,
+        "35:24": 2308
+      },
+      "reuse_steps_total": 0,
+      "actual_full_reuse_row_observations_sum_over_layer_heads": 0,
+      "actual_full_reuse_observations_per_layer_head": {},
+      "stale_merge_reuse_row_observations_sum_over_layer_heads": 0,
+      "stale_merge_reuse_observations_per_layer_head": {},
+      "denominator_note": "cosine/LSE/error means are equal-weight over selected layer/head means; the n fields are raw aligned row observations and are never treated as independent bootstrap units."
+    },
+    "gap_by_layer_head": {
+      "0:0": {
+        "mean": 0.19618339315288646,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.19291516266304204,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.6009669155946664,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.2594732411362061,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.09021716487994358,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.2060308920977021,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.05736238158623945,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.37550093891511777,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.1414557605061526,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.21793635738386982,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.13797833898079798,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.0698477209608239,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.20943199834411524,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.3499497115751831,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.21592125563631212,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.2004836159723702,
+        "n_prompts": 16
+      }
+    },
+    "cos_out_by_layer_head": {
+      "0:0": {
+        "mean": 0.9166640385302152,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.8436215652474615,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.9831086963034591,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.9410692096563846,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.8040559707106488,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.8335111359059143,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.8419603819542647,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.8722311285490277,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.8579394624918671,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.9328072369404455,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.9380507542476384,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.9091792923833295,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.9488960556873107,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.974051808843432,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.8765465583694063,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.923371911530865,
+        "n_prompts": 16
+      }
+    },
+    "cos_in_by_layer_head": {
+      "0:0": {
+        "mean": 0.7204806453899961,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.6507064029911578,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.3821417828490152,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.6815959683918028,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.7138388055824076,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.6274802443165155,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.7845980003326136,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.49673018920589185,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.7164837022016636,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.7148708795777071,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.8000724151123739,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.8393315714497696,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.7394640571376547,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.624102096788351,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.6606253027511874,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.7228882956218565,
+        "n_prompts": 16
+      }
+    },
+    "actual_full_reuse_by_layer_head": null,
+    "stale_merge_rel_by_layer_head": null,
+    "n_layer_head_positive_gap": 16,
+    "n_layer_head_nonpositive_gap": 0,
+    "layer_head_gap_min": 0.05736238158623945,
+    "layer_head_gap_max": 0.6009669155946664,
+    "prompt_mean_gaps": {
+      "100": 0.22405246858640265,
+      "101": 0.18212473885854708,
+      "102": 0.23786363187375376,
+      "103": 0.18060646739221461,
+      "104": 0.23801128881940142,
+      "105": 0.2620131202108626,
+      "106": 0.29354326738975944,
+      "107": 0.1997194882644136,
+      "108": 0.20295285265776328,
+      "109": 0.20042407656596467,
+      "110": 0.21704209004317154,
+      "111": 0.2539416843838377,
+      "112": 0.2049376311173173,
+      "113": 0.19352070748726347,
+      "114": 0.2504589875645347,
+      "115": 0.1804423481702212
+    }
+  },
+  "s2": {
+    "condition": "official_s2_tau2",
+    "n_prompts": 16,
+    "n_prompts_expected": 16,
+    "primary_mean_gap": {
+      "n": 16,
+      "mean": 0.21430195382033582,
+      "ci_low": 0.20284791659068063,
+      "ci_high": 0.22685536512424087
+    },
+    "mean_cos_out": {
+      "n": 16,
+      "mean": 0.9005519834654669,
+      "ci_low": 0.8929908224167576,
+      "ci_high": 0.9071125031945173
+    },
+    "mean_cos_in": {
+      "n": 16,
+      "mean": 0.6862500297418229,
+      "ci_low": 0.6668543315640691,
+      "ci_high": 0.7034720092515704
+    },
+    "mean_gap_changed_stratum": {
+      "n": 16,
+      "mean": 0.2626452833841199,
+      "ci_low": 0.2483324683333412,
+      "ci_high": 0.2770085582393451
+    },
+    "mean_gap_unchanged_stratum": {
+      "n": 16,
+      "mean": 0.17948674730402858,
+      "ci_low": 0.17227089630205578,
+      "ci_high": 0.18779253915150737
+    },
+    "mean_lse_out_abs_drift": {
+      "n": 16,
+      "mean": 0.6527180691844262,
+      "ci_low": 0.6213936469070349,
+      "ci_high": 0.6850493348238477
+    },
+    "mean_lse_in_abs_drift": {
+      "n": 16,
+      "mean": 0.987314029080147,
+      "ci_low": 0.9448185015808557,
+      "ci_high": 1.034086607753059
+    },
+    "mean_prev_step_stale_merge_rel_l2": {
+      "n": 16,
+      "mean": 0.3685797583667916,
+      "ci_low": 0.35146605179799106,
+      "ci_high": 0.38668560692618664
+    },
+    "mean_actual_full_rel_l2_refresh": {
+      "n": 16,
+      "mean": 0.0016818933584649295,
+      "ci_low": 0.001676227199585249,
+      "ci_high": 0.0016878855672177752
+    },
+    "mean_actual_full_rel_l2_reuse": {
+      "n": 16,
+      "mean": 0.24298193062239143,
+      "ci_low": 0.23225779754599432,
+      "ci_high": 0.2550226291410932
+    },
+    "mean_stale_merge_rel_l2_reuse": {
+      "n": 16,
+      "mean": 0.24260888439090483,
+      "ci_low": 0.23188820194778056,
+      "ci_high": 0.2546421620969824
+    },
+    "mean_stale_vs_actual_rel_l2": {
+      "n": 16,
+      "mean": 0.0019237594846457631,
+      "ci_low": 0.001914672076689372,
+      "ci_high": 0.0019342658481269395
+    },
+    "mean_cache_label_rel_l2": {
+      "n": 16,
+      "mean": 0.0006157175649844608,
+      "ci_low": 0.0005958592530545756,
+      "ci_high": 0.0006366195391510666
+    },
+    "max_cache_label_rel_l2": 0.003325978061184287,
+    "max_cache_label_lse_abs": 9.5367431640625e-06,
+    "steps": {
+      "denoise_total": 2119,
+      "denoise_steps": 1354,
+      "refresh_steps": 1854,
+      "kv_write_steps": 1854,
+      "saving_steps": 765,
+      "al_store_steps": 955,
+      "reuse_steps": 265
+    },
+    "denominators": {
+      "bootstrap_units": "prompts (not query rows or tokens)",
+      "n_prompt_units_for_primary": 16,
+      "gap_aligned_row_observations_sum_over_layer_heads": 37696,
+      "gap_observations_per_layer_head": {
+        "0:0": 2356,
+        "0:8": 2356,
+        "0:16": 2356,
+        "0:24": 2356,
+        "2:0": 2356,
+        "2:8": 2356,
+        "2:16": 2356,
+        "2:24": 2356,
+        "17:0": 2356,
+        "17:8": 2356,
+        "17:16": 2356,
+        "17:24": 2356,
+        "35:0": 2356,
+        "35:8": 2356,
+        "35:16": 2356,
+        "35:24": 2356
+      },
+      "reuse_steps_total": 265,
+      "actual_full_reuse_row_observations_sum_over_layer_heads": 16960,
+      "actual_full_reuse_observations_per_layer_head": {
+        "0:0": 1060,
+        "0:8": 1060,
+        "0:16": 1060,
+        "0:24": 1060,
+        "2:0": 1060,
+        "2:8": 1060,
+        "2:16": 1060,
+        "2:24": 1060,
+        "17:0": 1060,
+        "17:8": 1060,
+        "17:16": 1060,
+        "17:24": 1060,
+        "35:0": 1060,
+        "35:8": 1060,
+        "35:16": 1060,
+        "35:24": 1060
+      },
+      "stale_merge_reuse_row_observations_sum_over_layer_heads": 16960,
+      "stale_merge_reuse_observations_per_layer_head": {
+        "0:0": 1060,
+        "0:8": 1060,
+        "0:16": 1060,
+        "0:24": 1060,
+        "2:0": 1060,
+        "2:8": 1060,
+        "2:16": 1060,
+        "2:24": 1060,
+        "17:0": 1060,
+        "17:8": 1060,
+        "17:16": 1060,
+        "17:24": 1060,
+        "35:0": 1060,
+        "35:8": 1060,
+        "35:16": 1060,
+        "35:24": 1060
+      },
+      "denominator_note": "cosine/LSE/error means are equal-weight over selected layer/head means; the n fields are raw aligned row observations and are never treated as independent bootstrap units."
+    },
+    "gap_by_layer_head": {
+      "0:0": {
+        "mean": 0.18944211600859698,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.17738418347605556,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.5859207172227765,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.24541139321179822,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.0763925027401022,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.20224499496134596,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.05405587918940768,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.37853016372167986,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.1611826209330498,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.21352155278382706,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.1356948596038865,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.06861574572720167,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.1977508106274599,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.34599424239975485,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.2158520309480739,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.18083744757035636,
+        "n_prompts": 16
+      }
+    },
+    "cos_out_by_layer_head": {
+      "0:0": {
+        "mean": 0.9207891801070123,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.8491917513310567,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.9788573416390907,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.9400400544777239,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.7984972220831252,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.836902281901463,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.8409867066936402,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.8769872344821477,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.8616301392183379,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.9249313369606137,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.932286466146879,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.9142728281297261,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.9524369596204623,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.9722884366033441,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.8773249800265503,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.9314088160262979,
+        "n_prompts": 16
+      }
+    },
+    "cos_in_by_layer_head": {
+      "0:0": {
+        "mean": 0.7313470641525037,
+        "n_prompts": 16
+      },
+      "0:8": {
+        "mean": 0.6718075681101556,
+        "n_prompts": 16
+      },
+      "0:16": {
+        "mean": 0.39293662568545745,
+        "n_prompts": 16
+      },
+      "0:24": {
+        "mean": 0.6946286612808177,
+        "n_prompts": 16
+      },
+      "2:0": {
+        "mean": 0.7221047191317753,
+        "n_prompts": 16
+      },
+      "2:8": {
+        "mean": 0.6346572870897025,
+        "n_prompts": 16
+      },
+      "2:16": {
+        "mean": 0.7869308275395045,
+        "n_prompts": 16
+      },
+      "2:24": {
+        "mean": 0.49845707089435487,
+        "n_prompts": 16
+      },
+      "17:0": {
+        "mean": 0.7004475180543055,
+        "n_prompts": 16
+      },
+      "17:8": {
+        "mean": 0.7114097839517235,
+        "n_prompts": 16
+      },
+      "17:16": {
+        "mean": 0.7965916065711844,
+        "n_prompts": 16
+      },
+      "17:24": {
+        "mean": 0.845657082349099,
+        "n_prompts": 16
+      },
+      "35:0": {
+        "mean": 0.7546861490804235,
+        "n_prompts": 16
+      },
+      "35:8": {
+        "mean": 0.6262941941793485,
+        "n_prompts": 16
+      },
+      "35:16": {
+        "mean": 0.6614729493954847,
+        "n_prompts": 16
+      },
+      "35:24": {
+        "mean": 0.7505713684033254,
+        "n_prompts": 16
+      }
+    },
+    "actual_full_reuse_by_layer_head": null,
+    "stale_merge_rel_by_layer_head": null,
+    "n_layer_head_positive_gap": 16,
+    "n_layer_head_nonpositive_gap": 0,
+    "layer_head_gap_min": 0.05405587918940768,
+    "layer_head_gap_max": 0.5859207172227765,
+    "prompt_mean_gaps": {
+      "100": 0.20963827369667665,
+      "101": 0.1929169006277031,
+      "102": 0.22895422282939157,
+      "103": 0.17196195028980704,
+      "104": 0.20755300326295673,
+      "105": 0.26336553768487647,
+      "106": 0.22130057736649178,
+      "107": 0.20299535540255662,
+      "108": 0.21820981615349988,
+      "109": 0.20295246832606878,
+      "110": 0.22633878046181052,
+      "111": 0.2696350626501953,
+      "112": 0.19518941673149745,
+      "113": 0.20157796852088167,
+      "114": 0.22530162242474036,
+      "115": 0.19094030469621917
+    }
+  },
+  "dense_validation": {
+    "status": "SUCCEEDED",
+    "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+    "finite_parameters": {
+      "elements": 4411424256,
+      "nonfinite_elements": 0,
+      "nonfinite_tensors": [],
+      "tensors": 291
+    },
+    "logits_audit": {
+      "calls": 2241,
+      "nonfinite_calls": 0,
+      "max_numel": 607744
+    },
+    "engine_exit": "ok",
+    "capture_errors": [],
+    "n_prompts": 16,
+    "tokens": [
+      349,
+      102,
+      124,
+      512,
+      225,
+      97,
+      104,
+      237,
+      165,
+      192,
+      160,
+      122,
+      224,
+      323,
+      113,
+      193
+    ]
+  },
+  "s2_validation": {
+    "status": "SUCCEEDED",
+    "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+    "finite_parameters": {
+      "elements": 4411424256,
+      "nonfinite_elements": 0,
+      "nonfinite_tensors": [],
+      "tensors": 291
+    },
+    "logits_audit": {
+      "calls": 2135,
+      "nonfinite_calls": 0,
+      "max_numel": 607744
+    },
+    "engine_exit": "ok",
+    "capture_errors": [],
+    "n_prompts": 16,
+    "tokens": [
+      330,
+      96,
+      124,
+      309,
+      245,
+      97,
+      104,
+      245,
+      171,
+      301,
+      159,
+      122,
+      190,
+      222,
+      115,
+      177
+    ]
+  },
+  "exclusions": {
+    "prefill_steps_instrumented": false,
+    "saving_steps_excluded": true,
+    "block_transitions_excluded_by_same_block_start": true,
+    "zero_norm_cos_excluded": true,
+    "note": "Saving steps are counted but not used for adjacent cosine pairs."
+  },
+  "limitations": [
+    "16 fixed GSM8K train prompts, one seed, no heldout/test evaluation.",
+    "Cosine and LSE are mechanistic diagnostics, not exactness or answer-quality evidence.",
+    "s2 reuse error is measured only on the frozen small subset and fixed sampler."
+  ]
+}

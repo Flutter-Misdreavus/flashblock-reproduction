@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "run_commits": [
+    {
+      "stage": "driver_config_supervisor_checkpoint",
+      "sha": "08ba307f737151c7cfad70d4d7b26744f97b383f",
+      "note": "supervisor checkpoint snapshot of one uncommitted worktree state; not the original commit of earlier dev probes"
+    },
+    {
+      "stage": "supervisor_feedback_corrections",
+      "sha": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
+      "note": "sentinel slot, reuse-only stale merge, post-schedule dirty count, explicit denominators"
+    },
+    {
+      "stage": "preflight_attempt1_execution",
+      "sha": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
+      "note": "passed numerical checks but predates hard-stop addendum; not accepted"
+    },
+    {
+      "stage": "supervisor_hardstop_addendum",
+      "sha": "ca964cf3b89e981502289e8fd9ba3d1184cf2eb1",
+      "note": "verbatim supervisor addendum commit"
+    },
+    {
+      "stage": "hardstops_and_development_ledger",
+      "sha": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
+      "note": "nonfinite/cache-label/resource hard stops; development probe ledger"
+    },
+    {
+      "stage": "preflight_attempt2_execution",
+      "sha": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
+      "note": "accepted preflight execution, attempt 2"
+    },
+    {
+      "stage": "preflight_attempt2_evidence_commit",
+      "sha": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+      "note": "committed accepted preflight evidence"
+    },
+    {
+      "stage": "formal_dense_execution",
+      "sha": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+      "note": "16 fixed prompts, batch 1, seed 42, max 512 ordinary-EOS tokens"
+    },
+    {
+      "stage": "formal_s2_execution",
+      "sha": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+      "note": "official s2/tau2, same controls"
+    },
+    {
+      "stage": "summary_heterogeneity",
+      "sha": "f767dae93796569103fe905623dcfb79a6355ea0",
+      "note": "summary-only change; raw formal data unchanged"
+    },
+    {
+      "stage": "summary_polish",
+      "sha": "8b39878944e8c2b9580abb7e958d3bf8ec25be3d",
+      "note": "summary-only change; raw formal data unchanged"
+    }
+  ],
+  "push_mode": "relay",
+  "push_status": "pending",
+  "push_error": "relay mode: executor commits locally only; GPT pulls the private repository objects and verifies/pushes"
+}

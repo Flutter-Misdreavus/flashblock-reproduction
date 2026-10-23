@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "accepted_preflight": {
+    "status": "SUCCEEDED",
+    "attempt": 2,
+    "wall_seconds": 37.166,
+    "execution_commit": "ecb4974a6ad1245c875b0142e43551c2ee99da07"
+  },
+  "development_probes": {
+    "schema_version": 1,
+    "run_id": "flashblock-20261023-mechanism",
+    "policy": "All --allow-dirty probes are development evidence only, not accepted preflight/formal evidence. They are charged to the stage GPU ledger. Early failed dev outputs were written to the same dev path before the preserve policy was applied; their errors/timings below are reconstructed from the worker session record. Successful dev raw files remain in runs/flashblock-20261023-mechanism/dev-hook/.",
+    "source_snapshots": {
+      "08ba307f:repro/mechanism_cli.py": "c86e0a82aac3951b3a9d8166a140fe0a884b48a9eebff369953241df57d8d1c3",
+      "4c00e4be:repro/mechanism_cli.py": "d68c55d85a7e150a83f41c357ac2b917c733b997523ceb1894e11532c0b029bf",
+      "note": "08ba307f is a supervisor checkpoint snapshot of one uncommitted worktree state; it is NOT the original commit of earlier dev probes."
+    },
+    "probes": [
+      {
+        "name": "dev_unit_1",
+        "kind": "synthetic unit",
+        "status": "FAILED",
+        "wall_seconds": 5.0,
+        "error": "paged_kv_scatter negative-slot assertion checked a slot that a positive input had written",
+        "base_commit": null,
+        "raw_evidence": "overwritten by dev_unit_2 before preservation policy",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_unit_2",
+        "kind": "synthetic unit",
+        "status": "SUCCEEDED",
+        "wall_seconds": 5.0,
+        "base_commit": null,
+        "raw_evidence": "runs/flashblock-20261023-mechanism/dev-unit2.json",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_hook_keyerror",
+        "kind": "real s2 train-100 max16",
+        "status": "FAILED",
+        "wall_seconds": 6.796,
+        "error": "KeyError('kv_heads') in hook registration",
+        "base_commit": null,
+        "worktree_dirty": true,
+        "raw_evidence": "overwritten by later dev run at the same path before preservation policy",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_hook_ninja",
+        "kind": "real s2 train-100 max16",
+        "status": "FAILED",
+        "wall_seconds": 6.7,
+        "error": "ValueError: FusedTemperatureSoftmaxOp could not find ninja executable",
+        "base_commit": null,
+        "worktree_dirty": true,
+        "raw_evidence": "overwritten by later dev run at the same path before preservation policy",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_hook_success",
+        "kind": "real s2 train-100 max16",
+        "status": "SUCCEEDED",
+        "wall_seconds": 81.36,
+        "generation_seconds_total": 81.35,
+        "includes_one_time_flashinfer_jit_compile": true,
+        "token_count": 16,
+        "mean_gap": 0.15796322163078003,
+        "max_cache_label_rel_l2": 0.00241514528170228,
+        "base_commit": "08ba307f (content-identical snapshot; not the original dev commit)",
+        "worktree_dirty": true,
+        "raw_evidence": "runs/flashblock-20261023-mechanism/dev-hook/s2-100.json",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_nohook_success",
+        "kind": "real s2 train-100 max16",
+        "status": "SUCCEEDED",
+        "wall_seconds": 8.803,
+        "generation_seconds_total": 8.683,
+        "token_ids_equal_to_dev_hook": true,
+        "base_commit": "08ba307f plus uncommitted worktree edits",
+        "worktree_dirty": true,
+        "raw_evidence": "runs/flashblock-20261023-mechanism/dev-hook/s2-100-nohook.json",
+        "accepted_evidence": false
+      },
+      {
+        "name": "dev_hardstop_success",
+        "kind": "real s2 train-100 max16",
+        "status": "SUCCEEDED",
+        "wall_seconds": 8.817,
+        "generation_seconds_total": 8.625,
+        "peak_allocated_mib": 11068.6,
+        "min_free_mib_sampled": 8563.1,
+        "breach": null,
+        "token_ids_equal_to_dev_hook": true,
+        "base_commit": null,
+        "worktree_dirty": true,
+        "raw_evidence": "runs/flashblock-20261023-mechanism/dev-hardstop/s2-100.json",
+        "accepted_evidence": false
+      }
+    ],
+    "reconstructed_commands": {
+      "dev_unit_1": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit.json",
+      "dev_unit_2": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py unit --out runs/flashblock-20261023-mechanism/dev-unit2.json",
+      "dev_hook_keyerror": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "dev_hook_ninja": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "dev_hook_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw --allow-dirty",
+      "dev_nohook_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 0 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hook/s2-100-nohook.json --raw-dir runs/flashblock-20261023-mechanism/dev-hook/raw-nohook --allow-dirty",
+      "dev_hardstop_success": "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/mechanism_cli.py generate --run-dir runs/flashblock-20261023-mechanism --condition s2 --ratio 2.0 --hooks 1 --indices 100 --max-tokens 16 --out runs/flashblock-20261023-mechanism/dev-hardstop/s2-100.json --raw-dir runs/flashblock-20261023-mechanism/dev-hardstop/raw --allow-dirty"
+    },
+    "total_conservative_wall_seconds": 130.0,
+    "note": "Charged 130s conservatively for all development probes, including failed/overwritten ones."
+  },
+  "dense": {
+    "wall_seconds": 240.449,
+    "resources": {
+      "peak_allocated_mib": 11068.6,
+      "peak_reserved_mib": 11110.0,
+      "min_free_mib_sampled": 8559.1,
+      "free_mib_start": 19729.1,
+      "free_mib_end": 8559.1,
+      "gpu_total_mib": 24134.2,
+      "samples": 479,
+      "breach": null,
+      "limits": {
+        "min_free_mib": 3072.0,
+        "max_allocated_mib": 16384.0
+      }
+    },
+    "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+    "status": "SUCCEEDED"
+  },
+  "s2": {
+    "wall_seconds": 224.767,
+    "resources": {
+      "peak_allocated_mib": 11068.6,
+      "peak_reserved_mib": 11110.0,
+      "min_free_mib_sampled": 8559.1,
+      "free_mib_start": 19729.1,
+      "free_mib_end": 8559.1,
+      "gpu_total_mib": 24134.2,
+      "samples": 448,
+      "breach": null,
+      "limits": {
+        "min_free_mib": 3072.0,
+        "max_allocated_mib": 16384.0
+      }
+    },
+    "execution_commit": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+    "status": "SUCCEEDED"
+  },
+  "formal_wall_seconds": 465.216,
+  "accepted_preflight_wall_seconds": 37.166,
+  "development_probe_wall_seconds_charged": 130.0,
+  "total_stage_wall_seconds_conservative": 632.382,
+  "conservative_gpu_hours_this_stage": 0.175662,
+  "campaign_gpu_hours_before": 0.4,
+  "campaign_gpu_hours_after_conservative": 0.575662,
+  "peak_allocated_mib_max": 11068.6,
+  "min_free_mib_sampled_min": 8559.1,
+  "note": "GPU hours charged conservatively as whole-stage wall time on one GPU; includes failed/unaccepted development probes and the accepted preflight, not only final dense/s2 runs."
+}
