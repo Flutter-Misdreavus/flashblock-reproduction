@@ -224,7 +224,8 @@ class NvmlSampler:
 def _compute_apps(gpu_uuid):
     try:
         out = subprocess.check_output(
-            ["nvidia-smi", "--query-compute-apps=pid,used_memory", "--format=csv,noheader"],
+            ["nvidia-smi", "-i", str(gpu_uuid),
+             "--query-compute-apps=pid,used_memory", "--format=csv,noheader"],
             text=True, timeout=10).strip().splitlines()
     except Exception as e:
         return {"error": repr(e), "apps": []}
@@ -380,6 +381,11 @@ def _reset_engine(h):
     torch.cuda.synchronize()
 
 
+def _sid_rec(h, sid):
+    return h.setdefault("per_seq_identity", {}).setdefault(
+        int(sid), {"stores": 0, "reuses": 0, "reorder_checks": 0})
+
+
 def _install_recorder(h, identity_layers):
     sch = h["llm"].scheduler
     orig = sch.schedule
@@ -396,44 +402,56 @@ def _install_recorder(h, identity_layers):
                 "current_denoising_step": int(s.current_denoising_step),
                 "dirty_count": int(sp.get("dirty_token_count", len(sp.get("dirty_tokens", [])))),
             })
-        pre_rows = {}
+        pre_rows, pre_lse = {}, {}
         if identity_layers:
+            n = len(running)
             for layer in identity_layers:
-                pre_rows[layer] = mr.attn_output_past[layer, :len(running)].clone()
+                pre_rows[layer] = mr.attn_output_past[layer, :n].clone()
+                pre_lse[layer] = mr.logsumexp[layer, :n].clone()
         seqs, rt = orig()
         rec = {"run_type": rt.name if rt is not None else None, "pre": pre,
                "issued": [int(s.seq_id) for s in seqs] if seqs else [],
                "no_update": [], "need_update": [], "need_store": [], "seq_ids": []}
+        identity_on = bool(h.get("identity_enabled")) and bool(identity_layers)
         if seqs and rt is not None and rt.name == "DENOISE" and seqs[0].sparsity_params is not None:
             sp = seqs[0].sparsity_params
             rec["no_update"] = [int(x) for x in sp.get("no_need_update_kvcache_idx", [])]
             rec["need_update"] = [int(x) for x in sp.get("need_update_kvcache_idx", [])]
             rec["need_store"] = [int(x) for x in sp.get("need_store_history_idx", [])]
             rec["seq_ids"] = [int(x) for x in sp.get("seq_ids", [])]
-            if identity_layers and rec["no_update"]:
+            if identity_on and rec["no_update"]:
                 if len(seqs) != len(running):
                     raise RuntimeError("identity preflight: batch order changed")
                 for idx in rec["no_update"]:
                     seq = seqs[idx]
+                    sid = int(seq.seq_id)
+                    _sid_rec(h, sid)["reuses"] += 1
                     for layer in identity_layers:
-                        key = (int(layer), int(seq.seq_id))
+                        key = (int(layer), sid)
                         if key not in h["expected"]:
                             raise RuntimeError(
-                                f"identity failure: reuse before store seq={seq.seq_id} layer={layer}")
-                        got = pre_rows[layer][idx]
+                                f"identity failure: reuse before store seq={sid} layer={layer}")
                         want = h["expected"][key]
-                        max_abs = float((got - want).abs().max().item())
-                        rel = float((got - want).norm().item() /
-                                    max(1e-12, want.norm().item()))
-                        h["identity_stats"]["checks"] += 1
-                        h["identity_stats"]["max_abs"] = max(
-                            h["identity_stats"]["max_abs"], max_abs)
-                        h["identity_stats"]["max_rel_l2"] = max(
-                            h["identity_stats"]["max_rel_l2"], rel)
-                        if max_abs != 0.0:
+                        got_a = pre_rows[layer][idx]
+                        got_l = pre_lse[layer][idx]
+                        max_abs_a = float((got_a - want["a"]).abs().max().item())
+                        max_abs_l = float((got_l - want["l"]).abs().max().item())
+                        rel_a = float((got_a - want["a"]).norm().item() /
+                                      max(1e-12, want["a"].norm().item()))
+                        rel_l = float((got_l - want["l"]).norm().item() /
+                                      max(1e-12, want["l"].norm().item()))
+                        st = h["identity_stats"]
+                        st["checks"] += 1
+                        st["checks_a"] += 1
+                        st["checks_l"] += 1
+                        st["max_abs_a"] = max(st["max_abs_a"], max_abs_a)
+                        st["max_abs_l"] = max(st["max_abs_l"], max_abs_l)
+                        st["max_rel_l2_a"] = max(st["max_rel_l2_a"], rel_a)
+                        st["max_rel_l2_l"] = max(st["max_rel_l2_l"], rel_l)
+                        if max_abs_a != 0.0 or max_abs_l != 0.0:
                             raise RuntimeError(
-                                f"identity failure: cached A/L mismatch seq={seq.seq_id} "
-                                f"layer={layer} max_abs={max_abs}")
+                                f"identity failure: cached A/L mismatch seq={sid} layer={layer} "
+                                f"max_abs_a={max_abs_a} max_abs_l={max_abs_l}")
         h["last_schedule"] = rec
         return seqs, rt
 
@@ -442,6 +460,12 @@ def _install_recorder(h, identity_layers):
 
 def _step_h(h, ratio, identity=False):
     llm = h["llm"]
+    sam = h.get("sampler")
+    if sam is not None and sam.breach is not None:
+        raise RuntimeError(f"resource guard breach: {sam.breach}")
+    peak = float(torch.cuda.max_memory_allocated() / 2**20)
+    if peak > h["cfg"]["controls"]["peak_allocated_limit_mib"]:
+        raise RuntimeError(f"resource guard breach: torch allocated {peak:.1f} MiB")
     out = llm.step()
     rec = h["last_schedule"]
     cnt = h["counters"]
@@ -456,33 +480,44 @@ def _step_h(h, ratio, identity=False):
         cnt["saving_rows"] += sum(1 for p in rec["pre"] if p["status"] == "SAVING")
     finished = out[0]
     mr = h["model_runner"]
-    if identity:
+    if identity and h.get("identity_enabled", False):
         for idx in rec["need_store"]:
-            sid = rec["seq_ids"][idx]
+            sid = int(rec["seq_ids"][idx])
+            _sid_rec(h, sid)["stores"] += 1
             for layer in h["identity_layers"]:
-                h["expected"][(int(layer), int(sid))] = mr.attn_output_past[layer, idx].clone()
+                h["expected"][(int(layer), sid)] = {
+                    "a": mr.attn_output_past[layer, idx].clone(),
+                    "l": mr.logsumexp[layer, idx].clone(),
+                }
     if ratio > 0 and finished:
         from jetengine_ext.engine.llm_engine import move_to_end_torch
         idxs = [int(x[3]) for x in finished]
         perm = move_to_end_torch(h["batch"], idxs).to(mr.attn_output_past.device)
         mr.attn_output_past.copy_(mr.attn_output_past.index_select(1, perm))
         mr.logsumexp.copy_(mr.logsumexp.index_select(1, perm))
-        if identity:
-            h["identity_stats"]["reorders"] += 1
+        if identity and h.get("identity_enabled", False):
+            st = h["identity_stats"]
+            st["reorders"] += 1
             survivors = list(llm.scheduler.running)
             for j, seq in enumerate(survivors):
+                sid = int(seq.seq_id)
+                _sid_rec(h, sid)["reorder_checks"] += 1
                 for layer in h["identity_layers"]:
-                    key = (int(layer), int(seq.seq_id))
+                    key = (int(layer), sid)
                     if key not in h["expected"]:
-                        raise RuntimeError(f"reorder identity missing expected seq={seq.seq_id}")
-                    max_abs = float((mr.attn_output_past[layer, j] - h["expected"][key]).abs().max().item())
-                    h["identity_stats"]["reorder_checks"] += 1
-                    if max_abs != 0.0:
+                        raise RuntimeError(f"reorder identity missing expected seq={sid}")
+                    a = float((mr.attn_output_past[layer, j] - h["expected"][key]["a"]).abs().max().item())
+                    l = float((mr.logsumexp[layer, j] - h["expected"][key]["l"]).abs().max().item())
+                    st["reorder_checks"] += 1
+                    st["max_reorder_abs_a"] = max(st["max_reorder_abs_a"], a)
+                    st["max_reorder_abs_l"] = max(st["max_reorder_abs_l"], l)
+                    if a != 0.0 or l != 0.0:
                         raise RuntimeError(
-                            f"reorder identity failure seq={seq.seq_id} layer={layer} "
-                            f"max_abs={max_abs}")
+                            f"reorder identity failure seq={sid} layer={layer} "
+                            f"max_abs_a={a} max_abs_l={l}")
     for item in finished:
         h["finished"][int(item[0])] = [int(x) for x in item[1]]
+        h["finished_order"].append(int(item[0]))
     return out
 
 
@@ -500,11 +535,19 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
     from jetengine_ext.sampling_params import SamplingParams
     llm = h["llm"]
     c = h["cfg"]["controls"]
+    t_wall = time.perf_counter()
+    h["identity_enabled"] = bool(identity)
     _reset_engine(h)
     h["finished"] = {}
+    h["finished_order"] = []
     h["counters"] = Counter()
-    h["identity_stats"] = {"checks": 0, "max_abs": 0.0, "max_rel_l2": 0.0,
-                           "reorders": 0, "reorder_checks": 0}
+    h["per_seq_identity"] = {}
+    h["inserted_seq_ids"] = []
+    h["identity_stats"] = {"checks": 0, "checks_a": 0, "checks_l": 0,
+                           "max_abs_a": 0.0, "max_abs_l": 0.0,
+                           "max_rel_l2_a": 0.0, "max_rel_l2_l": 0.0,
+                           "reorders": 0, "reorder_checks": 0,
+                           "max_reorder_abs_a": 0.0, "max_reorder_abs_l": 0.0}
     seedinfo = _seed_all(c["seed"])
     sps = [SamplingParams(
         temperature=c["temperature"], max_tokens=int(mt), ignore_eos=bool(c["ignore_eos"]),
@@ -513,17 +556,21 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         remasking_strategy=c["remasking_strategy"]) for mt in max_tokens_list]
     T.cuda.synchronize()
     T.cuda.reset_peak_memory_stats()
-    mem_start = NvmlSampler("GPU-REDACTED", interval=99)
-    mem_start._init_nvml()
-    load_start = mem_start.query()
+    load_probe = NvmlSampler(c["gpu_uuid"], interval=99)
+    load_probe._init_nvml()
+    load_start = load_probe.query()
     seqs = []
+    initial_seq_ids = []
     pending = 0
     t0 = time.perf_counter()
     max_active = int(h["batch"])
-    while pending < min(max_active, len(prompts)):
+    initial_batch = min(max_active, len(prompts))
+    while pending < initial_batch:
         seq = _make_seq(h, prompts[pending], sps[pending], ratio)
         llm.scheduler.add(seq)
         seqs.append(seq)
+        initial_seq_ids.append(int(seq.seq_id))
+        _sid_rec(h, seq.seq_id)
         pending += 1
         guard = 0
         while seq.status.name == "WAITING":
@@ -546,6 +593,8 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
             seq = _make_seq(h, prompts[pending], sps[pending], ratio)
             llm.scheduler.add(seq)
             seqs.append(seq)
+            h["inserted_seq_ids"].append(int(seq.seq_id))
+            _sid_rec(h, seq.seq_id)
             pending += 1
             guard = 0
             while seq.status.name == "WAITING":
@@ -578,10 +627,15 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
                           "distinct_kernels": len(rows),
                           "classification_note": "attention keys contain one of "
                           + ",".join(pats) + "; approximate kernel-name classification"}
-    mem_end = mem_start.query()
+    load_end = load_probe.query()
     peak_alloc = float(T.cuda.max_memory_allocated() / 2**20)
     peak_res = float(T.cuda.max_memory_reserved() / 2**20)
-    # validate
+    if h.get("sampler") is not None and h["sampler"].breach is not None:
+        raise RuntimeError(f"resource guard breach at boundary: {h['sampler'].breach}")
+    if peak_alloc > c["peak_allocated_limit_mib"]:
+        raise RuntimeError(f"resource guard breach at boundary: allocated {peak_alloc}")
+    if load_end["mem_free_mib"] < c["min_free_mib"]:
+        raise RuntimeError(f"resource guard breach at boundary: physical free {load_end}")
     counts, hashes, problems = [], [], []
     all_out_ids = []
     for seq in seqs:
@@ -599,13 +653,23 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         if llm.config.mask_token_id in toks:
             problems.append(f"seq {seq.seq_id} mask id in output")
         hashes.append(_ids_hash(toks))
-    if identity and h["identity_stats"]["checks"] == 0:
-        problems.append("identity preflight made no reuse checks")
+    for seq in seqs:
+        _sid_rec(h, seq.seq_id)
+    newseq_ok = [sid for sid in h["inserted_seq_ids"]
+                 if h["per_seq_identity"][sid]["stores"] > 0
+                 and h["per_seq_identity"][sid]["reuses"] > 0]
+    survivors_ok = [sid for sid, v in h["per_seq_identity"].items()
+                    if v["reorder_checks"] > 0]
+    if identity and h["identity_stats"]["checks_a"] == 0:
+        problems.append("identity preflight made no A reuse checks")
+    if identity and h["identity_stats"]["checks_l"] == 0:
+        problems.append("identity preflight made no L reuse checks")
     if identity and h["identity_stats"]["reorders"] == 0:
         problems.append("identity preflight made no completion reorder")
     return {
         "prefill_seconds": prefill_seconds, "decode_seconds": decode_seconds,
         "e2e_seconds": (prefill_seconds + decode_seconds) if timeit else None,
+        "wall_seconds": round(time.perf_counter() - t_wall, 3),
         "output_token_counts": counts, "total_output_tokens": int(sum(counts)),
         "output_sha256_by_seq": hashes,
         "output_concat_sha256": _sha256_bytes(":".join(hashes).encode()),
@@ -618,9 +682,15 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         "per_seq_global_denoise_steps": [int(s.global_denoising_step) for s in seqs],
         "per_seq_completion_tokens": [int(s.num_completion_tokens) for s in seqs],
         "identity": h["identity_stats"] if identity else None,
+        "initial_seq_ids": initial_seq_ids,
+        "inserted_seq_ids": h["inserted_seq_ids"],
+        "finished_order": h["finished_order"],
+        "per_seq_identity": h["per_seq_identity"],
+        "newseq_reuse_after_store": newseq_ok,
+        "survivors_with_reorder": survivors_ok,
         "peak_allocated_mib": round(peak_alloc, 1),
         "peak_reserved_mib": round(peak_res, 1),
-        "load_start": load_start, "load_end": mem_end,
+        "load_start": load_start, "load_end": load_end,
         "profile": ({"kernels": profile_rows, "totals": profile_totals} if profile else None),
     }
 
@@ -706,7 +776,8 @@ def cmd_preflight(args):
     try:
         sampler.start()
         h = {"cfg": cfg, "batch": pf["batch"], "llm": _make_engine(cfg, pf["batch"]),
-             "identity_layers": pf["identity_layers"], "expected": {}}
+             "identity_layers": pf["identity_layers"], "expected": {},
+             "sampler": sampler}
         h["model_runner"] = h["llm"].model_runner
         _install_recorder(h, pf["identity_layers"])
         kv = int(h["llm"].config.num_kvcache_blocks)
@@ -724,8 +795,24 @@ def cmd_preflight(args):
         prompts = [tok.encode(r["question"] + "\n" + r["answer"])[:512] for r in rows]
         _reset_engine(h)
         h["batch"] = pf["max_active"]  # scheduler capacity is 4
-        run = _run_once(h, prompts, pf["max_tokens"], cfg["controls"]["sparsity_ratio_s2"],
-                        identity=True, timeit=False)
+        audit = {"calls": 0, "nonfinite_calls": 0, "sync_per_call": True}
+        orig_run_model = h["model_runner"].run_model
+
+        def audited_run_model(*a, **k):
+            logits = orig_run_model(*a, **k)
+            audit["calls"] += 1
+            if not bool(torch.isfinite(logits).all().item()):
+                audit["nonfinite_calls"] += 1
+                raise RuntimeError(f"non-finite logits at audited call {audit['calls']}")
+            return logits
+
+        h["model_runner"].run_model = audited_run_model
+        try:
+            run = _run_once(h, prompts, pf["max_tokens"],
+                            cfg["controls"]["sparsity_ratio_s2"], identity=True, timeit=False)
+        finally:
+            h["model_runner"].run_model = orig_run_model
+        res["logits_audit"] = audit
         res["partial_completion"] = run
         if run["problems"]:
             raise RuntimeError(f"partial-completion problems: {run['problems'][:5]}")
@@ -733,19 +820,28 @@ def cmd_preflight(args):
             raise RuntimeError("partial-completion token count mismatch")
         expected_stores = sum(1 for x in run["per_seq_completion_tokens"] if x > 0)
         res["identity_requirements"] = {
-            "reuse_checks_gt_0": run["identity"]["checks"] > 0,
+            "A_reuse_checks_gt_0": run["identity"]["checks_a"] > 0,
+            "L_reuse_checks_gt_0": run["identity"]["checks_l"] > 0,
             "reorder_checks_gt_0": run["identity"]["reorder_checks"] > 0,
-            "new_request_inserted": sum(run["output_token_counts"]) == sum(pf["max_tokens"]),
+            "new_request_inserted": len(run["inserted_seq_ids"]) > 0,
+            "new_request_reuse_after_store": len(run["newseq_reuse_after_store"]) > 0,
             "all_outputs_exact": run["output_token_counts"] == pf["max_tokens"],
-            "zero_identity_mismatch": run["identity"]["max_abs"] == 0.0,
-            "zero_reorder_mismatch": True,
+            "zero_A_identity_mismatch": run["identity"]["max_abs_a"] == 0.0,
+            "zero_L_identity_mismatch": run["identity"]["max_abs_l"] == 0.0,
+            "zero_reorder_A_mismatch": run["identity"]["max_reorder_abs_a"] == 0.0,
+            "zero_reorder_L_mismatch": run["identity"]["max_reorder_abs_l"] == 0.0,
         }
+        if not all([res["identity_requirements"]["A_reuse_checks_gt_0"],
+                    res["identity_requirements"]["L_reuse_checks_gt_0"],
+                    res["identity_requirements"]["new_request_reuse_after_store"],
+                    res["identity_requirements"]["zero_A_identity_mismatch"],
+                    res["identity_requirements"]["zero_L_identity_mismatch"]]):
+            raise RuntimeError(f"identity requirements failed: {res['identity_requirements']}")
         # ---- tiny fixed-work timing sanity, dense then s2 ----
         tiny = {"batch": pf["tiny_batch"], "length": pf["tiny_length"],
                 "max_tokens": pf["tiny_max_tokens"], "runs": []}
-        for cond in cfg["conditions"][:1] + cfg["conditions"][1:]:
+        for cond in cfg["conditions"]:
             ratio = float(cond["ratio"])
-            tcfg = dict(h); tcfg["cfg"] = cfg
             # same engine, just reset; batch size matches 4
             rr = _run_once(h, tokens[pf["tiny_length"]][:pf["tiny_batch"]],
                            [pf["tiny_max_tokens"]] * pf["tiny_batch"], ratio,
@@ -762,7 +858,9 @@ def cmd_preflight(args):
                 raise RuntimeError("nonpositive tiny timing")
         res["tiny_timing"] = tiny
         res["finite_parameters"] = {"checked": False,
-                                    "note": "weights accepted by parent mechanism stage; finite logits audited per output id"}
+                                    "note": "weights accepted by parent mechanism stage; every "
+                                            "run_model logit tensor was checked with torch.isfinite "
+                                            "in this untimed preflight (per-call sync disclosed)"}
         res["status"] = "SUCCEEDED"
     except Exception as e:
         import traceback
@@ -777,8 +875,9 @@ def cmd_preflight(args):
             res["engine_exit_error"] = repr(e)
         res["resources"] = sampler.summary()
         res["wall_seconds"] = round(time.perf_counter() - t_wall, 3)
-        res["ended_at_utc"] = _now()
+        res["gpu_command_wall_seconds"] = res["wall_seconds"]
         res["headroom"] = {"compute_apps_after": _compute_apps(cfg["controls"]["gpu_uuid"])}
+        res["ended_at_utc"] = _now()
         _atomic_json(out, res)
         if res["status"] == "SUCCEEDED":
             compact = {k: v for k, v in res.items() if k not in ("partial_completion",)}
@@ -795,6 +894,30 @@ def cmd_preflight(args):
 # ---------------------------------------------------------------------------
 # matrix
 # ---------------------------------------------------------------------------
+def _prior_gpu_wall(include_current_matrix=False):
+    total = 0.0
+    details = {}
+    for p in sorted(RUN_DIR.glob("preflight*.json")):
+        try:
+            d = _load(p)
+            w = float(d.get("gpu_command_wall_seconds") or d.get("wall_seconds") or 0.0)
+            details[p.name] = w
+            total += w
+        except Exception:
+            pass
+    for name in ("matrix.json", "profile.json"):
+        p = RUN_DIR / name
+        if p.exists() and (include_current_matrix or name != "matrix.json"):
+            try:
+                d = _load(p)
+                w = float(d.get("gpu_command_wall_seconds") or 0.0)
+                details[name] = w
+                total += w
+            except Exception:
+                pass
+    return total, details
+
+
 def cmd_matrix(args):
     cfg = load_config(args.config)
     _configure_env(cfg)
@@ -806,10 +929,11 @@ def cmd_matrix(args):
     man, tokens = _load_manifest(cfg)
     RUN_DIR.mkdir(parents=True, exist_ok=True)
     t_start = time.perf_counter()
+    prior_wall, prior_detail = _prior_gpu_wall()
     rows_path = RUN_DIR / "timed-rows.json"
     all_rows = []
     failures = []
-    engines = {}
+    current_h = None
     sampler = NvmlSampler(cfg["controls"]["gpu_uuid"],
                           min_free_mib=cfg["controls"]["min_free_mib"],
                           max_alloc_mib=cfg["controls"]["peak_allocated_limit_mib"])
@@ -817,18 +941,20 @@ def cmd_matrix(args):
             "argv": [sys.executable] + sys.argv, "started_at_utc": _now(),
             "input_manifest_sha256": _sha256(EXP_DIR / "input-manifest.json"),
             "config_sha256": _sha256(CONFIG_PATH), "warmups": [], "rows": [],
-            "failures": [], "status": "FAILED"}
+            "failures": [], "status": "FAILED",
+            "prior_gpu_wall_seconds": round(prior_wall, 3),
+            "prior_gpu_wall_detail": prior_detail,
+            "gpu_command_wall_limit_seconds": cfg["budget"]["gpu_command_wall_limit_seconds"]}
     try:
         sampler.start()
         for batch in [1, 4]:
             settings = [s for s in cfg["settings"] if int(s["batch"]) == batch]
-            h = {"cfg": cfg, "batch": batch, "llm": _make_engine(cfg, batch),
-                 "identity_layers": [], "expected": {}}
-            h["model_runner"] = h["llm"].model_runner
-            _install_recorder(h, [])
-            engines[batch] = h
-            kv = int(h["llm"].config.num_kvcache_blocks)
-            cal = len(h["llm"].scheduler.cal_blocks)
+            current_h = {"cfg": cfg, "batch": batch, "llm": _make_engine(cfg, batch),
+                         "identity_layers": [], "expected": {}, "sampler": sampler}
+            current_h["model_runner"] = current_h["llm"].model_runner
+            _install_recorder(current_h, [])
+            kv = int(current_h["llm"].config.num_kvcache_blocks)
+            cal = len(current_h["llm"].scheduler.cal_blocks)
             need = batch * math.ceil(cfg["controls"]["max_model_len"] / 256)
             meta[f"kv_cache_B{batch}"] = {"blocks": kv, "cal_blocks": cal,
                                           "free_data_blocks": kv - cal,
@@ -840,26 +966,34 @@ def cmd_matrix(args):
                 prompts = tokens[L][:B]
                 # warmup both conditions at this exact shape (untimed)
                 for cond in cfg["conditions"]:
-                    rr = _run_once(h, prompts, [cfg["controls"]["max_new_tokens"]] * B,
+                    rr = _run_once(current_h, prompts,
+                                   [cfg["controls"]["max_new_tokens"]] * B,
                                    float(cond["ratio"]), identity=False, timeit=True)
-                    w = {"stage": "warmup", "setting": setting["name"], "condition": cond["name"],
+                    w = {"stage": "warmup", "setting": setting["name"],
+                         "condition": cond["name"],
                          "decode_seconds": rr["decode_seconds"],
                          "prefill_seconds": rr["prefill_seconds"],
+                         "wall_seconds": rr["wall_seconds"],
                          "total_output_tokens": rr["total_output_tokens"],
+                         "peak_allocated_mib": rr["peak_allocated_mib"],
                          "problems": rr["problems"], "execution_commit": commit,
                          "ended_at_utc": _now()}
                     meta["warmups"].append(w)
                     if rr["problems"]:
-                        raise RuntimeError(f"warmup {setting['name']} {cond['name']}: {rr['problems'][:3]}")
+                        raise RuntimeError(f"warmup {setting['name']} {cond['name']}: "
+                                           f"{rr['problems'][:3]}")
                 for ri, order in enumerate(cfg["pair_rounds"]):
                     for cname in order:
                         cond = next(c for c in cfg["conditions"] if c["name"] == cname)
                         elapsed = time.perf_counter() - t_start
-                        if elapsed > cfg["budget"]["gpu_command_wall_limit_seconds"]:
+                        cumulative = prior_wall + elapsed
+                        if cumulative > cfg["budget"]["gpu_command_wall_limit_seconds"]:
                             raise RuntimeError(
-                                f"GPU-command wall budget exhausted: {elapsed:.1f}s > "
+                                f"cumulative GPU-command wall budget exhausted: "
+                                f"{cumulative:.1f}s > "
                                 f"{cfg['budget']['gpu_command_wall_limit_seconds']}s")
-                        rr = _run_once(h, prompts, [cfg["controls"]["max_new_tokens"]] * B,
+                        rr = _run_once(current_h, prompts,
+                                       [cfg["controls"]["max_new_tokens"]] * B,
                                        float(cond["ratio"]), identity=False, timeit=True)
                         row = {"schema_version": 1, "run_id": RUN_ID,
                                "setting": setting["name"], "batch": B, "length": L,
@@ -871,6 +1005,7 @@ def cmd_matrix(args):
                                "prefill_seconds": rr["prefill_seconds"],
                                "decode_seconds": rr["decode_seconds"],
                                "e2e_seconds": rr["e2e_seconds"],
+                               "wall_seconds": rr["wall_seconds"],
                                "decode_tps": (rr["total_output_tokens"] / rr["decode_seconds"]
                                               if rr["decode_seconds"] else None),
                                "total_output_tokens": rr["total_output_tokens"],
@@ -908,6 +1043,17 @@ def cmd_matrix(args):
                     "status": "RUNNING", "execution_commit": commit,
                     "completed_rows": len(all_rows), "warmups": len(meta["warmups"]),
                     "gpu_wall_seconds": round(time.perf_counter() - t_start, 1)})
+            # release this engine completely before constructing the next batch engine
+            try:
+                current_h["llm"].exit()
+            finally:
+                current_h["model_runner"] = None
+                current_h["llm"] = None
+                current_h = None
+                import gc
+                gc.collect()
+                torch.cuda.empty_cache()
+                torch.cuda.synchronize()
         meta["status"] = "SUCCEEDED"
     except Exception as e:
         import traceback
@@ -916,13 +1062,15 @@ def cmd_matrix(args):
         meta["failures"] = failures
         meta["status"] = "FAILED"
     finally:
-        for b, h in engines.items():
+        if current_h is not None:
             try:
-                h["llm"].exit()
+                current_h["llm"].exit()
             except Exception as e:
-                failures.append({"engine_exit_B": b, "error": repr(e)})
+                failures.append({"engine_exit": "error", "error": repr(e)})
         meta["resources"] = sampler.summary()
         meta["gpu_command_wall_seconds"] = round(time.perf_counter() - t_start, 3)
+        meta["cumulative_gpu_wall_seconds"] = round(
+            prior_wall + meta["gpu_command_wall_seconds"], 3)
         meta["ended_at_utc"] = _now()
         meta["rows"] = all_rows
         _atomic_json(RUN_DIR / "matrix-progress.json", meta)
@@ -932,6 +1080,7 @@ def cmd_matrix(args):
         _atomic_json(RUN_DIR / "matrix.json", meta)
     print(json.dumps({"status": meta["status"], "rows": len(all_rows),
                       "gpu_wall_seconds": meta["gpu_command_wall_seconds"],
+                      "cumulative_gpu_wall_seconds": meta["cumulative_gpu_wall_seconds"],
                       "failures": failures[:1]}))
     return 0 if meta["status"] == "SUCCEEDED" else 1
 
@@ -949,9 +1098,13 @@ def cmd_profile(args):
     commit = _git_head()
     man, tokens = _load_manifest(cfg)
     out = Path(args.out).resolve()
+    t_wall = time.perf_counter()
+    prior_wall, prior_detail = _prior_gpu_wall()
     res = {"schema_version": 1, "run_id": RUN_ID, "status": "FAILED",
            "execution_commit": commit, "argv": [sys.executable] + sys.argv,
-           "started_at_utc": _now(), "runs": []}
+           "started_at_utc": _now(), "runs": [], "warmups": [],
+           "prior_gpu_wall_seconds": round(prior_wall, 3),
+           "prior_gpu_wall_detail": prior_detail}
     sampler = NvmlSampler(cfg["controls"]["gpu_uuid"],
                           min_free_mib=cfg["controls"]["min_free_mib"],
                           max_alloc_mib=cfg["controls"]["peak_allocated_limit_mib"])
@@ -959,19 +1112,32 @@ def cmd_profile(args):
     try:
         sampler.start()
         h = {"cfg": cfg, "batch": 4, "llm": _make_engine(cfg, 4),
-             "identity_layers": [], "expected": {}}
+             "identity_layers": [], "expected": {}, "sampler": sampler}
         h["model_runner"] = h["llm"].model_runner
         _install_recorder(h, [])
         prompts = tokens[8192][:4]
         for cond in cfg["conditions"]:
-            _run_once(h, prompts, [256] * 4, float(cond["ratio"]),
-                      identity=False, timeit=True, profile=False)
+            rr = _run_once(h, prompts, [256] * 4, float(cond["ratio"]),
+                           identity=False, timeit=True, profile=False)
+            res["warmups"].append({"condition": cond["name"],
+                                   "decode_seconds": rr["decode_seconds"],
+                                   "prefill_seconds": rr["prefill_seconds"],
+                                   "wall_seconds": rr["wall_seconds"],
+                                   "problems": rr["problems"]})
+            if rr["problems"]:
+                raise RuntimeError(f"profile warmup {cond['name']}: {rr['problems'][:3]}")
         for cond in cfg["conditions"]:
+            cumulative = prior_wall + (time.perf_counter() - t_wall)
+            if cumulative > cfg["budget"]["gpu_command_wall_limit_seconds"]:
+                raise RuntimeError(f"cumulative GPU-command wall budget exhausted before profile: "
+                                   f"{cumulative:.1f}s")
             rr = _run_once(h, prompts, [256] * 4, float(cond["ratio"]),
                            identity=False, timeit=True, profile=True)
             item = {"condition": cond["name"], "ratio": float(cond["ratio"]),
                     "decode_seconds": rr["decode_seconds"],
                     "prefill_seconds": rr["prefill_seconds"],
+                    "e2e_seconds": rr["e2e_seconds"],
+                    "wall_seconds": rr["wall_seconds"],
                     "total_output_tokens": rr["total_output_tokens"],
                     "counters": rr["counters"],
                     "per_seq_global_denoise_steps": rr["per_seq_global_denoise_steps"],
@@ -980,7 +1146,8 @@ def cmd_profile(args):
             res["runs"].append(item)
             if rr["problems"]:
                 raise RuntimeError(f"profile {cond['name']}: {rr['problems'][:3]}")
-            if len(rr["output_token_counts"]) != 4 or any(c != 256 for c in rr["output_token_counts"]):
+            if len(rr["output_token_counts"]) != 4 or any(
+                    c != 256 for c in rr["output_token_counts"]):
                 raise RuntimeError("profile output count")
         res["status"] = "SUCCEEDED"
     except Exception as e:
@@ -994,18 +1161,29 @@ def cmd_profile(args):
         except Exception as e:
             res["engine_exit_error"] = repr(e)
         res["resources"] = sampler.summary()
-        res["gpu_command_wall_seconds"] = None
+        res["gpu_command_wall_seconds"] = round(time.perf_counter() - t_wall, 3)
+        res["cumulative_gpu_wall_seconds"] = round(
+            prior_wall + res["gpu_command_wall_seconds"], 3)
         res["ended_at_utc"] = _now()
         _atomic_json(out, res)
         if res["status"] == "SUCCEEDED":
-            compact = {k: v for k, v in res.items() if k not in ("partial_completion",)}
-            compact["partial_completion"] = {
-                k: v for k, v in res["partial_completion"].items()
-                if k not in ("load_start", "load_end", "output_sha256_by_seq",
-                             "seed_before_run", "profile")
-            }
-            _atomic_json(EXP_DIR / "preflight.json", compact)
-    print(json.dumps({"status": res["status"], "out": str(out), "error": res.get("error")}))
+            small = {"schema_version": 1, "run_id": RUN_ID,
+                     "execution_commit": commit,
+                     "note": "separate B4L8192 profiles after warmup; latencies excluded "
+                             "from 60 primary rows",
+                     "runs": [{"condition": r["condition"],
+                               "decode_seconds": r["decode_seconds"],
+                               "prefill_seconds": r["prefill_seconds"],
+                               "wall_seconds": r["wall_seconds"],
+                               "total_output_tokens": r["total_output_tokens"],
+                               "counters": r["counters"],
+                               "per_seq_global_denoise_steps":
+                                   r["per_seq_global_denoise_steps"],
+                               "peak_allocated_mib": r["peak_allocated_mib"],
+                               "profile": r["profile"]} for r in res["runs"]]}
+            _atomic_json(EXP_DIR / "separate-profile.json", small)
+    print(json.dumps({"status": res["status"], "out": str(out),
+                      "error": res.get("error")}))
     return 0 if res["status"] == "SUCCEEDED" else 1
 
 
@@ -1148,18 +1326,20 @@ def _load(path):
 def cmd_ledger(args):
     cfg = load_config(args.config)
     prior = float(cfg["budget"]["campaign_before_gpu_hours"])
+    total_wall, details = _prior_gpu_wall(include_current_matrix=True)
     files = {}
-    total_wall = 0.0
-    for name, fname in (("preflight", "preflight.json"), ("matrix", "matrix.json"),
-                        ("profile", "profile.json")):
-        p = RUN_DIR / fname
-        if p.exists():
+    for name, w in details.items():
+        files[name] = {"wall_seconds": round(w, 3)}
+    for p in sorted(RUN_DIR.glob("*.json")):
+        if p.name not in ("preflight.json", "matrix.json", "profile.json"):
+            continue
+        try:
             d = _load(p)
-            w = float(d.get("gpu_command_wall_seconds") or d.get("wall_seconds") or 0.0)
-            files[name] = {"path": str(p.relative_to(ROOT)), "wall_seconds": w,
-                           "status": d.get("status"),
-                           "execution_commit": d.get("execution_commit")}
-            total_wall += w
+            files[p.name]["status"] = d.get("status")
+            files[p.name]["execution_commit"] = d.get("execution_commit")
+            files[p.name]["path"] = str(p.relative_to(ROOT))
+        except Exception:
+            pass
     gpu_hours = total_wall / 3600.0
     ledger = {"schema_version": 1, "run_id": RUN_ID,
               "commands": files,
@@ -1169,21 +1349,26 @@ def cmd_ledger(args):
               "campaign_after_upper_gpu_hours": round(prior + gpu_hours, 6),
               "campaign_limit_gpu_hours": cfg["budget"]["campaign_limit_gpu_hours"],
               "stage_limit_gpu_hours": cfg["budget"]["stage_gpu_hours"],
-              "note": "conservative GPU-command wall including failures; wrapper wall recorded separately"}
-    for f in ("preflight", "matrix", "profile"):
-        p = RUN_DIR / f"{f}.json"
+              "note": "conservative sum of measured GPU-command walls including every "
+                      "retained preflight attempt, matrix warmups/timed runs and profiles; "
+                      "failed/aborted commands are charged too"}
+    for fname in ("preflight.json", "matrix.json", "profile.json"):
+        p = RUN_DIR / fname
         if p.exists():
             d = _load(p)
             r = d.get("resources", {})
-            ledger[f] = {"gpu_command_wall_seconds": files[f]["wall_seconds"],
-                         "physical_free_min_mib": r.get("mem_free_min_mib"),
-                         "physical_used_max_mib": r.get("mem_used_max_mib"),
-                         "util_gpu_mean_pct": r.get("util_gpu_mean_pct"),
-                         "util_gpu_max_pct": r.get("util_gpu_max_pct"),
-                         "samples": r.get("samples"), "breach": r.get("breach")}
+            ledger[fname] = {"gpu_command_wall_seconds": files[fname]["wall_seconds"],
+                             "cumulative_gpu_wall_seconds": d.get("cumulative_gpu_wall_seconds"),
+                             "physical_free_min_mib": r.get("mem_free_min_mib"),
+                             "physical_used_max_mib": r.get("mem_used_max_mib"),
+                             "util_gpu_mean_pct": r.get("util_gpu_mean_pct"),
+                             "util_gpu_max_pct": r.get("util_gpu_max_pct"),
+                             "samples": r.get("samples"), "breach": r.get("breach")}
+    ledger["stage_cumulative_gpu_hours_including_this"] = round(gpu_hours, 6)
     _atomic_json(EXP_DIR / "resource-ledger.json", ledger)
     print(json.dumps({"status": "SUCCEEDED", "wall_seconds": total_wall,
-                      "gpu_hours": gpu_hours, "campaign_after": prior + gpu_hours}))
+                      "gpu_hours": gpu_hours, "campaign_after": prior + gpu_hours,
+                      "files": list(details)}))
     return 0
 
 
