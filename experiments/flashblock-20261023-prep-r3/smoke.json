@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r3",
+  "seed": 42,
+  "status": "SUCCEEDED",
+  "scope": "two real GSM8K train prompts 100,101; max 64 new tokens; smoke only, no answer-accuracy claim",
+  "baseline": {
+    "arm": "dense",
+    "cold_start": {
+      "status": "SUCCEEDED",
+      "validation": {
+        "valid_outputs": true,
+        "logits_finite": true,
+        "parameters_finite": true,
+        "memory_within_budget": true,
+        "reuse_observed": true
+      },
+      "seed": 42,
+      "generated_tokens_total": 128,
+      "generation_seconds": 84.646,
+      "tokens_per_second": 1.512,
+      "wall_seconds": 105.278,
+      "peak_allocated_mb": 11075.4,
+      "peak_reserved_mb": 11110.0,
+      "min_free_mb_sampled": 8561.1,
+      "kv_cache": {
+        "blocks": 65,
+        "block_size": 256,
+        "capacity_tokens": 16640,
+        "gpu_memory_utilization": 0.65
+      },
+      "engine_exit": "ok",
+      "logits_audit": {
+        "calls": 57,
+        "nonfinite_calls": 0,
+        "max_numel": 1215488
+      },
+      "finite_parameters": {
+        "tensors": 291,
+        "elements": 4411424256,
+        "nonfinite_elements": 0,
+        "nonfinite_tensors": []
+      },
+      "template_audit": [
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "d4eae6cb5815feba83ee80f0c0c5731a12533b6334cbd7eb1b7ef8a197fcd831"
+        },
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "264b3a5060b50571fd1f73c067e8f3b30bc736433629864123dfc642c8c3d6ff"
+        }
+      ],
+      "outputs": [
+        {
+          "index": 100,
+          "prompt_tokens": 75,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 301,
+          "text_sha256": "c23ca2c84fcecf3e5cfd56db53f7a970a27b2acf822f1e1369b134e2a359e013",
+          "token_ids_sha256": "adc48af6fa315b5634c76b7245c8a133edf0a67bc4f41cfe49b174746a6463ae"
+        },
+        {
+          "index": 101,
+          "prompt_tokens": 128,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 233,
+          "text_sha256": "bd303e975f402a36d59cc353ce263ac6dfede09a68d001026c280e4714dcc78c",
+          "token_ids_sha256": "5893b036b536442506d529c8f46de927a8f63c3ef1defa791d23fe382221e61d"
+        }
+      ],
+      "reuse_counts": {
+        "steps": 0,
+        "need_update": 0,
+        "no_update": 0,
+        "no_update_blocks": [],
+        "no_update_seqs": [],
+        "need_update_blocks": [],
+        "dirty_hist_len": 0,
+        "dirty_hist_min": null,
+        "dirty_hist_max": null
+      }
+    },
+    "warm": {
+      "status": "SUCCEEDED",
+      "validation": {
+        "valid_outputs": true,
+        "logits_finite": true,
+        "parameters_finite": true,
+        "memory_within_budget": true,
+        "reuse_observed": true
+      },
+      "seed": 42,
+      "generated_tokens_total": 128,
+      "generation_seconds": 5.195,
+      "tokens_per_second": 24.64,
+      "wall_seconds": 13.075,
+      "peak_allocated_mb": 11070.8,
+      "peak_reserved_mb": 11110.0,
+      "min_free_mb_sampled": 8561.1,
+      "kv_cache": {
+        "blocks": 65,
+        "block_size": 256,
+        "capacity_tokens": 16640,
+        "gpu_memory_utilization": 0.65
+      },
+      "engine_exit": "ok",
+      "logits_audit": {
+        "calls": 57,
+        "nonfinite_calls": 0,
+        "max_numel": 1215488
+      },
+      "finite_parameters": {
+        "tensors": 291,
+        "elements": 4411424256,
+        "nonfinite_elements": 0,
+        "nonfinite_tensors": []
+      },
+      "template_audit": [
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "d4eae6cb5815feba83ee80f0c0c5731a12533b6334cbd7eb1b7ef8a197fcd831"
+        },
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "264b3a5060b50571fd1f73c067e8f3b30bc736433629864123dfc642c8c3d6ff"
+        }
+      ],
+      "outputs": [
+        {
+          "index": 100,
+          "prompt_tokens": 75,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 301,
+          "text_sha256": "c23ca2c84fcecf3e5cfd56db53f7a970a27b2acf822f1e1369b134e2a359e013",
+          "token_ids_sha256": "adc48af6fa315b5634c76b7245c8a133edf0a67bc4f41cfe49b174746a6463ae"
+        },
+        {
+          "index": 101,
+          "prompt_tokens": 128,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 233,
+          "text_sha256": "bd303e975f402a36d59cc353ce263ac6dfede09a68d001026c280e4714dcc78c",
+          "token_ids_sha256": "5893b036b536442506d529c8f46de927a8f63c3ef1defa791d23fe382221e61d"
+        }
+      ],
+      "reuse_counts": {
+        "steps": 0,
+        "need_update": 0,
+        "no_update": 0,
+        "no_update_blocks": [],
+        "no_update_seqs": [],
+        "need_update_blocks": [],
+        "dirty_hist_len": 0,
+        "dirty_hist_min": null,
+        "dirty_hist_max": null
+      }
+    }
+  },
+  "s2": {
+    "arm": "official FlashBlock s2 tau2",
+    "run": {
+      "status": "SUCCEEDED",
+      "validation": {
+        "valid_outputs": true,
+        "logits_finite": true,
+        "parameters_finite": true,
+        "memory_within_budget": true,
+        "reuse_observed": true
+      },
+      "seed": 42,
+      "generated_tokens_total": 128,
+      "generation_seconds": 5.781,
+      "tokens_per_second": 22.14,
+      "wall_seconds": 13.311,
+      "peak_allocated_mb": 11070.8,
+      "peak_reserved_mb": 11110.0,
+      "min_free_mb_sampled": 8559.1,
+      "kv_cache": {
+        "blocks": 65,
+        "block_size": 256,
+        "capacity_tokens": 16640,
+        "gpu_memory_utilization": 0.65
+      },
+      "engine_exit": "ok",
+      "logits_audit": {
+        "calls": 56,
+        "nonfinite_calls": 0,
+        "max_numel": 1215488
+      },
+      "finite_parameters": {
+        "tensors": 291,
+        "elements": 4411424256,
+        "nonfinite_elements": 0,
+        "nonfinite_tensors": []
+      },
+      "template_audit": [
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "d4eae6cb5815feba83ee80f0c0c5731a12533b6334cbd7eb1b7ef8a197fcd831"
+        },
+        {
+          "matches_tokenizer_template": true,
+          "prompt_sha256": "264b3a5060b50571fd1f73c067e8f3b30bc736433629864123dfc642c8c3d6ff"
+        }
+      ],
+      "outputs": [
+        {
+          "index": 100,
+          "prompt_tokens": 75,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 303,
+          "text_sha256": "d7c479f4a0960f2006f054304abd12151ae5159b232192fabebf77da5d1c8d39",
+          "token_ids_sha256": "fed3c9ec5e0c121031e5c27b472d087e9f5a449849132a98373a627d3e4415a4"
+        },
+        {
+          "index": 101,
+          "prompt_tokens": 128,
+          "new_tokens": 64,
+          "ids_in_vocab": true,
+          "text_nonempty": true,
+          "contains_mask_token": false,
+          "text_chars": 210,
+          "text_sha256": "ddea6d2d1826e63b9818b9980bfeb5050176358ff3f4ce131e65a5cc1dc0542b",
+          "token_ids_sha256": "61c51dc9b7a95e2861d6d51a367c2f7b2f1ef5fa02390d4b64023c8e5def2631"
+        }
+      ],
+      "reuse_counts": {
+        "steps": 106,
+        "need_update": 84,
+        "no_update": 22,
+        "no_update_blocks": [
+          19,
+          20,
+          22,
+          24,
+          27,
+          31,
+          32,
+          33,
+          36,
+          39,
+          42,
+          45
+        ],
+        "no_update_seqs": [
+          2,
+          3
+        ],
+        "need_update_blocks": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47
+        ],
+        "dirty_hist_len": 106,
+        "dirty_hist_min": 0,
+        "dirty_hist_max": 4
+      }
+    }
+  },
+  "determinism": {
+    "baseline_token_ids_cold_equals_warm": true,
+    "baseline_text_cold_equals_warm": true,
+    "s2_text_equals_baseline": false
+  },
+  "timing_note": "cold baseline includes one-time Triton/CUDA compilation; warm baseline is the comparable 5.2 s run. s2 5.78 s is slower than warm dense in this block4 smoke, so no speed claim.",
+  "raw_evidence": {
+    "baseline_cold": {
+      "file": "smoke-baseline-cold.raw.json",
+      "sha256": "61a460f068e6d9fbbeb4a823dbbe01918d1e88e02d24616e2183889ec521dfe7"
+    },
+    "baseline_warm": {
+      "file": "smoke-baseline.raw.json",
+      "sha256": "0d6b9aaaa9f03fd60c50d5a16e1ba06d43979991db284f16c6d4a0b164c72e62"
+    },
+    "s2": {
+      "file": "smoke-s2.raw.json",
+      "sha256": "a320732ad9d0c21f69d4ae5f70eb367359210b33e3bc48405db3d835ff8f1aa6"
+    },
+    "s2_reuse_trace": {
+      "file": "smoke-s2.raw.reuse.jsonl",
+      "sha256": "8ef5cbba39adce1c844bce3c9f3ca8dc1767007f5cfa9a98d60df68e4989a432"
+    }
+  }
+}

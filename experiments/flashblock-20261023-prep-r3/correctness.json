@@ -1,0 +1,369 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r3",
+  "seed": 42,
+  "seed_state": {
+    "seed": 42,
+    "python_random_first": 2147483648,
+    "numpy_first": 42,
+    "torch_initial_seed": 42,
+    "torch_cuda_initial_seed": 42
+  },
+  "tolerances": {
+    "fp32_reference_rel_l2": 1e-05,
+    "bf16_rel_l2": 0.01,
+    "bf16_max_abs": 0.05
+  },
+  "kernel_provenance": {
+    "flash_attn_2_cuda_path": "/data/research/flashblock-reproduction/flash-attention/flash_attn_2_cuda.cpython-310-x86_64-linux-gnu.so",
+    "under_vendored_tree": true,
+    "sha256": "f82cca5e9ac5ebea3e8d15933190b736b7e9fe68bf94ffc90d1fa03b8c4b6a12",
+    "bytes": 12190192,
+    "torch_version": "2.4.1+cu121",
+    "torch_cuda": "12.1",
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_capability": [
+      8,
+      6
+    ],
+    "gpu_uuid_env": "GPU-REDACTED",
+    "history_symbols": [
+      "_ZN5flash36all_update_store_history_fp32_kernelI13__nv_bfloat16EEvPfPKfS4_S4_PKbPT_S2_S2_iiii",
+      "_ZN5flash36all_update_store_history_fp32_kernelI6__halfEEvPfPKfS4_S4_PKbPT_S2_S2_iiii",
+      "_ZN5flash36all_update_store_history_fp32_kernelIfEEvPfPKfS3_S3_PKbPT_S1_S1_iiii",
+      "_ZN5flash43launch_all_update_store_history_fp32_kernelI13__nv_bfloat16EEvPfPKfS4_S4_PKbPT_S2_S2_iiii",
+      "_ZN5flash43launch_all_update_store_history_fp32_kernelI6__halfEEvPfPKfS4_S4_PKbPT_S2_S2_iiii",
+      "_ZN5flash43launch_all_update_store_history_fp32_kernelIfEEvPfPKfS3_S3_PKbPT_S1_S1_iiii"
+    ],
+    "update_symbols": [
+      "_ZN5flash11update_attnERKN2at6TensorES3_S3_RS1_S3_S3_",
+      "_ZN5flash17update_attn_fusedEN2at6TensorES1_S1_S1_S1_S1_S1_S1_S1_",
+      "_ZN5flash24update_attn_fused_kernelI13__nv_bfloat16EEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash24update_attn_fused_kernelI6__halfEEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash24update_attn_fused_kernelIfEEvPKfS2_PKT_S2_S5_S5_PKbS7_S7_PS3_S8_Pfiiii",
+      "_ZN5flash24update_attn_fused_varlenEN2at6TensorES1_S1_S1_S1_S1_St8optionalIS1_E",
+      "_ZN5flash31launch_update_attn_fused_kernelI13__nv_bfloat16EEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash31launch_update_attn_fused_kernelI6__halfEEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash31launch_update_attn_fused_kernelIfEEvPKfS2_PKT_S2_S5_S5_PKbS7_S7_PS3_S8_Pfiiii",
+      "_ZN5flash31update_attn_fused_varlen_kernelI13__nv_bfloat16EEvPKfS3_PKT_S3_S6_S6_PKbPS4_S9_Pfiii",
+      "_ZN5flash31update_attn_fused_varlen_kernelI6__halfEEvPKfS3_PKT_S3_S6_S6_PKbPS4_S9_Pfiii",
+      "_ZN5flash31update_attn_fused_varlen_kernelIfEEvPKfS2_PKT_S2_S5_S5_PKbPS3_S8_Pfiii",
+      "_ZN5flash33update_attn_fused_cur_hist_kernelI13__nv_bfloat16EEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash33update_attn_fused_cur_hist_kernelI6__halfEEvPKfS3_PKT_S3_S6_S6_PKbS8_S8_PS4_S9_Pfiiii",
+      "_ZN5flash33update_attn_fused_cur_hist_kernelIfEEvPKfS2_PKT_S2_S5_S5_PKbS7_S7_PS3_S8_Pfiiii",
+      "_ZN5flash35update_attn_fused_kernel_fp32_cacheI13__nv_bfloat16EEvPKfS3_S3_S3_S3_PKT_PKbS8_S8_PS4_PfSA_iiii",
+      "_ZN5flash35update_attn_fused_kernel_fp32_cacheI6__halfEEvPKfS3_S3_S3_S3_PKT_PKbS8_S8_PS4_PfSA_iiii",
+      "_ZN5flash35update_attn_fused_kernel_fp32_cacheIfEEvPKfS2_S2_S2_S2_PKT_PKbS7_S7_PS3_PfS9_iiii",
+      "_ZN5flash38launch_update_attn_fused_varlen_kernelI13__nv_bfloat16EEvPKfS3_PKT_S3_S6_S6_PKbPS4_S9_Pfiii",
+      "_ZN5flash38launch_update_attn_fused_varlen_kernelI6__halfEEvPKfS3_PKT_S3_S6_S6_PKbPS4_S9_Pfiii"
+    ]
+  },
+  "environment": {
+    "torch": "2.4.1+cu121",
+    "triton": "3.0.0",
+    "numpy": "1.26.4"
+  },
+  "all_passed": true,
+  "cases": [
+    {
+      "tolerance": {
+        "rel_l2": 1e-05
+      },
+      "cases": {
+        "B2_Q7_S33_Hq8_Hkv2_D64": {
+          "rel_l2": 5.984746164707742e-07,
+          "max_abs": 1.0728836059570312e-06
+        },
+        "B1_Q4_S1_Hq4_Hkv4_D128": {
+          "rel_l2": 8.193307731084529e-08,
+          "max_abs": 4.76837158203125e-07
+        },
+        "B3_Q5_S65_Hq6_Hkv3_D40": {
+          "rel_l2": 5.985970374930869e-07,
+          "max_abs": 8.344650268554688e-07
+        }
+      },
+      "case": "fp32_reference_selfcheck",
+      "seconds": 0.2038,
+      "passed": true
+    },
+    {
+      "tolerance": {
+        "rel_l2": 0.01,
+        "max_abs": 0.05
+      },
+      "cases": {
+        "B1_Q1_S1_Hq8_Hkv8_D128": {
+          "rel_l2_vs_fp32ref": 0.0,
+          "max_abs_vs_fp32ref": 0.0,
+          "rel_l2_vs_sdpa": 0.0,
+          "max_abs_vs_sdpa": 0.0
+        },
+        "B2_Q4_S17_Hq8_Hkv2_D128": {
+          "rel_l2_vs_fp32ref": 0.001986989461170163,
+          "max_abs_vs_fp32ref": 0.006861448287963867,
+          "rel_l2_vs_sdpa": 0.001986994328074324,
+          "max_abs_vs_sdpa": 0.006861686706542969
+        },
+        "B2_Q8_S65_Hq8_Hkv8_D128": {
+          "rel_l2_vs_fp32ref": 0.002112584782865141,
+          "max_abs_vs_fp32ref": 0.002727508544921875,
+          "rel_l2_vs_sdpa": 0.002112585571144405,
+          "max_abs_vs_sdpa": 0.0027288198471069336
+        },
+        "B1_Q3_S129_Hq16_Hkv4_D128": {
+          "rel_l2_vs_fp32ref": 0.0021805968628080845,
+          "max_abs_vs_fp32ref": 0.0018042922019958496,
+          "rel_l2_vs_sdpa": 0.002180613958558964,
+          "max_abs_vs_sdpa": 0.0018044710159301758
+        },
+        "B2_Q5_S256_Hq8_Hkv1_D128": {
+          "rel_l2_vs_fp32ref": 0.0021608025887927085,
+          "max_abs_vs_fp32ref": 0.0011383295059204102,
+          "rel_l2_vs_sdpa": 0.002160805404421276,
+          "max_abs_vs_sdpa": 0.0011383593082427979
+        }
+      },
+      "case": "bf16_dense_parity_varying_lengths",
+      "seconds": 0.3049,
+      "passed": true
+    },
+    {
+      "tolerance": {
+        "rel_l2": 0.01,
+        "max_abs": 0.05
+      },
+      "note": "each call recomputes history from scratch (all store mask true) = no-reuse control; empty history must yield zero out_hist and -inf (not NaN) LSE",
+      "cases": {
+        "B2_past16_Hq8_Hkv2_D128": {
+          "rel_l2_full": 0.0019117958527132776,
+          "max_abs_full": 0.003809332847595215,
+          "rel_l2_lse_full": 6.1614826153699e-08,
+          "out_hist_shape": [
+            2,
+            4,
+            8,
+            128
+          ],
+          "out_hist_dtype": "torch.float32",
+          "hist_nan": false,
+          "lse_hist_nan": false,
+          "rel_l2_hist": 0.001143583344316585,
+          "max_abs_hist": 0.0018308907747268677,
+          "rel_l2_lse_hist": 7.361617293649226e-08
+        },
+        "B2_past68_Hq8_Hkv2_D128": {
+          "rel_l2_full": 0.0020510971658291724,
+          "max_abs_full": 0.0024115443229675293,
+          "rel_l2_lse_full": 5.99995195903787e-08,
+          "out_hist_shape": [
+            2,
+            4,
+            8,
+            128
+          ],
+          "out_hist_dtype": "torch.float32",
+          "hist_nan": false,
+          "lse_hist_nan": false,
+          "rel_l2_hist": 0.001293645449036844,
+          "max_abs_hist": 0.0012034215033054352,
+          "rel_l2_lse_hist": 6.830937598752442e-08
+        },
+        "B1_past4_Hq16_Hkv4_D128": {
+          "rel_l2_full": 0.0017179608337331382,
+          "max_abs_full": 0.006654024124145508,
+          "rel_l2_lse_full": 6.13335579422401e-08,
+          "out_hist_shape": [
+            1,
+            4,
+            16,
+            128
+          ],
+          "out_hist_dtype": "torch.float32",
+          "hist_nan": false,
+          "lse_hist_nan": false,
+          "rel_l2_hist": 0.0007639549044735867,
+          "max_abs_hist": 0.0026409924030303955,
+          "rel_l2_lse_hist": 9.141688949693831e-08
+        },
+        "B2_past0_Hq8_Hkv2_D128": {
+          "rel_l2_full": 0.0017030377079708687,
+          "max_abs_full": 0.00738525390625,
+          "rel_l2_lse_full": 5.7219837265428345e-08,
+          "out_hist_shape": [
+            2,
+            4,
+            8,
+            128
+          ],
+          "out_hist_dtype": "torch.float32",
+          "hist_nan": false,
+          "lse_hist_nan": false,
+          "hist_abs_max": 0.0,
+          "lse_hist_inf_fraction": 1.0,
+          "lse_hist_neg_inf_fraction": 1.0
+        }
+      },
+      "case": "no_reuse_history_decomposition",
+      "seconds": 0.2044,
+      "passed": true
+    },
+    {
+      "steps": [
+        {
+          "step": 0,
+          "cache_len": 16,
+          "rel_l2": 0.001970170606812297,
+          "max_abs": 0.003652215003967285,
+          "rel_l2_lse": 5.7613300672903505e-08
+        },
+        {
+          "step": 1,
+          "cache_len": 20,
+          "rel_l2": 0.0019272184064335308,
+          "max_abs": 0.0037502050399780273,
+          "rel_l2_lse": 5.429215290682708e-08
+        },
+        {
+          "step": 2,
+          "cache_len": 24,
+          "rel_l2": 0.0019528492171442115,
+          "max_abs": 0.003888845443725586,
+          "rel_l2_lse": 5.8024119517345515e-08
+        },
+        {
+          "step": 3,
+          "cache_len": 28,
+          "rel_l2": 0.001957662450492184,
+          "max_abs": 0.003687143325805664,
+          "rel_l2_lse": 5.7892208756610374e-08
+        },
+        {
+          "step": 4,
+          "cache_len": 32,
+          "rel_l2": 0.0020070567587280224,
+          "max_abs": 0.0037679672241210938,
+          "rel_l2_lse": 6.315339586727125e-08
+        },
+        {
+          "step": 5,
+          "cache_len": 36,
+          "rel_l2": 0.0019988103290439893,
+          "max_abs": 0.0033196210861206055,
+          "rel_l2_lse": 6.337005804617689e-08
+        },
+        {
+          "step": 6,
+          "cache_len": 40,
+          "rel_l2": 0.002072037424712554,
+          "max_abs": 0.0025949478149414062,
+          "rel_l2_lse": 7.607366793516955e-08
+        },
+        {
+          "step": 7,
+          "cache_len": 44,
+          "rel_l2": 0.0020891183458055036,
+          "max_abs": 0.0023578405380249023,
+          "rel_l2_lse": 6.564015080543472e-08
+        }
+      ],
+      "case": "no_reuse_multistep_cache_growth",
+      "seconds": 0.0128,
+      "passed": true
+    },
+    {
+      "block_table": [
+        [
+          2,
+          5
+        ],
+        [
+          4,
+          1
+        ]
+      ],
+      "cases": {
+        "rel_l2": 0.0021849396699542938,
+        "max_abs": 0.0011701583862304688,
+        "after_slot_reset_rel_l2": 0.0020997282473958667,
+        "after_slot_reset_max_abs": 0.0019043684005737305
+      },
+      "case": "paged_kv_slot_reuse_and_reset",
+      "seconds": 0.0797,
+      "passed": true
+    },
+    {
+      "tolerance": {
+        "rel_l2": 0.01,
+        "max_abs": 0.05
+      },
+      "cases": {
+        "store_out_rel_l2_vs_full": 0.0020807691618735906,
+        "store_out_max_abs_vs_full": 0.0036433935165405273,
+        "store_lse_rel_l2_vs_full": 6.343916756329614e-08,
+        "stored_A_rel_l2_vs_prefix": 0.0012831048869690344,
+        "stored_L_rel_l2_vs_prefix": 6.759245460184387e-08,
+        "unchanged_q_reuse_rel_l2_vs_store": 0.0010672888507633304,
+        "unchanged_q_reuse_max_abs_vs_store": 0.00390625,
+        "reuse_returned_lse_rel_l2_vs_current_block": 8.21396258472301e-08,
+        "reuse_A_unchanged": true,
+        "reuse_L_unchanged": true
+      },
+      "case": "cached_reuse_unchanged_q",
+      "seconds": 0.0034,
+      "passed": true
+    },
+    {
+      "tolerance": {
+        "rel_l2": 0.01,
+        "max_abs": 0.05
+      },
+      "note": "A/L were produced by the store call for q1 over the prefix and are passed unchanged with changed q2; the independent target is therefore log-space composition(stale A/L, fresh current-block attention), not a fresh-query or full recomputation. Those errors are reported separately as staleness.",
+      "cases": {
+        "rel_l2_vs_stale_composition": 0.0017110547390633572,
+        "max_abs_vs_stale_composition": 0.0036156177520751953,
+        "rel_l2_vs_fresh_query_composition": 1.0742459220080627,
+        "rel_l2_vs_full_recompute": 1.1043455972866159,
+        "max_abs_vs_full_recompute": 1.4885356426239014,
+        "returned_lse_rel_l2_vs_current_block": 8.704072225686976e-08,
+        "cache_L_equals_history": true,
+        "stale_cache_query_rows": "q2 differs from q1 that produced A/L"
+      },
+      "case": "cached_reuse_changed_q_stale_composition",
+      "seconds": 0.042,
+      "passed": true
+    },
+    {
+      "note": "audited actual upstream semantics: this path caches history-only A/L (prefix excluding the current block); dirty_mask neither changes output nor the cache because the current block is always recomputed. dirty_mask_effective=false is documented, not hidden.",
+      "cases": {
+        "dirty_fraction": 0.5,
+        "dirty_mask_effective": false,
+        "rel_l2_vs_composition_all": 0.0017076974394092015,
+        "rel_l2_vs_composition_dirty_rows": 0.001711410261054789,
+        "rel_l2_vs_full_dirty_rows": 1.1298537720686765,
+        "all_finite": true,
+        "cache_unchanged": true
+      },
+      "case": "cached_reuse_dirty_mask_audit",
+      "seconds": 0.2774,
+      "passed": true
+    },
+    {
+      "cases": {
+        "per_sequence_rel_l2": [
+          0.0019158841479351963,
+          0.0019589494700357948
+        ],
+        "slot_swap_rel_l2": 0.0,
+        "reset_rel_l2": [
+          0.0019158841479351963,
+          0.0019589494700357948
+        ],
+        "reset_A_rel_l2": 0.0
+      },
+      "case": "cached_reuse_reset_and_slot_reorder",
+      "seconds": 0.0141,
+      "passed": true
+    }
+  ]
+}

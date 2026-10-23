@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r3",
+  "branch": "exp/flashblock-20261023",
+  "correctness": {
+    "success_commit": "79b94b86",
+    "attempts": [
+      {"commit": "4f319012", "result": "FAILED", "reason": "dict kwargs TypeError in _kernel_call"},
+      {"commit": "1d3bc964", "result": "FAILED", "reason": "independent changed-Q target used fresh q2 history instead of stale A/L"},
+      {"commit": "79b94b86", "result": "PASSED", "reason": "9/9 correctness groups"}
+    ]
+  },
+  "smoke": {
+    "baseline_cold_success_commit": "737c4f90",
+    "baseline_warm_success_commit": "904d7689",
+    "s2_success_commit": "904d7689",
+    "attempts": [
+      {"commit": "79b94b86", "condition": "baseline", "result": "FAILED", "reason": "ModuleNotFoundError: liger_kernel"},
+      {"commit": "adfb9af7", "condition": "baseline", "result": "FAILED", "reason": "Triton 3.0 autotune key IndexError"},
+      {"commit": "c7723532", "condition": "baseline", "result": "FAILED", "reason": "Triton autotune signature order still mismatched"},
+      {"commit": "737c4f90", "condition": "baseline", "result": "PASSED", "note": "cold, includes compilation"},
+      {"commit": "737c4f90", "condition": "s2", "result": "FAILED", "reason": "streaming reuse-buffer batch mismatch"},
+      {"commit": "904d7689", "condition": "s2", "result": "PASSED"},
+      {"commit": "904d7689", "condition": "baseline", "result": "PASSED", "note": "warm, identical token IDs to cold"}
+    ]
+  },
+  "environment_snapshot_commit": "904d7689",
+  "notes": "Actual execution SHAs are recorded per stage; HEAD after evidence commit is reported in report.json. No test-set evaluation, no training."
+}
