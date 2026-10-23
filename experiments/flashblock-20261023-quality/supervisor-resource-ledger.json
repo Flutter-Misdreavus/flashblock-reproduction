@@ -1,0 +1,39 @@
+{
+  "run_id": "flashblock-20261023-quality",
+  "prior_conservative_campaign_charge_gpu_hours": 1.9,
+  "wrapper_wall_seconds": 2533.844,
+  "worker_gpu_command_wall_seconds": 1491.636,
+  "worker_gpu_command_hours": 0.414343,
+  "supervisor_conservative_stage_charge_gpu_hours": 0.8,
+  "campaign_charge_after_gpu_hours": 2.7,
+  "campaign_limit_gpu_hours": 8,
+  "remaining_gpu_hours": 5.3,
+  "method": "Entire quality wrapper 2533.844s rounded upward to0.80h, including CPU, failure and orchestration wait. Conservative allocation charge, not GPU busy time. CPU-only supervisor audit adds no GPU use.",
+  "resource_breach": "Smoke1 failed before generation: whole-parameter finite-scan allocator temporaries left physical free2469.1MiB. Formal heldout run after resource repair had no breach.",
+  "accepted_generation": {
+    "execution_commit": "0b39fb9253818ac30e651230564e24bc89187bc1",
+    "gpu_command_wall_seconds": 1395.492,
+    "peak_allocated_mib": 11963.6,
+    "min_physical_free_mib": 7679.1,
+    "logit_calls": 15086,
+    "nonfinite_calls": 0,
+    "kv_data_pages": 89,
+    "worst_case_required_pages": 68
+  },
+  "event_id": "7dbe58638ac3396d07703e5fd2feb13e2ab6088484a3cf98ef775d265cfb3ea5",
+  "task_sha256": "c861d4cf12e214d9dcd870960162f091d93d88cf4e2e706898df79980761aca2",
+  "completed_at": "2026-10-23T04:44:19.984628+00:00",
+  "report_sha256": "81632024ce8be7a038823a93bade5819a2a1a5c3d5730fd18e75a74dd55d7570",
+  "final_storage_probe": {
+    "runtime_bytes": 16273577773,
+    "project_bytes": 241954268,
+    "filesystem_available_bytes": 69140262912,
+    "note": "2026-10-23 UTC after GPU completion; project total includes source and existing git objects; conservative combined disk below30GiB."
+  },
+  "final_gpu_probe": {
+    "uuid": "GPU-REDACTED",
+    "own_gpu_processes": 0,
+    "preexisting_other_processes": 3,
+    "note": "Other processes retained; no termination or modification."
+  }
+}

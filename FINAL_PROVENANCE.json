@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "campaign": "flashblock-20261023",
+  "scope": "training-free original TraDo4B BF16 on one shared RTX3090; mechanism + efficiency + fixed128 quality",
+  "repository": "https://github.com/Flutter-Misdreavus/flashblock-reproduction",
+  "visibility_verified": "private",
+  "branch": "exp/flashblock-20261023",
+  "head_at_report_creation": "94af9c77f19c96cd90b4a24bd6850c7900935018",
+  "push_at_report_creation": "verified private and pushed through94af9c77",
+  "final_delivery_receipt": "runs/final-delivery.json (local ignored receipt: final HEAD, remote ref, report digest, clean status)",
+  "actual_execution_commits": {
+    "preparation_correctness": "79b94b8649c3db8989ac87c2f5bbb1049a5ff2f1",
+    "preparation_model_smoke": "904d76898a2eaf301068a3638240294abfd50a68",
+    "mechanism_preflight": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
+    "mechanism_formal": "4f4490e9b8a9dd3c32413cc35f034eb21f81626d",
+    "efficiency_preflight": "6131651c22abf5b0b149a139e851dd483bbe698b",
+    "efficiency_batch1": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+    "efficiency_release_smoke": "cafd8a4060afff8139cc6706346c574ea7aceca9",
+    "efficiency_batch4": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+    "efficiency_accepted_profile": "a13e5b0953623e6a95f307d4a5160c8964579dec",
+    "quality_train_smoke_failed": "e9ca4f37411f5078a3c8d5948418c0589b6e5e84",
+    "quality_train_smoke_passed_prechunk": "0373d21123d236aa8dbbdfaf1d44a91092201f05",
+    "quality_train_smoke_final": "fcab64fbf77d818ef6f1148081bb29a9f5c0a77c",
+    "quality_heldout_all256": "0b39fb9253818ac30e651230564e24bc89187bc1",
+    "quality_independent_statistics": "d56db2642209d0316d9daac81c939276d17b1463",
+    "quality_cpu_raw_evidence_audit": "94af9c77f19c96cd90b4a24bd6850c7900935018"
+  },
+  "model": {
+    "id": "Gen-Verse/TraDo-4B-Instruct",
+    "revision": "d350259d64abf9219362ccb1435d68910744eea7"
+  },
+  "dataset": {
+    "id": "openai/gsm8k",
+    "config": "main",
+    "revision": "740312add88f781978c0658806c59bc2815b9866"
+  },
+  "upstream": "a322fb80f29df0d4cc842fbc011929bc85ba8f36",
+  "environment": "experiments/flashblock-20261023-prep-r3/environment.json",
+  "hash_locks": "experiments/flashblock-20261023-prep-r3/locks.json",
+  "conservative_gpu_hours": {
+    "preparation": 0.4,
+    "mechanism": 0.6,
+    "efficiency": 0.9,
+    "quality": 0.8,
+    "total": 2.7,
+    "cap": 8.0,
+    "not_measured_gpu_busy_time": true
+  },
+  "stages": {
+    "prep-r3": {
+      "review": "experiments/flashblock-20261023-prep-r3/supervisor-review.md",
+      "resource_ledger": "experiments/flashblock-20261023-prep-r3/supervisor-resource-ledger.json",
+      "run_commits": "experiments/flashblock-20261023-prep-r3/run-commits.json",
+      "supervisor-resource-ledger.json_sha256": "1bd5705207f5013547c7880ceb1d3a2a510451b8b797bd2dec0176503c4c6669",
+      "run-commits.json_sha256": "28ee8f5c3303ca5ee61924253899aceb15da6853c692675062b2ac1085332c4d"
+    },
+    "mechanism": {
+      "review": "experiments/flashblock-20261023-mechanism/supervisor-review.md",
+      "resource_ledger": "experiments/flashblock-20261023-mechanism/supervisor-resource-ledger.json",
+      "run_commits": "experiments/flashblock-20261023-mechanism/run-commits.json",
+      "supervisor-resource-ledger.json_sha256": "3973c719730e53ed0a30ec9d5a8d56435089fc2d2995637839841f83677fb14f",
+      "run-commits.json_sha256": "838d1d1276a4f04b938b25fdd36b30db3ff45501fa8354dc42af5953154661cf"
+    },
+    "efficiency": {
+      "review": "experiments/flashblock-20261023-efficiency/supervisor-review.md",
+      "resource_ledger": "experiments/flashblock-20261023-efficiency/supervisor-resource-ledger.json",
+      "run_commits": "experiments/flashblock-20261023-efficiency/run-commits.json",
+      "supervisor-resource-ledger.json_sha256": "3822dd6a2600de1095526dab86d1daf7f0381244a067783d5e9e732736436490",
+      "run-commits.json_sha256": "845bcb1ee20b638689b9d79d51047d6060f011fbd438b123b5b6c6c3e889be62"
+    },
+    "quality": {
+      "review": "experiments/flashblock-20261023-quality/supervisor-review.md",
+      "resource_ledger": "experiments/flashblock-20261023-quality/supervisor-resource-ledger.json",
+      "run_commits": "experiments/flashblock-20261023-quality/run-commits.json",
+      "supervisor-resource-ledger.json_sha256": "8f68123c6713622c887e259de40522b6f843d14d6734fe6040df09697d50f8ce",
+      "run-commits.json_sha256": "140db8ff5622869c93398ef4ba6c0499d8e43dcf9dfeedcd69028f6ed4ae2e55"
+    }
+  },
+  "limitations": [
+    "shared GPU timing",
+    "undistilled4B, not paper8B32k+ A100 table",
+    "quality128 items one seed",
+    "failed resource-bound probes retained",
+    "different real-text prompts across performance lengths",
+    "no equivalence or positive quality-gain claim"
+  ]
+}
