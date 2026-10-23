@@ -186,7 +186,7 @@ def _kernel_call(q, k_cache, v_cache, knew, vnew, cache_seqlens, block_size, blo
         if store_mask is None and update_mask is None:
             store_mask = torch.ones((B, Hq, Q, 1), dtype=torch.bool, device=q.device)
         kwargs = dict(
-            q, k_cache, v_cache, k=knew, v=vnew,
+            q=q, k_cache=k_cache, v_cache=v_cache, k=knew, v=vnew,
             cache_seqlens=cache_seqlens, block_table=block_table,
             causal=False, return_softmax_lse=True, block_size=block_size, num_splits=1,
             attn_output_past=out_past, logsumexp=lse_past,
