@@ -1764,9 +1764,12 @@ def cmd_summarize(args):
         f"s2 reuse: mean actual-vs-fresh-full relL2="
         f"{s2_sum['mean_actual_full_rel_l2_reuse']['mean']}, mean stale-merge relL2="
         f"{s2_sum['mean_stale_merge_rel_l2_reuse']['mean']}. "
-        f"Cache-label max relL2 dense/s2={dense_sum['max_cache_label_rel_l2']}/{s2_sum['max_cache_label_rel_l2']}. "
-        f"This is descriptive mechanism evidence on a small frozen subset; no efficiency, exactness, "
-        f"quality or heldout claim is made."
+        f"Cache-label max relL2 dense/s2="
+        f"{'n/a' if dense_sum['max_cache_label_rel_l2'] is None else dense_sum['max_cache_label_rel_l2']}/"
+        f"{s2_sum['max_cache_label_rel_l2']}. "
+        f"This run completed the fixed 16-prompt mechanism matrix with preflight and hard stops; "
+        f"it is descriptive mechanism evidence on a small frozen subset, with no efficiency, "
+        f"exactness, quality or heldout claim."
     )
     body = {
         "schema_version": 1, "run_id": RUN_ID, "status": status,
