@@ -10,6 +10,7 @@ import concurrent.futures as cf
 import hashlib
 import json
 import os
+import subprocess
 import sys
 import time
 import urllib.request
@@ -38,23 +39,23 @@ def sha256_file(path):
 
 
 def download_range(url, start, end, dest):
+    """Fetch one byte range with curl; curl is robust to mirror keep-alive stalls."""
     for attempt in range(RETRIES):
         try:
-            req = urllib.request.Request(
-                url,
-                headers={"Range": f"bytes={start}-{end}", "User-Agent": "flashblock-prep/1"},
+            subprocess.run(
+                [
+                    "curl", "-sSL", "--fail", "--connect-timeout", "20", "--max-time", "900",
+                    "--max-filesize", str(end-start+1),
+                    "-r", f"{start}-{end}", "-o", str(dest), url,
+                ],
+                check=True,
+                timeout=920,
             )
-            with urllib.request.urlopen(req, timeout=120) as r, open(dest, "wb") as f:
-                while True:
-                    b = r.read(1024 * 1024)
-                    if not b:
-                        break
-                    f.write(b)
             size = os.path.getsize(dest)
             if size == end - start + 1:
                 return dest
             raise IOError(f"short range {start}-{end}: {size}")
-        except Exception as e:  # bounded retry on transient network errors
+        except Exception:
             if attempt == RETRIES - 1:
                 raise
             time.sleep(2 * (attempt + 1))
@@ -126,14 +127,24 @@ def main():
             download_file(url, dest, size, args.workers)
         sha = sha256_file(dest)
         expected = meta.get("lfs", {}).get("oid")
+        if rel.endswith(".safetensors") and not expected:
+            raise SystemExit(f"Missing upstream LFS SHA256 for {rel}")
         if expected and sha != expected:
             raise SystemExit(f"sha256 mismatch for {rel}: {sha} != {expected}")
+        git_oid = meta.get("oid") if not expected else None
+        if git_oid:
+            blob = dest.read_bytes()
+            got_oid = hashlib.sha1(b"blob " + str(len(blob)).encode() + b"\0" + blob).hexdigest()
+            if got_oid != git_oid:
+                raise SystemExit(f"Git blob hash mismatch: {rel}")
         records.append(
             {
                 "path": rel,
                 "size": size,
                 "sha256": sha,
                 "upstream_sha256": expected,
+                "upstream_git_oid": git_oid,
+                "git_blob_verified": bool(git_oid),
                 "sha256_verified": bool(expected) and sha == expected,
                 "seconds": round(time.time() - t0, 2),
             }

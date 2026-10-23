@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-prep-r2",
+  "parent_run_id": "flashblock-20261023-prep",
+  "ready": true,
+  "hypothesis": "Preparation gate only: real custom kernels and original TraDo4B support correct no-reuse decomposition and finite real generation on allocated RTX3090.",
+  "baseline": "Original TraDo4B BF16 dense optimized attention, same decoder.",
+  "intervention": "Official FlashBlock s2 tau2 plus no-reuse decomposition control; no training.",
+  "dataset": "Gen-Verse/TraDo-4B-Instruct original checkpoint and openai/gsm8k main; resolve/freeze revisions and hashes before run.",
+  "split": "Only train100..101 smoke; freeze train100..115 mechanism and 128 seeded test IDs without evaluating test.",
+  "primary_metric": "Independent correctness parity, actual custom kernel execution, valid smoke generation and resource fit.",
+  "decision_rule": "Pass only if custom implementation is loaded and validated with independent reference plus real model smoke; otherwise report precise blocking layer. Stop for supervisor review.",
+  "controls": [
+    "Read AGENTS.md and PROTOCOL.md first; all limits mandatory.",
+    "Use isolated runtime; own existing environments may be read-only dependencies.",
+    "GPU UUID fixed; process<=16GiB, physical headroom>=3GiB; CPU<=8; build jobs2; new total disk<=30GiB, filesystem free>=40GiB.",
+    "No full quality/performance/mechanism stage yet. No training or quantization.",
+    "Commit code/config before tests or inference and after fixes; record each SHA and explicit staging; relay push by GPT.",
+    "No detached jobs or nested agents. Execute under existing systemd cgroup.",
+    "Inspect source build for torch/FlashInfer ABI and GPU support. A generic pip flash-attn wheel is NOT the custom kernel. Pin dependencies; avoid installing video stack.",
+    "Within 2h diagnose/install/build; report actionable failure if unavailable. At most two bounded fixes in gate; preserve failures.",
+    "Read review-parent.md first. Stop repeating settled network/version exploration.",
+    "Long commands FOREGROUND via managed bash job facility; never nohup/ampersand/setsid. Track job IDs.",
+    "No monkey patches pretending missing torch dtypes exist. Install coherent pristine packages.",
+    "Cumulative update count and dirty-query masking must be audited; preserve and document upstream semantics."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Start from committed supervisor recovery patch. Record actual SHA before every run.",
+  "environment": "Isolated Python3.10,torch2.4.1/cu124,triton3.0,numpy1.26.4,transformers4.52.4,pristine flashinfer0.2.9,customFA on CUDA12.8. No borrowed package symlinks.",
+  "experiment_commands": [
+    "Read review-parent.md; verify prior service and old pip/fetch processes stopped. Preserve partials and logs.",
+    "Run committed repro/setup_env.sh in tracked foreground; start committed fetch_model.py as a separate tracked foreground job, pinned model d350259d64abf9219362ccb1435d68910744eea7. No borrowed environment mutation.",
+    "Build custom FA using committed script. Verify custom symbols and provenance. Commit any bounded ABI repair before rebuilding.",
+    "Implement/commit independent numerical correctness and real smoke CLI; validate reference, dense parity, empty history, GQA, varying lengths and cache reset/slot behavior. Same sampler both conditions.",
+    "Freeze dataset revision and 128 seeded test IDs without evaluation. Run train100..101 max64 new tokens baseline/s2; record actual SHA, generated tokens, finite checks, memory/timing, refresh/reuse counts.",
+    "Write required reports, small evidence and resource ledger; commit; stop for GPT gate review."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 0.48,
+    "wall_seconds": 5700,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only, one bounded headless session; no paid API purchases/top-ups."
+  },
+  "stop_conditions": [
+    "Stop no later than2026-10-23T02:59:38Z (two hours after original prep start), wrapper5700s/systemd5760s. GPU<=0.48h; campaign<=8h.",
+    "Stop on OOM, NaN, provenance mismatch, resource contention preventing headroom, disk limits; preserve evidence.",
+    "Two bounded routine repair attempts maximum, each committed before rerun. No scientific scope changes.",
+    "No heldout test evaluation or next stage without new GPT task."
+  ],
+  "required_outputs": [
+    "report.json",
+    "environment.json",
+    "locks.json",
+    "correctness.json",
+    "smoke.json",
+    "resource-ledger.json",
+    "Versioned setup/build scripts, focused validation CLI, formal-test-ids.json and actual run commits."
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}

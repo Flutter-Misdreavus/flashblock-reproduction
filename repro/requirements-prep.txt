@@ -1,10 +1,7 @@
-# flashblock-20261023-prep pinned environment (Python 3.10)
-# torch 2.2.2+cu121 / triton 2.2.0 / numpy 1.26.3 are reused read-only from the
-# own MemLoop runtime venv (verified identical dist-info) and symlinked into the
-# isolated venv; they are not reinstalled or upgraded.
-torch==2.2.2+cu121
-triton==2.2.0
-numpy==1.26.3
+# Isolated Python3.10; no borrowed package symlinks.
+torch==2.4.1
+triton==3.0.0
+numpy==1.26.4
 transformers==4.52.4
 tokenizers==0.21.4
 huggingface_hub==0.34.4
