@@ -2,10 +2,10 @@
   "schema_version": 1,
   "run_id": "flashblock-20261023-quality",
   "parent_run_id": "flashblock-20261023-efficiency",
-  "created_at": "2026-10-23T04:14:11Z",
-  "git_head": "ff3079a13b06330034b332fda3831a8f74fb0b9b",
+  "created_at": "2026-10-23T04:16:30Z",
+  "git_head": "c732e1beaf1b30be589f66e1ea4b285695f0c713",
   "config_path": "experiments/flashblock-20261023-quality/quality-config.json",
-  "config_sha256": "94d9fa42c0cf736d12255badddad416be773d64b82cab7cc3e399624adb86bb5",
+  "config_sha256": "85bc177814968b49f72f549b6ff86b51911a2b5391725bd34d1d0b3d321e6daf",
   "model": {
     "model_id": "Gen-Verse/TraDo-4B-Instruct",
     "revision": "d350259d64abf9219362ccb1435d68910744eea7",
@@ -317,7 +317,7 @@
     "min_free_mib": 3072,
     "max_new_disk_gib": 30,
     "min_free_disk_gib": 40,
-    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after the first committed smoke hit the shared-GPU physical-free guard (2.47 GiB < 3.07 GiB) before generating; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
+    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after smoke1 hit the physical-free guard; the primary own-footprint cause was retained caching-allocator temporaries from the whole-parameter finite scan (now replaced by the proven 1Mi-element chunked scan), not an assumed co-tenant increase; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
   },
   "groups": {
     "count": 32,
