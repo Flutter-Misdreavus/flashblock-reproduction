@@ -42,15 +42,17 @@ def download_range(url, start, end, dest):
     """Fetch one byte range with curl; curl is robust to mirror keep-alive stalls."""
     for attempt in range(RETRIES):
         try:
-            subprocess.run(
-                [
-                    "curl", "-sSL", "--fail", "--connect-timeout", "20", "--max-time", "900",
-                    "--max-filesize", str(end-start+1),
-                    "-r", f"{start}-{end}", "-o", str(dest), url,
-                ],
-                check=True,
-                timeout=920,
-            )
+            # hf-mirror stalls on range GETs for small metadata files; use a plain
+            # GET there (still size-bounded) and keep ranges for the shards.
+            small = start == 0 and end < 1024 * 1024
+            cmd = [
+                "curl", "-sSL", "--fail", "--connect-timeout", "20", "--max-time", "900",
+                "--max-filesize", str(end-start+1),
+            ]
+            if not small:
+                cmd += ["-r", f"{start}-{end}"]
+            cmd += ["-o", str(dest), url]
+            subprocess.run(cmd, check=True, timeout=920)
             size = os.path.getsize(dest)
             if size == end - start + 1:
                 return dest
