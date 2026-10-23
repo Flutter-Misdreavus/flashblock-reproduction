@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "dataset": {
+    "dataset": "openai/gsm8k",
+    "config": "main",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "train_parquet": "/data/research/minicache-reproduction-runtime/data/gsm8k/main/train-00000-of-00001.parquet",
+    "train_sha256": "ea82612ea9582142387730c793eb67d3b12849002bc0b7fa6f8efafa7351419d",
+    "split": "train only; no heldout QA"
+  },
+  "recipe": "question + '\\n' + answer, rows joined with '\\n\\n', tokenizer.encode",
+  "tokenizer": {
+    "local_path": "/data/research/flashblock-reproduction-runtime/models/TraDo-4B-Instruct",
+    "class": "Qwen2Tokenizer",
+    "vocab_size": 151643,
+    "mask_token_id": 151669,
+    "pad_token_id": 151643,
+    "eos_token_id": 151643
+  },
+  "lengths": [
+    1024,
+    4096,
+    8192
+  ],
+  "inputs_per_length": 4,
+  "note": "raw token ids stay outside Git under runs/<run_id>/inputs/; only hashes/recipe in Git",
+  "groups": {
+    "1024": {
+      "length": 1024,
+      "inputs": [
+        {
+          "index": 0,
+          "length": 1024,
+          "source_row_start": 400,
+          "source_row_end": 479,
+          "source_rows_sha256": "ca5c581249357aeeafeacd6efd46dad327fbcb08bfa68bec6d8505a812ddf133",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L1024-j0.json",
+          "raw_sha256": "764189ad6722fa4f26b5e455f0ecb596561293f6507f0ffd01d43b5cea2a64ed",
+          "token_ids_sha256": "0867b18206a7b26b69b7d95aa78703bdd14405012c014ec7ae9134fa8b56c5c0",
+          "first256_sha256": "2f84bcbaceee8e89ed79c3b1a7f8d8e5d2eb5281e2f2b85a76cbb33d5eae7598",
+          "distinct_blocks": 4,
+          "blocks": 4,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 1,
+          "length": 1024,
+          "source_row_start": 480,
+          "source_row_end": 559,
+          "source_rows_sha256": "faf6220d08f96174565fa66d0b40f12e19f7653b427c57584291ce8b4ee46630",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L1024-j1.json",
+          "raw_sha256": "8c19e7d3dd9f67abbf73f1122199ddb0ba2df8a0aee48482aaba60bfc93978c1",
+          "token_ids_sha256": "b05fc67df9bc34570587a38e6b50f94f692e2e53fdde171c0dbfb44ae276b62c",
+          "first256_sha256": "9a511641e30ecc9d57988a01045f250159fbde2e7245bc584cb6d1526c10c956",
+          "distinct_blocks": 4,
+          "blocks": 4,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 2,
+          "length": 1024,
+          "source_row_start": 560,
+          "source_row_end": 639,
+          "source_rows_sha256": "ed13b6919e57955392cda560d67fe8dc5634f112d5bb71469bdbdb8fcc45af35",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L1024-j2.json",
+          "raw_sha256": "eb1497153d6264bc44bc2229c41e3dd04d7ec4a778567784a3fa910616d0af35",
+          "token_ids_sha256": "268fd86b2915a0dea43c6d583cc83296aa2181f3fdfed9c5040da59d968b42dc",
+          "first256_sha256": "c1fbe666e54b3595a28526bc5e724884e69072934c8fa4a31854654cec1e3adc",
+          "distinct_blocks": 4,
+          "blocks": 4,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 3,
+          "length": 1024,
+          "source_row_start": 640,
+          "source_row_end": 719,
+          "source_rows_sha256": "5b49748797e79488d8f5eef3d0d7352ae957e2912adc7245a286aa40b9374d6f",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L1024-j3.json",
+          "raw_sha256": "9cbb5703b0ced81c006dba9639ddb44211211934302e3e60e0dc675f70021d78",
+          "token_ids_sha256": "57a4281f09367211afdc04629fd9bd1325209a1fb734ad1dc9e235d5ad1e47c9",
+          "first256_sha256": "a240e5f02402d7fb46c077996575764d928c9b0c6f3ed8c313ae7d5cceb06853",
+          "distinct_blocks": 4,
+          "blocks": 4,
+          "duplicate_blocks": 0
+        }
+      ],
+      "first256_distinct": true
+    },
+    "4096": {
+      "length": 4096,
+      "inputs": [
+        {
+          "index": 0,
+          "length": 4096,
+          "source_row_start": 720,
+          "source_row_end": 799,
+          "source_rows_sha256": "891f12fea738d44111d81d568bccbce6f6991bf150035ecfe6c2a19ede0ef721",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L4096-j0.json",
+          "raw_sha256": "378ee9a41e669ad5dba4c9d61721c56155150ea1f38b8ca45e44ed88c1dfa23c",
+          "token_ids_sha256": "85c7d2b31b4ce60e48add011cc6696f014220548dc09dcc0ce2b2f6fae08574e",
+          "first256_sha256": "e815aa595c68feda5878f44a82e6c26ab3d7c9f66429a1ab640c6c2bca6743d4",
+          "distinct_blocks": 16,
+          "blocks": 16,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 1,
+          "length": 4096,
+          "source_row_start": 800,
+          "source_row_end": 879,
+          "source_rows_sha256": "da0b38fea094a41f2b9070b66b949eaf76c6d165ea191a78b05ff2bf5c720d0b",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L4096-j1.json",
+          "raw_sha256": "a4782a7d5360b4554a086d5586225798877d9c446821fb9646bf6d6b66ea5ed4",
+          "token_ids_sha256": "e238294273ee954a80b71b4d05af3fd8489e0e64bc0157fc5329626d09fbe301",
+          "first256_sha256": "3cb7ff264a9c5fbb7aae175c54c15e2077123d495ab407fb860311b2c4c4ef38",
+          "distinct_blocks": 16,
+          "blocks": 16,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 2,
+          "length": 4096,
+          "source_row_start": 880,
+          "source_row_end": 959,
+          "source_rows_sha256": "876f659c4365827d871427ad2b14f898a8d1fe4bde1af9cbc531ce2afb021389",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L4096-j2.json",
+          "raw_sha256": "fbbf7e9ea7f09df4e9b0d9f5d2f2184ae1f9b8d651ea7319753ac638343d8cd4",
+          "token_ids_sha256": "eb500ccda779b9bf8f629526f392cfc94f7e708d31944ec73c11d88c365576ba",
+          "first256_sha256": "850d27289cac68890dc1b9de1140cc20870aa1833ea41735c2cd26c4f859a86b",
+          "distinct_blocks": 16,
+          "blocks": 16,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 3,
+          "length": 4096,
+          "source_row_start": 960,
+          "source_row_end": 1039,
+          "source_rows_sha256": "f908efad3a452bc125c88bf24bb858517d076c5ff5a5a43f9cc5ed276ad2ef10",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L4096-j3.json",
+          "raw_sha256": "15e9c14f2849cca7a45256ff89e60e7bf7a47618d66ad92e24b56891a3047c94",
+          "token_ids_sha256": "df99a5e8eac12022e6bc50f5e9143ec02512f6d7f3fdff43572311f89c93d967",
+          "first256_sha256": "2c23ea1cacea1c3d90290b91b1b98f49fad7a7492a41f5d695c2d0d11f7b3b99",
+          "distinct_blocks": 16,
+          "blocks": 16,
+          "duplicate_blocks": 0
+        }
+      ],
+      "first256_distinct": true
+    },
+    "8192": {
+      "length": 8192,
+      "inputs": [
+        {
+          "index": 0,
+          "length": 8192,
+          "source_row_start": 1040,
+          "source_row_end": 1119,
+          "source_rows_sha256": "1c3ac8d04d2db7b36ef783a183ba612090a03fc5b8b9590944ea8eaa799b406e",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L8192-j0.json",
+          "raw_sha256": "ef75fec7ef09512b00ac6ec9ef26590042cabe36e1e7db383f7ae7feaf704a9e",
+          "token_ids_sha256": "6ec3a0675da75badae3e96ebfe6e5e079c57bf8c3205882a4dbbbab836d87c93",
+          "first256_sha256": "b96198e8b06d2239f13e33e83665bb61c30f8660ab417df3c2ebe279e03c56d3",
+          "distinct_blocks": 32,
+          "blocks": 32,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 1,
+          "length": 8192,
+          "source_row_start": 1120,
+          "source_row_end": 1199,
+          "source_rows_sha256": "6dd2406ac60dd8dbc5d4260e1093ff722a3253e26d6af7febb7097a5e11a65d9",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L8192-j1.json",
+          "raw_sha256": "4ecf8ed55d9708b618abf57439ee5e6c024bc1c54eec5d90ca4eda984ec4484d",
+          "token_ids_sha256": "2995b29ab44ed1493a1a5816739535bdbca2e73aa7df93f265c6786d586cf2f8",
+          "first256_sha256": "3aa4c1062db70adf56c432e1f8016e9b15b07544034734bdba34ef28722abdea",
+          "distinct_blocks": 32,
+          "blocks": 32,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 2,
+          "length": 8192,
+          "source_row_start": 1200,
+          "source_row_end": 1279,
+          "source_rows_sha256": "4ac455186cbdef6e7262433971be90262ff88a493ddb0004a7c0aef08a4bab49",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L8192-j2.json",
+          "raw_sha256": "dbcd2466585122738551cad314f258d174b1516e1cf428a1278ad68dc981e354",
+          "token_ids_sha256": "2ed62b0fa9402086115bffb57668699cc0ce85e1457ea86106b4c8460b42cdd3",
+          "first256_sha256": "a172a3dee51b0fbe5a7dd9b65e7349b0e15ad8c0aaaee32adce59a85ed11ad57",
+          "distinct_blocks": 32,
+          "blocks": 32,
+          "duplicate_blocks": 0
+        },
+        {
+          "index": 3,
+          "length": 8192,
+          "source_row_start": 1280,
+          "source_row_end": 1359,
+          "source_rows_sha256": "97995b9f295c757a1e5da4e3a4f40a0e42ca3ff88d78fd92379951ab391d0503",
+          "raw_relpath": "runs/flashblock-20261023-efficiency/inputs/ids-L8192-j3.json",
+          "raw_sha256": "d3bf7c63235ddfc0ce037dd9cbca7fdb620311b236386dd8e149421773371788",
+          "token_ids_sha256": "a846dd59bde5a5f3dcdcba6d491d99d90cb1c173bfd5a32f503093eddb2e8598",
+          "first256_sha256": "1b1805db20ff274c641410ebd698158fe5e11765e236f8a9e7d550cb2e20a377",
+          "distinct_blocks": 32,
+          "blocks": 32,
+          "duplicate_blocks": 0
+        }
+      ],
+      "first256_distinct": true
+    }
+  }
+}
