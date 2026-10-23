@@ -583,6 +583,7 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
     peak_res = float(T.cuda.max_memory_reserved() / 2**20)
     # validate
     counts, hashes, problems = [], [], []
+    all_out_ids = []
     for seq in seqs:
         toks = h["finished"].get(int(seq.seq_id))
         if toks is None:
@@ -590,9 +591,10 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
             toks = []
         want = int(seq.max_tokens)
         counts.append(len(toks))
+        all_out_ids.extend(toks)
         if len(toks) != want:
             problems.append(f"seq {seq.seq_id} tokens {len(toks)} != {want}")
-        if any((x < 0 or x >= llm.tokenizer.vocab_size) for x in toks):
+        if any((x < 0 or x >= len(llm.tokenizer)) for x in toks):
             problems.append(f"seq {seq.seq_id} out-of-vocab id")
         if llm.config.mask_token_id in toks:
             problems.append(f"seq {seq.seq_id} mask id in output")
@@ -607,6 +609,9 @@ def _run_once(h, prompts, max_tokens_list, ratio, identity=False, timeit=True,
         "output_token_counts": counts, "total_output_tokens": int(sum(counts)),
         "output_sha256_by_seq": hashes,
         "output_concat_sha256": _sha256_bytes(":".join(hashes).encode()),
+        "max_output_token_id": max(all_out_ids) if all_out_ids else None,
+        "tokenizer_len": len(llm.tokenizer),
+        "tokenizer_vocab_size": int(llm.tokenizer.vocab_size),
         "problems": problems,
         "seed_before_run": seedinfo,
         "counters": {k: int(v) for k, v in sorted(h["counters"].items())},
