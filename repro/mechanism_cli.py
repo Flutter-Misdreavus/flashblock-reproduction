@@ -1511,6 +1511,7 @@ def cmd_summarize(args):
     out_dir.mkdir(parents=True, exist_ok=True)
 
     per_prompt = []
+    keep_stats = ("n", "mean", "p50")
     for res in (dense, s2):
         for p in res.get("prompts", []):
             row = {k: v for k, v in p.items() if k not in ("trace_pair", "trace_step")}
@@ -1519,6 +1520,17 @@ def cmd_summarize(args):
                 row["output"] = {k: o.get(k) for k in (
                     "new_tokens", "ids_in_vocab", "contains_mask_token",
                     "text_nonempty", "token_ids_sha256")}
+            # compact per-layer/head table: keep means and one quantile, drop
+            # redundant distribution tails from the committed per-prompt file
+            compact = {}
+            for lh, metrics in row.get("per_layer_head", {}).items():
+                compact[lh] = {}
+                for metric, st in metrics.items():
+                    if not isinstance(st, dict):
+                        compact[lh][metric] = st
+                        continue
+                    compact[lh][metric] = {k: st.get(k) for k in keep_stats if k in st}
+            row["per_layer_head"] = compact
             per_prompt.append(row)
     _atomic_json(out_dir / "mechanism-per-prompt.json", per_prompt)
 
@@ -1561,22 +1573,25 @@ def cmd_summarize(args):
     }
     _atomic_json(out_dir / "mechanism-summary.json", summary)
 
-    # bounded trace (no raw generated text)
+    # bounded trace (no raw generated text); hard caps keep the committed file small
+    pair_cap, step_cap = 600, 150
     trace = {
         "schema_version": 1, "run_id": RUN_ID,
         "note": "bounded small trace; raw generations remain outside Git in the run directory",
-        "dense_pair": dense.get("prompts", [{}])[0].get("trace_pair", [])[:TRACE_PAIR_MAX] if dense.get("prompts") else [],
-        "dense_step": dense.get("prompts", [{}])[0].get("trace_step", [])[:TRACE_STEP_MAX] if dense.get("prompts") else [],
-        "s2_pair": s2.get("prompts", [{}])[0].get("trace_pair", [])[:TRACE_PAIR_MAX] if s2.get("prompts") else [],
-        "s2_step": s2.get("prompts", [{}])[0].get("trace_step", [])[:TRACE_STEP_MAX] if s2.get("prompts") else [],
+        "caps": {"pair_entries_per_condition": pair_cap,
+                 "step_entries_per_condition": step_cap},
+        "dense_pair": [], "dense_step": [], "s2_pair": [], "s2_step": [],
     }
-    # gather a few traces from distinct prompts, still bounded
     for res, prefix in ((dense, "dense"), (s2, "s2")):
         for p in res.get("prompts", []):
-            if len(trace[prefix + "_pair"]) >= 2 * TRACE_PAIR_MAX:
+            pair_left = pair_cap - len(trace[prefix + "_pair"])
+            step_left = step_cap - len(trace[prefix + "_step"])
+            if pair_left <= 0 and step_left <= 0:
                 break
-            trace[prefix + "_pair"].extend(p.get("trace_pair", [])[:200])
-            trace[prefix + "_step"].extend(p.get("trace_step", [])[:60])
+            if pair_left > 0:
+                trace[prefix + "_pair"].extend(p.get("trace_pair", [])[:min(50, pair_left)])
+            if step_left > 0:
+                trace[prefix + "_step"].extend(p.get("trace_step", [])[:min(20, step_left)])
     _atomic_json(out_dir / "bounded-small-trace.json", trace)
 
     # exact plotting data: per condition/prompt/layer/head
