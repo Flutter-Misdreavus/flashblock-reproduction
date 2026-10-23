@@ -11,11 +11,11 @@
     "--out",
     "runs/flashblock-20261023-mechanism/preflight.json",
     "--attempt",
-    "1"
+    "2"
   ],
-  "execution_commit": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
-  "attempt": 1,
-  "started_at_utc": "2026-10-23T02:39:06Z",
+  "execution_commit": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
+  "attempt": 2,
+  "started_at_utc": "2026-10-23T02:42:48Z",
   "unit": {
     "status": "SUCCEEDED",
     "all_pass": true,
@@ -65,7 +65,7 @@
         "pass": true
       }
     },
-    "execution_commit": "4c00e4be50b8899ffc5407a80b59b4372135d3d7",
+    "execution_commit": "ecb4974a6ad1245c875b0142e43551c2ee99da07",
     "torch": "2.4.1+cu121",
     "cuda": "12.1",
     "device": "NVIDIA GeForce RTX 3090",
@@ -104,8 +104,8 @@
     "all_required_hooks_nonzero": true,
     "n_aligned_observations": 512,
     "hook_capture_errors": [],
-    "nohook_generation_seconds": 8.092,
-    "hook_generation_seconds": 8.936,
+    "nohook_generation_seconds": 8.502,
+    "hook_generation_seconds": 8.632,
     "nohook_resources": {
       "peak_allocated_mib": 11068.6,
       "peak_reserved_mib": 11106.0,
@@ -113,7 +113,12 @@
       "free_mib_start": 19729.1,
       "free_mib_end": 8563.1,
       "gpu_total_mib": 24134.2,
-      "samples": 16
+      "samples": 17,
+      "breach": null,
+      "limits": {
+        "min_free_mib": 3072.0,
+        "max_allocated_mib": 16384.0
+      }
     },
     "hook_resources": {
       "peak_allocated_mib": 11068.6,
@@ -122,7 +127,12 @@
       "free_mib_start": 19729.1,
       "free_mib_end": 8563.1,
       "gpu_total_mib": 24134.2,
-      "samples": 18
+      "samples": 17,
+      "breach": null,
+      "limits": {
+        "min_free_mib": 3072.0,
+        "max_allocated_mib": 16384.0
+      }
     }
   },
   "attempts": [
@@ -142,5 +152,6 @@
       "log": "/data/research/flashblock-reproduction/runs/flashblock-20261023-mechanism/preflight/hook.log"
     }
   ],
-  "ended_at_utc": "2026-10-23T02:39:42Z"
+  "ended_at_utc": "2026-10-23T02:43:25Z",
+  "wall_seconds": 37.166
 }
