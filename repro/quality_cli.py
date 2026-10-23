@@ -152,11 +152,31 @@ def _budget_guard(cfg, current_elapsed=0.0, margin_seconds=120.0):
     stage_cap = cfg["budget"]["stage_gpu_hours"] * 3600.0 - margin_seconds
     campaign_cap = (cfg["budget"]["campaign_limit_gpu_hours"]
                     - cfg["budget"]["reserve_gpu_hours"]) * 3600.0 - margin_seconds
-    if st["prior_gpu_seconds_including_current"] > min(stage_cap, campaign_cap):
+    if (st["prior_gpu_seconds_including_current"] > stage_cap
+            or st["campaign_gpu_hours"] * 3600.0 > campaign_cap):
         raise BudgetError(
             "GPU budget guard: measured stage/campaign allocation would exceed "
-            f"cap+reserve: {json.dumps(st)}")
+            f"stage cap or campaign cap-reserve: {json.dumps(st)}")
     return st
+
+
+def _budget_deadline(cfg, margin_seconds=120.0, base_prior=None):
+    """Monotonic deadline from the GPU-command wall charged at command start."""
+    if base_prior is None:
+        base_prior = _gpu_prior_seconds()
+    stage_left = cfg["budget"]["stage_gpu_hours"] * 3600.0 - base_prior
+    campaign_left = ((cfg["budget"]["campaign_limit_gpu_hours"]
+                      - cfg["budget"]["reserve_gpu_hours"]
+                      - cfg["budget"]["campaign_before_gpu_hours"]) * 3600.0
+                     - base_prior)
+    left = min(stage_left, campaign_left) - margin_seconds
+    if left <= 0:
+        raise BudgetError(f"no GPU wall budget remains: stage_left={stage_left:.1f}s "
+                          f"campaign_left={campaign_left:.1f}s")
+    return time.monotonic() + left, {"base_prior_seconds": round(base_prior, 3),
+                                     "stage_left_seconds": round(stage_left, 3),
+                                     "campaign_left_seconds": round(campaign_left, 3),
+                                     "deadline_margin_seconds": margin_seconds}
 
 
 def _configure_env(cfg):
@@ -490,6 +510,8 @@ def _install_finite_hook(h, audit):
         audit["max_numel"] = max(audit.get("max_numel", 0), int(logits.numel()))
         if not bool(torch.isfinite(logits).all().item()):
             audit["nonfinite_calls"] += 1
+            raise RuntimeError(
+                f"nonfinite logits at audited run_model call {audit['calls']}")
         return logits
 
     mr.run_model = wrapped
@@ -528,6 +550,13 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
     t0 = time.perf_counter()
     prefill_seconds = None
     decode_seconds = None
+
+    def checked_step():
+        deadline = h.get("budget_deadline")
+        if deadline is not None and time.monotonic() > deadline:
+            raise BudgetError("live monotonic GPU wall deadline exceeded inside a group")
+        eff._step_h(h, ratio)
+
     try:
         # Sequential prefill, identical both conditions (scheduler does not
         # enforce max_num_batched_tokens).
@@ -537,7 +566,7 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
             seqs.append(seq)
             guard = 0
             while seq.status.name == "WAITING":
-                eff._step_h(h, ratio)
+                checked_step()
                 guard += 1
                 if guard > 8:
                     raise RuntimeError(f"prefill did not complete for {item['index']}")
@@ -545,9 +574,11 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
         prefill_seconds = time.perf_counter() - t0
         t_dec = time.perf_counter()
         while llm.scheduler.running:
-            eff._step_h(h, ratio)
+            checked_step()
         T.cuda.synchronize()
         decode_seconds = time.perf_counter() - t_dec
+    except BudgetError:
+        raise
     except Exception as exc:  # noqa: BLE001
         error = repr(exc)
         tb = traceback.format_exc()[-6000:]
@@ -561,6 +592,14 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
     eos_id = int(getattr(llm.tokenizer, "eos_token_id", -1))
     rows = []
     problems = []
+    if peak_alloc > float(c["peak_allocated_limit_mib"]):
+        problems.append(
+            f"boundary resource violation: torch allocated {peak_alloc:.1f} MiB")
+    if float(load_end["mem_free_mib"]) < float(c["min_free_mib"]):
+        problems.append(
+            f"boundary resource violation: physical free {load_end['mem_free_mib']:.1f} MiB")
+    if h.get("sampler") is not None and h["sampler"].breach is not None:
+        problems.append(f"sampler guard breach: {h['sampler'].breach}")
     for seq_pos, seq in enumerate(seqs):
         sid = int(seq.seq_id)
         ids = h["finished"].get(sid)
@@ -580,6 +619,7 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
             finish = "other"
         truncated = finish == "max_tokens"
         text = llm.tokenizer.decode(ids, skip_special_tokens=False)
+        clean_text = llm.tokenizer.decode(ids, skip_special_tokens=True)
         seq_completion = len(ids)
         try:
             seq_completion = int(seq.num_completion_tokens)
@@ -606,7 +646,7 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
             "finish_reason": finish,
             "eos_present": eos_present,
             "truncated": truncated,
-            "empty_output": not bool(text.strip()),
+            "empty_output": not bool(clean_text.strip()),
             "ids_in_vocab": ids_in_vocab,
             "contains_mask_token": contains_mask,
             "seq_id": sid,
@@ -623,6 +663,10 @@ def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
         "ratio": float(ratio),
         "group_condition_order": int(order_pos),
         "execution_commit": commit,
+        "config_sha256": _config_sha(),
+        "manifest_sha256": _manifest_sha() if MANIFEST_PATH.exists() else None,
+        "scorer_sha256": _scorer_sha(),
+        "eos_token_id": eos_id,
         "seed": int(c["seed"]),
         "seed_before_run": seedinfo,
         "max_new_tokens": int(max_tokens),
@@ -657,7 +701,10 @@ def cmd_smoke(args):
     cfg = load_config()
     if _manifest_sha() != args.manifest_sha:
         raise RuntimeError("smoke manifest hash does not match frozen manifest")
+    execution_commit = _git_head()
     _budget_guard(cfg)
+    base_prior = _gpu_prior_seconds()
+    deadline, budget_info = _budget_deadline(cfg, base_prior=base_prior)
     _configure_env(cfg)
     torch = _init_torch()
     eff._setup_paths()
@@ -677,8 +724,9 @@ def cmd_smoke(args):
     h = None
     result = {"schema_version": 1, "run_id": RUN_ID, "stage": "train_smoke",
               "scope": "GSM8K train prompts 100,101; ordinary EOS; max 256 new tokens; smoke only, no accuracy claim",
-              "execution_commit": _git_head(), "status": "FAILED",
+              "execution_commit": execution_commit, "status": "FAILED",
               "config_sha256": _config_sha(), "manifest_sha256": _manifest_sha(),
+              "budget_deadline": budget_info,
               "commands": ["smoke train100..101 both conditions ordinary EOS max256"],
               "conditions": {}}
     try:
@@ -687,7 +735,8 @@ def cmd_smoke(args):
             label="smoke engine construction")
         result["preconstruction"] = free
         h = {"cfg": cfg, "batch": 2, "llm": eff._make_engine(cfg, 2),
-             "identity_layers": [], "expected": {}, "sampler": sampler}
+             "identity_layers": [], "expected": {}, "sampler": sampler,
+             "budget_deadline": deadline}
         h["model_runner"] = h["llm"].model_runner
         eff._install_recorder(h, [])
         kv = int(h["llm"].config.num_kvcache_blocks)
@@ -709,7 +758,7 @@ def cmd_smoke(args):
             ratio = cfg["controls"]["sparsity_ratio_dense"] if cond == "dense" else cfg["controls"]["sparsity_ratio_s2"]
             res = _run_batch(h, cfg, items, cond, ratio, group_index=-1,
                              order_pos=pos, max_tokens=256,
-                             commit=_git_head())
+                             commit=execution_commit)
             result["conditions"][cond] = res
             _atomic_json(RUN_DIR / f"train-smoke-{cond}.json", res)
             if res["status"] != "SUCCEEDED":
@@ -718,9 +767,9 @@ def cmd_smoke(args):
                 if int(res["counters"].get("reuse_rows", 0)) <= 0:
                     ok_all = False
                     result["s2_reuse_failure"] = "no reuse rows observed"
-                if int(res["counters"].get("need_update_rows", 0)) <= 0:
+                if int(res["counters"].get("update_rows", 0)) <= 0:
                     ok_all = False
-                    result["s2_update_failure"] = "no need_update rows observed"
+                    result["s2_update_failure"] = "no need_update/update rows observed"
             else:
                 if int(res["counters"].get("reuse_rows", 0)) != 0:
                     ok_all = False
@@ -802,7 +851,7 @@ def _load_frozen(cfg):
     return man, by_index
 
 
-def _validate_completed_group(path, man, group_index, condition):
+def _validate_completed_group(path, man, group_index, condition, cfg):
     if not path.exists():
         return None
     data = _load_json(path)
@@ -810,16 +859,53 @@ def _validate_completed_group(path, man, group_index, condition):
         return None
     if int(data.get("group_index", -1)) != group_index or data.get("condition") != condition:
         raise RuntimeError(f"completed group identity mismatch: {path}")
+    if data.get("problems") not in ([], None):
+        raise RuntimeError(f"completed group carries problems: {path}")
     if len(data.get("items", [])) != 4:
         raise RuntimeError(f"completed group does not have 4 items: {path}")
-    ids = sorted(int(x["index"]) for x in data["items"])
+    if data.get("config_sha256") != man["config_sha256"]:
+        raise RuntimeError(f"completed group config hash mismatch: {path}")
+    if data.get("manifest_sha256") != _manifest_sha():
+        raise RuntimeError(f"completed group manifest hash mismatch: {path}")
+    if data.get("scorer_sha256") != man["scorer"]["sha256"]:
+        raise RuntimeError(f"completed group scorer hash mismatch: {path}")
+    if not data.get("execution_commit"):
+        raise RuntimeError(f"completed group missing execution commit: {path}")
+    if int(data.get("seed", -1)) != int(cfg["controls"]["seed"]):
+        raise RuntimeError(f"completed group seed mismatch: {path}")
+    if int(data.get("max_new_tokens", -1)) != int(cfg["controls"]["max_new_tokens"]):
+        raise RuntimeError(f"completed group max-token limit mismatch: {path}")
+    if int(data.get("batch_size", -1)) != int(cfg["controls"]["batch_size"]):
+        raise RuntimeError(f"completed group batch size mismatch: {path}")
+    order = (cfg["groups"]["order_even_group_index"] if group_index % 2 == 0
+             else cfg["groups"]["order_odd_group_index"])
+    if int(data.get("group_condition_order", -1)) != order.index(condition):
+        raise RuntimeError(f"completed group condition order mismatch: {path}")
+    eos_id = int(data.get("eos_token_id", -1))
+    ids_expected = sorted(int(x["index"]) for x in data["items"])
     expected = man["dataset"]["ids"][group_index * 4:(group_index + 1) * 4]
-    if ids != expected:
+    if ids_expected != expected:
         raise RuntimeError(f"completed group IDs mismatch: {path}")
     for row in data["items"]:
         meta = next(x for x in man["items"] if int(x["index"]) == int(row["index"]))
+        ids = [int(x) for x in row["token_ids"]]
         if row["prompt_sha256"] != meta["prompt_sha256"]:
             raise RuntimeError(f"completed group prompt hash mismatch: {path}")
+        if int(row["prompt_tokens"]) != int(meta["prompt_tokens"]):
+            raise RuntimeError(f"completed group prompt length mismatch: {path}")
+        if int(row["new_tokens"]) != len(ids):
+            raise RuntimeError(f"completed group token count mismatch: {path}")
+        if row["output_sha256"] != _sha256_bytes(
+                json.dumps(ids, separators=(",", ":")).encode()):
+            raise RuntimeError(f"completed group output hash mismatch: {path}")
+        if bool(row["truncated"]) != (row["finish_reason"] == "max_tokens"):
+            raise RuntimeError(f"completed group truncation flag mismatch: {path}")
+        if bool(row["eos_present"]) != (bool(ids) and ids[-1] == eos_id):
+            raise RuntimeError(f"completed group EOS flag mismatch: {path}")
+        if not bool(row["ids_in_vocab"]) or bool(row["contains_mask_token"]):
+            raise RuntimeError(f"completed group invalid raw IDs: {path}")
+        if len(ids) > int(cfg["controls"]["max_new_tokens"]) or len(ids) < 1:
+            raise RuntimeError(f"completed group length outside limit: {path}")
     return data
 
 
@@ -834,7 +920,16 @@ def cmd_generate(args):
     torch = _init_torch()
     eff._setup_paths()
     RAW_DIR.mkdir(parents=True, exist_ok=True)
+    execution_commit = _git_head()
+    if cfg["controls"]["ignore_eos"] is not False:
+        raise RuntimeError("heldout generation requires ignore_eos=false")
+    if int(cfg["controls"]["max_new_tokens"]) != 4096:
+        raise RuntimeError("heldout generation requires exact max_new_tokens=4096")
+    if int(cfg["controls"]["batch_size"]) != 4 or int(cfg["controls"]["max_active"]) != 4:
+        raise RuntimeError("heldout generation requires batch_size=max_active=4")
     _budget_guard(cfg)
+    base_prior = _gpu_prior_seconds()
+    deadline, budget_info = _budget_deadline(cfg, base_prior=base_prior)
     started = eff._now()
     t_start = time.time()
     sampler = eff.NvmlSampler(
@@ -844,11 +939,12 @@ def cmd_generate(args):
     sampler.start()
     h = None
     progress = {"schema_version": 1, "run_id": RUN_ID,
-                "execution_commit": _git_head(), "status": "RUNNING",
+                "execution_commit": execution_commit, "status": "RUNNING",
                 "started": started, "groups_total": 32,
                 "completed_group_conditions": [],
                 "config_sha256": _config_sha(),
-                "manifest_sha256": _manifest_sha()}
+                "manifest_sha256": _manifest_sha(),
+                "budget_deadline": budget_info}
     error = None
     status = "FAILED"
     try:
@@ -859,7 +955,8 @@ def cmd_generate(args):
         init_t0 = time.perf_counter()
         h = {"cfg": cfg, "batch": int(cfg["controls"]["batch_size"]),
              "llm": eff._make_engine(cfg, int(cfg["controls"]["batch_size"])),
-             "identity_layers": [], "expected": {}, "sampler": sampler}
+             "identity_layers": [], "expected": {}, "sampler": sampler,
+             "budget_deadline": deadline}
         h["model_runner"] = h["llm"].model_runner
         eff._install_recorder(h, [])
         progress["engine_init_seconds"] = round(time.perf_counter() - init_t0, 3)
@@ -893,7 +990,7 @@ def cmd_generate(args):
                               "prompt_tokens": meta["prompt_tokens"]})
             for pos, cond in enumerate(order):
                 path = _group_path(g, cond)
-                done = _validate_completed_group(path, man, g, cond)
+                done = _validate_completed_group(path, man, g, cond, cfg)
                 if done is not None:
                     key = f"g{g:02d}:{cond}"
                     if key not in progress["completed_group_conditions"]:
@@ -906,7 +1003,7 @@ def cmd_generate(args):
                     shutil.move(str(path), str(dest))
                     progress.setdefault("preserved_failed_files", []).append(str(dest))
                 _budget_guard(cfg, time.time() - t_start)
-                commit = _git_head()
+                commit = execution_commit
                 res = _run_batch(h, cfg, items, cond,
                                  (cfg["controls"]["sparsity_ratio_s2"] if cond == "s2"
                                   else cfg["controls"]["sparsity_ratio_dense"]),
@@ -930,6 +1027,10 @@ def cmd_generate(args):
                                   "elapsed_s": progress["elapsed_seconds"],
                                   "group_wall_s": res["wall_seconds"],
                                   "decode_s": res["decode_seconds"]}), flush=True)
+        if audit["nonfinite_calls"] != 0 or audit["calls"] == 0:
+            raise RuntimeError(f"nonfinite/missing logits audit: {audit}")
+        if len(progress["completed_group_conditions"]) != 64:
+            raise RuntimeError("not all 64 group-condition calls completed")
         status = "SUCCEEDED"
     except BudgetError as exc:
         status = "BLOCKED"
@@ -1013,7 +1114,7 @@ def cmd_summarize(args):
     for g in range(32):
         for cond in ("dense", "s2"):
             path = _group_path(g, cond)
-            data = _validate_completed_group(path, man, g, cond)
+            data = _validate_completed_group(path, man, g, cond, cfg)
             if data is None:
                 raise RuntimeError(f"missing/incomplete group file: {path}")
             group_rows[(g, cond)] = data
