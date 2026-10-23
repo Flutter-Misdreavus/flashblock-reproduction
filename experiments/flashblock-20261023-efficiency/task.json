@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "parent_run_id": "flashblock-20261023-mechanism",
+  "ready": true,
+  "hypothesis": "Official tau2 attention reuse improves decoding throughput over optimized dense attention as per-sequence context increases, on one shared RTX3090 with original TraDo4B.",
+  "baseline": "Original optimized dense attention, same4B weights, decoder, sampler and scheduled batch/inputs.",
+  "intervention": "Official s2/tau2 cached A/L reuse; no training or quantization.",
+  "dataset": "Frozen model d350259d64abf9219362ccb1435d68910744eea7 and openai/gsm8k main 740312add88f781978c0658806c59bc2815b9866; existing verified runtime files only.",
+  "split": "Training text only for deterministic workload token manifests and preflight; no heldout QA. Six settings B1/B4 x per-sequence initial prefix1024/4096/8192.",
+  "primary_metric": "Mean of five paired dense_decode_seconds/s2_decode_seconds ratios at batch4 x8192 initial tokens per sequence, each producing exactly256 tokens per request; higher better.",
+  "decision_rule": ">=1.10 mean primary speedup meets frozen engineering target, not paper-table replication. Report all5pairs, descriptive paired-bootstrap95%CI, shared-load variability and step-count differences. No selective reruns/dropouts. Valid negative findings proceed to quality review; numerical/resource failure blocks.",
+  "controls": [
+    "Read parent supervisor-review.md and PROTOCOL.md. No heldout evaluation, training, quantization or scientific-parameter changes. Use existing tested isolatedenvironment; no reinstall.",
+    "GPU UUID GPU-REDACTED only, ownpeak<=16GiB/free>=3GiB, CPU<=8, newdisk<=30GiB/free>=40GiB, campaign<=8GPUh. Log measured processallocationwall including failures. No otherprocessinterference.",
+    "Block4, denoise8, dynamic.9, temp1, top_p1, top_k0, consistent_sampling1, seed42 reset per run. IgnoreEOStrue ONLY for this fixedwork performance task. Exact outputcount B*256, no residual masks/invalidrawIDs. Same inputs bothconditions.",
+    "Build and freeze long inputs from original train text, deterministic offsets/truncation/concatenation; persequence lengths EXACT1024/4096/8192. Distinctfirst256-tokenprefix hashes for4inputs; prevent accidental sharedprefixpages. Storerawtokens outsideGit, versionmanifesthashes andconstructionrecipe.",
+    "Allocatedcachebatch_size==max_active exactly (1or4). Schedule sequential prefill identicallybothconditions to constrain peakmem: addone request, executeitsPREFILLonly, thenaddnext, deferdecode untilallBprefilled. Scheduler does NOT enforce max_num_batched_tokens. Record this implementationchoice.",
+    "Reset scheduler/block-manager state/prefixcache consistently between timedruns outside timing, with no liverequests. Warmup bothdenseands2 at each exactshape beforefivepairs. Exclude modelinit/JIT/warmup. Primarytime includes scheduler/sample/refresh/store/merge/completioncompaction. CUDA synchronize only timingboundaries, no per-step profile sync or JSONL traces in timedruns.",
+    "Pairedorder frozen AB,BA,AB,BA,AB for eachsetting; seed42 repeated. Fixedsettingorder B1L1024,B1L4096,B1L8192,B4L1024,B4L4096,B4L8192. Saveincrementally andretainallruns; no best-runselection.",
+    "End-to-end metric means prefill+decode for pretokenized requests; reportprefill separately. Tokenization/modelinit/detokenizationexcluded and explicitlystated. Same countingbothconditions. Record tokens, diffusion/saving steps, reuse/full/store counts, deterministicoutputhashes.",
+    "Actual cached A/L identity under partialcompletion/newrequest insertion must pass preflight. See implementation-notes.md. Rawstepdriver must apply original move_to_end_torch ordering to BOTH buffers aftereachcompletion before nextstep.",
+    "Memorycapacity planning includes36layers*144KiB/token and4calc pages plusweights/temporaries. Calculatefromactualfree. gpu_memory_utilization is GLOBALdevicetarget; no blind.95default. RequireenoughKVpages for4*(8192+256) +calcpages beforetiming. If primarycannotfitwithinbudget, reportnotmeasured; no silentbatch/contextreduction.",
+    "Capture shared-load evidence via low-overheadNVML/physicalmemory sampling identicallybothconditions; otherprocesscount/memory andoverallutil plusidleutilbefore/after ifavailable. Do not infer exclusiveGPU or perprocesscomputeutil frommemoryalone. Flag noisy timings anddescriptiveCI.",
+    "Separate representative B4L8192 instrumentedprofiles (one percondition afterwarmup) forattention/other time; exclude theirlatencies from primary60runs. Report profilerperturbation and actualstepwork.",
+    "COMMIT BEFORE ALL GPU PROBES, includingdevelopment; remove/disable allow-dirtyfor this stage. Max2implementation-repaircycles; preserve failures/no overwrite. Explicitpathstaging,checkdiff,pushrelayGPT/check15min. No nestedagents/no detachedjobs.",
+    "No needrepeat all oldsyntheticcorrectness tests unlessaffectedcodechanges. Use proven path/seed/resourcehelpers. Allruntimeexceptionsstop affectedexecution; no posthocpassingNaN/referencefail.",
+    "ParentGPTconservativecampaigncharge=1.00GPUh. Thisstage<=1.50GPUh, leaving>=5.50h forquality/reserve under8h. Trackboth GPU-commandwall andwrapperwall withoutmislabeling.",
+    "Important: parentmechanismactualreusefulloutputerror0.243 is acceptedapproximation evidence, not a kernel defect. Do notchange tau,dirty-maskbehavior,sampler ormodel toreduceit. Only efficiencydrivers/referenceidentity/runtimecompatibility may befixed."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Start from GPT-accepted mechanism-stage commit. Commit implementation/config/manifests before ALL GPU tests; record actual per-attempt/run SHA and verify clean worktree.",
+  "environment": "Existing isolated Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9, compiled customFA; DO NOT reinstall. xxhash3.5.0 pinned; verify/install only missing requirements.",
+  "experiment_commands": [
+    "Read acceptedparentreview and notes. Freeze minimal performanceconfig/inputrecipe. Implement focused driver and cached-slot identity preflight; commitbeforeANYexecution. Record CUDA/kernel/libraryversions andinitialGPU/diskheadroom.",
+    "Untimedpreflight6train100..105 requests, max_tokens[16,32,48,64,16,32], batch4/max_active4 toforce partialcompletion/replacement. VerifyrealA/Lexpectedbyseq_id onreuse andno reusebeforestore fornewseq; fullbuffercopyreorderidentity, finitevalidoutputs, memory. Then tinyfixedwork timing sanity check withsynchronizedboundaries. Preserveallattempts; max2committedfixcycles.",
+    "Afterpreflightpass, runall6settings with warmups and5pairedinterleavedrepeats, exactly256newtokens/seq. PrimaryconditionB4L8192. Persist eachrawrecordandhash outsideGit plus smallmetricsincrementally, enforcecumulativeGPUallocationbudget and memoryguards.",
+    "Run separate one representative profilepercondition atB4L8192 forattention/nonattentionbreakdown. Do notmixprofilelatencies into mainrows. Exportspeed/contexttable, allpairedrecords, mean/medianTPS,prefill/E2E, pairedratioCI, stepcounts,reusefraction, memory andloadsummary.",
+    "Write structuredreport andartifactswithsmallrawtimings/configs/manifests/provenance/resources; commit andstopforGPTreview. No heldoutquality yet. GPTwillindependentlyrecomputestatisticsandmakefigures fromcompletepairedrows."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 1.5,
+    "wall_seconds": 7200,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only, one bounded headless session; no paid API purchases/top-ups."
+  },
+  "stop_conditions": [
+    "Thisstage activeGPUallocation<=1.5h; campaign<=8h includingpriorstages/failures. Wrapper7200s/systemd7260s. Fill exactpriorcharge from parentreviewbeforelaunch.",
+    "Stop onOOM,NaN,cacheidentityfailure,incorrectworkcounts,provenancemismatch,resourcebreach. Never silentlyreduceprimarybatch/context orchange sampler.",
+    "Max2implementation-repaircycles, committedbeforeeachtest. Preservefailures/attemptidentities. Runfixedmatrixonce; sharedloadnoiseis reported, notgroundsforcherry-pickedrepeats.",
+    "StopafterthisstageforGPTreview; heldouttestnotauthorizedinthisrun."
+  ],
+  "required_outputs": [
+    "report.json",
+    "efficiency-paired-runs.json or CSV (60timedrows)",
+    "efficiency-summary.json",
+    "input-manifest.json",
+    "preflight.json withactualcachedslotidentityevidence",
+    "separate-profile.json",
+    "resource-ledger.json",
+    "commands-and-provenance.json",
+    "versioneddriver/config andallactualruncommits"
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "run_id": "flashblock-20261023-mechanism",
+  "wrapper_wall_seconds": 1951.493,
+  "gpu_hours_upper_charge": 0.6,
+  "basis": "Entire wrapper wall rounded up; conservative, includes CPU-only work and all failed/unaccepted probes, not measured GPU busy time.",
+  "prior_campaign_gpu_hours_charge": 0.4,
+  "campaign_gpu_hours_charge": 1.0,
+  "limit": 8.0
+}
