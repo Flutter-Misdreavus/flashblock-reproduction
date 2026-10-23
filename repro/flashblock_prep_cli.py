@@ -716,7 +716,7 @@ def cmd_smoke(args):
 
         llm = LLM(
             args.model, enforce_eager=True, tensor_parallel_size=1,
-            mask_token_id=MASK_TOKEN_ID, block_length=4, batch_size=max(4, len(prompts)),
+            mask_token_id=MASK_TOKEN_ID, block_length=4, batch_size=len(prompts),
             gpu_memory_utilization=args.gpu_mem, max_model_len=args.max_model_len,
             max_num_batched_tokens=args.max_model_len, max_num_seqs=4,
         )
