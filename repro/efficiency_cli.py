@@ -456,6 +456,31 @@ def _install_recorder(h, identity_layers):
         return seqs, rt
 
     sch.schedule = wrapped
+    h["orig_schedule"] = orig
+
+
+def _release_engine(h):
+    """Break recorder closures, exit the engine, drop every reference, free cache."""
+    if h is None:
+        return
+    llm = h.get("llm")
+    try:
+        if llm is not None and h.get("orig_schedule") is not None:
+            llm.scheduler.schedule = h["orig_schedule"]
+    except Exception:
+        pass
+    try:
+        if llm is not None:
+            llm.exit()
+    except Exception:
+        pass
+    for key in ("llm", "model_runner", "expected", "orig_schedule", "sampler"):
+        h[key] = None
+    import gc
+    gc.collect()
+    if torch is not None:
+        torch.cuda.empty_cache()
+        torch.cuda.synchronize()
 
 
 def _step_h(h, ratio, identity=False):
@@ -869,8 +894,7 @@ def cmd_preflight(args):
         res["status"] = "FAILED"
     finally:
         try:
-            if h is not None:
-                h["llm"].exit()
+            _release_engine(h)
         except Exception as e:
             res["engine_exit_error"] = repr(e)
         res["resources"] = sampler.summary()
@@ -916,6 +940,66 @@ def _prior_gpu_wall(include_current_matrix=False):
             except Exception:
                 pass
     return total, details
+
+
+def cmd_smoke(args):
+    cfg = load_config(args.config)
+    _configure_env(cfg)
+    _setup_paths()
+    _init_torch()
+    if _git_status():
+        raise SystemExit("refusing GPU smoke with dirty worktree")
+    commit = _git_head()
+    res = {"schema_version": 1, "run_id": RUN_ID, "status": "FAILED",
+           "execution_commit": commit, "argv": [sys.executable] + sys.argv,
+           "started_at_utc": _now(), "steps": []}
+    probe = NvmlSampler(cfg["controls"]["gpu_uuid"], interval=99)
+    probe._init_nvml()
+    t0 = time.perf_counter()
+    h = None
+    try:
+        res["free_before"] = probe.query()
+        for batch in (1, 4):
+            h = {"cfg": cfg, "batch": batch, "llm": _make_engine(cfg, batch),
+                 "identity_layers": [], "expected": {}}
+            h["model_runner"] = h["llm"].model_runner
+            _install_recorder(h, [])
+            kv = int(h["llm"].config.num_kvcache_blocks)
+            cal = len(h["llm"].scheduler.cal_blocks)
+            need = batch * math.ceil(cfg["controls"]["max_model_len"] / 256)
+            item = {"batch": batch, "kv_blocks": kv, "cal_blocks": cal,
+                    "free_data_blocks": kv - cal, "needed_data_blocks": need,
+                    "allocated_mib": round(float(torch.cuda.memory_allocated() / 2**20), 1),
+                    "free_after_init": probe.query()}
+            res["steps"].append(item)
+            if kv - cal < need:
+                raise RuntimeError(f"B{batch} KV capacity {kv-cal} < {need}")
+            _release_engine(h)
+            h = None
+            item["allocated_after_release_mib"] = round(
+                float(torch.cuda.memory_allocated() / 2**20), 1)
+            item["free_after_release"] = probe.query()
+            if item["allocated_after_release_mib"] > 1024:
+                raise RuntimeError(
+                    f"B{batch} model memory not released: "
+                    f"{item['allocated_after_release_mib']} MiB still allocated")
+        res["status"] = "SUCCEEDED"
+    except Exception as e:
+        import traceback
+        res["error"] = repr(e)
+        res["traceback"] = traceback.format_exc()[-4000:]
+    finally:
+        try:
+            _release_engine(h)
+        except Exception:
+            pass
+        res["wall_seconds"] = round(time.perf_counter() - t0, 3)
+        res["gpu_command_wall_seconds"] = res["wall_seconds"]
+        res["ended_at_utc"] = _now()
+        _atomic_json(Path(args.out).resolve(), res)
+    print(json.dumps({"status": res["status"], "out": args.out,
+                      "error": res.get("error")}))
+    return 0 if res["status"] == "SUCCEEDED" else 1
 
 
 def cmd_matrix(args):
@@ -1044,16 +1128,8 @@ def cmd_matrix(args):
                     "completed_rows": len(all_rows), "warmups": len(meta["warmups"]),
                     "gpu_wall_seconds": round(time.perf_counter() - t_start, 1)})
             # release this engine completely before constructing the next batch engine
-            try:
-                current_h["llm"].exit()
-            finally:
-                current_h["model_runner"] = None
-                current_h["llm"] = None
-                current_h = None
-                import gc
-                gc.collect()
-                torch.cuda.empty_cache()
-                torch.cuda.synchronize()
+            _release_engine(current_h)
+            current_h = None
         meta["status"] = "SUCCEEDED"
     except Exception as e:
         import traceback
@@ -1064,7 +1140,7 @@ def cmd_matrix(args):
     finally:
         if current_h is not None:
             try:
-                current_h["llm"].exit()
+                _release_engine(current_h)
             except Exception as e:
                 failures.append({"engine_exit": "error", "error": repr(e)})
         meta["resources"] = sampler.summary()
@@ -1156,8 +1232,7 @@ def cmd_profile(args):
         res["traceback"] = traceback.format_exc()[-5000:]
     finally:
         try:
-            if h is not None:
-                h["llm"].exit()
+            _release_engine(h)
         except Exception as e:
             res["engine_exit_error"] = repr(e)
         res["resources"] = sampler.summary()
@@ -1509,6 +1584,7 @@ def main():
     p = sub.add_parser("freeze"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_freeze)
     p = sub.add_parser("probe"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_probe)
     p = sub.add_parser("preflight"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_preflight)
+    p = sub.add_parser("smoke"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_smoke)
     p = sub.add_parser("matrix"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_matrix)
     p = sub.add_parser("profile"); p.add_argument("--config", default=str(CONFIG_PATH)); p.add_argument("--out", required=True); p.set_defaults(func=cmd_profile)
     p = sub.add_parser("summarize"); p.add_argument("--config", default=str(CONFIG_PATH)); p.set_defaults(func=cmd_summarize)

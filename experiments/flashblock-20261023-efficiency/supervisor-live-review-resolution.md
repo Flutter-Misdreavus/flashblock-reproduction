@@ -32,3 +32,14 @@ preserved here with this resolution. No frozen scientific parameter changed.
 7. **Clean guards.** Frozen config, driver, manifest and environment snapshot
    were committed sequentially before the first GPU preflight. No `--allow-dirty`
    path exists in this stage. Raw run files stay outside Git.
+
+8. **Matrix attempt 1 OOM (2026-10-23T03:27Z).** The first matrix attempt
+   completed all 30 B1 rows, then OOM'd while constructing the B4 engine
+   (19.18 GiB still allocated by PyTorch). The `schedule` recorder closure held a
+   direct reference to `model_runner`, so `LLM.exit()` did not actually free the
+   B1 model. Fix: store the original bound `schedule`, restore it (dropping the
+   recorder closure) before `exit`, then drop every `h` reference, `gc.collect()`
+   and `torch.cuda.empty_cache()`. A committed `smoke` command now constructs B1,
+   releases it, asserts process allocation <=1024 MiB, then constructs B4, before
+   any full rerun. Attempt 1 raw rows/log are retained as `*-attempt1.*` and are
+   not used in the 60-row summary.
