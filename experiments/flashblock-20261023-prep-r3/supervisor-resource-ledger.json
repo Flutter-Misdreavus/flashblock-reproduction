@@ -1,0 +1,9 @@
+{
+  "run_id": "flashblock-20261023-prep-r3",
+  "wrapper_wall_seconds": 1035.937,
+  "gpu_hours_charge": 0.3,
+  "basis": "Conservative entire r3 wrapper wall rounded up, includes CPU-only work; not measured GPU active time.",
+  "prior_gpu_hours_charge": 0.1,
+  "campaign_gpu_hours_charge": 0.4,
+  "campaign_gpu_hours_limit": 8
+}

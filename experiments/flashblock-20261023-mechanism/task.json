@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-mechanism",
+  "parent_run_id": "flashblock-20261023-prep-r3",
+  "ready": true,
+  "hypothesis": "On actual TraDo4B diffusion trajectories, aligned block-external attention outputs are more stable across adjacent denoising steps than block-internal outputs; actual tau2 cached reuse has measurable approximation error.",
+  "baseline": "Original dense optimized attention and identical sampler; independent FP32 split/recombine diagnostic does not replace model forward outputs.",
+  "intervention": "Official s2/tau2 on own trajectory; separate previous-step stale A/L diagnostic on dense trajectory.",
+  "dataset": "Frozen model d350259d64abf9219362ccb1435d68910744eea7 and openai/gsm8k main 740312add88f781978c0658806c59bc2815b9866; existing verified runtime files only.",
+  "split": "GSM8K train indices100..115, max512 new tokens ordinaryEOS per prompt; no heldout test. Heads0,8,16,24 layers0,2,17,35.",
+  "primary_metric": "Per-prompt mean aligned adjacent-step A_out cosine minus A_in cosine, equally average selected layers/heads; report mean gap and prompt-bootstrap95%CI.",
+  "decision_rule": "Mechanistic relative-stability claim supported descriptively if mean paired gap>0; CI entirely>0 adds evidence only on this small subset. Negative gap or heterogeneous layers are retained. LSE drift and full composed-output errors accompany cosine, never infer exactness or quality from cosine. No test tuning.",
+  "controls": [
+    "Follow AGENTS.md/PROTOCOL.md, read parent review. No training, quantization, threshold tuning or heldout evaluation.",
+    "Existing isolated environment and fixed model, no reinstall. GPU UUID GPU-REDACTED only; own peak16GiB, free>=3GiB; CPU<=8, disknew<=30GiB/free>=40GiB; no otherprocesschanges.",
+    "Batch1 sequential prompts (no dynamic compaction required this stage), allocatedcachebatch1/max_active1. Existing original chat template verifiedmatches tokenizer; same controls block4/denoise8/dynamic.9/temp1/topp1/topk0/consistent_sampling1/seed42 reset each prompt bothconditions.",
+    "Instrument selected post-RoPE attention inputs/outputs without replacing model outputs or consuming sampling RNG. Timing is diagnostic only and never a speed result.",
+    "Use immutable per-step snapshot BEFORE scheduler mutates seq.block_table/num_tokens on reuse. Full reference uses true historical pages and fresh current K/V, not the temporary calc-page. See implementation-notes.md.",
+    "Only align consecutive DENOISING steps on same prompt/blockstart/queryposition. Exclude prefill/saving and block transitions; stratify changed vs unchanged input token rows. No averaging unrelated token positions.",
+    "Aggregate and bootstrap by prompt (16units), not token-level pseudoreplication. Save small per-prompt/layer/head summaries and bounded traces; rawgenerations/tensors outsideGit.",
+    "Full no-reuse split/recombine control vs actual dense output; separately actual s2 output vs fresh full reference and independent stale A/L merge. Refresh means actual cachewrite, not every need_update step. Count reuse denominator including/excluding saving clearly.",
+    "Prefill kernel call signature was repaired for Triton3.0; before formal16 include small independent block-causal reference parity with unequal/unaligned sequence lengths. Tolerance original BF16relL2<=.01/maxabs<=.05; do not relax.",
+    "Commit explicitpaths before runs and after fixes/stageevidence; checkpoint15min; relaypush by GPT. Preserve each attemptedoutput/SHA. No detachedprocess/nestedagents.",
+    "At most two measured diagnostic repair cycles for this stage; dependencyimports alreadyvalidated. If reference or dataidentity fails, return blocker without altering numerical method.",
+    "Read parent supervisor-review.md (not only worker review.md). Initial phase accepted only after preflight passes; fix validator to require exact output count/no mask tokens and check raw IDs before engine cleanup.",
+    "Prefill preflight additionally validates repaired paged KV scatter against direct indexing with noncontiguous slot_mapping and negative-slot skip. Previous unit suite did not include this scatter check.",
+    "Campaign conservativeGPUcharge starts0.40h; thisstage<=1h. No need repeat fullmodel download/hash scan each prompt."
+  ],
+  "seeds": [
+    42
+  ],
+  "code_revision": "Start from accepted prep-r3 review commit; commit driver/config before preflight/formal runs, record actual SHA for every attempt.",
+  "environment": "Existing isolated Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9, compiled customFA; DO NOT reinstall. xxhash3.5.0 pinned; verify/install only missing requirements.",
+  "experiment_commands": [
+    "Verify accepted parent evidence, environment/weights/data locks and GPUheadroom. Implement focused mechanism driver plus prefill correctness/neutrality preflight; no forkedmodelimplementation. Commit code/config before tests.",
+    "Preflight on train100 max16tokens: compare instrumented vs no-hook output tokenIDs with same seed; all required hooks countsnonzero, exact split/recombine within fixedtolerances, refhistorymapping correct. Prefill independent block-causal BF16 reference inclGQA32/8/hd128/len75,128. Preserve failures; max2correction cycles.",
+    "Run fixed16 train100..115 dense and s2 max512 sequential batch1, seed42 resetperprompt; allfinite/validIDs, correctcachelabels, resourceguard. Persist rawgenerationoutsideGit and metricrecords incrementally. Verify no skippedprompts/emptytrajectories.",
+    "Export per-prompt layer/head means, quantiles, pairedcosgap, alignedLout absolute drift, denseprevious-step stale mergedrelativeL2 and actuals2 fullerror/stale-composition residual, cacheage/dirtycount/reuse/refresh distributions. Excludezero-normcoscasesexplicitly; nohandselection.",
+    "Create mechanism figure Aout/Ain with COMMON cosine color scale, LSEdrift/error plots and per-prompt summaries; standalone PNG/PDF via standard plotting tools. Or give exact CSV for GPT to plot if matplotlib absent; noenvironmentreinstall.",
+    "Write run report/manifest, smallrawaggregates, executedcommands, perattemptSHA, measuredresourceledger; commit; stop for GPT review. No efficiency or heldout test yet."
+  ],
+  "budget": {
+    "gpu_count": 1,
+    "gpu_hours": 1.0,
+    "wall_seconds": 7200,
+    "max_attempts": 2,
+    "model_cost_limit": "Existing DSH account only, one bounded headless session; no paid API purchases/top-ups."
+  },
+  "stop_conditions": [
+    "ActiveGPU allocation<=1.0h thisstage; campaign<=8h; wrapper7200s/systemd7260s. Include failedGPUattempts in ledger.",
+    "Stop on OOM/NaN/provenancemismatch/incorrectreference/leakage/resourcebreach. Preserve failures. No tolerance or prompt/parameter tuning basedonoutcomes.",
+    "Complete fixed matrixonce; stopforGPTreview. Max2 diagnostic repaircycles, each committed before rerun; nounboundedretries."
+  ],
+  "required_outputs": [
+    "report.json",
+    "mechanism-per-prompt.json or CSV",
+    "mechanism-summary.json",
+    "preflight.json",
+    "bounded-small-trace.json",
+    "resource-ledger.json",
+    "commands-and-provenance.json",
+    "mechanism figure or exact plotting data; formal driver/config with actual run SHAs."
+  ],
+  "version_control": {
+    "repository": "Flutter-Misdreavus/flashblock-reproduction",
+    "visibility": "private",
+    "branch": "exp/flashblock-20261023",
+    "push_mode": "relay",
+    "checkpoint_minutes": 15
+  }
+}
