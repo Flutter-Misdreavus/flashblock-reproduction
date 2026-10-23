@@ -219,7 +219,7 @@
     "prefill_mode": "sequential_per_request: add one request, run only its PREFILL, then add next; defer decode; identical both conditions",
     "tensor_parallel_size": 1,
     "enforce_eager": true,
-    "gpu_memory_utilization": 0.8,
+    "gpu_memory_utilization": 0.72,
     "max_model_len": 8448,
     "max_num_batched_tokens": 8448,
     "warmup_model_len": 8448,
@@ -228,7 +228,8 @@
     "peak_allocated_limit_mib": 16384,
     "min_free_mib": 3072,
     "max_new_disk_gib": 30,
-    "min_free_disk_gib": 40
+    "min_free_disk_gib": 40,
+    "gpu_memory_utilization_note": "resource-only adjustment 0.80 -> 0.72 after the first committed smoke hit the shared-GPU physical-free guard (2.47 GiB < 3.07 GiB) before generating; identical both conditions; KV capacity still covers the worst frozen group (16990 tokens, 67 data pages)"
   },
   "groups": {
     "count": 32,

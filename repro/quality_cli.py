@@ -515,7 +515,6 @@ def _install_finite_hook(h, audit):
         return logits
 
     mr.run_model = wrapped
-    h["orig_run_model"] = orig
 
 
 def _run_batch(h, cfg, items, cond, ratio, group_index, order_pos, max_tokens,
@@ -714,6 +713,18 @@ def cmd_smoke(args):
     items = _train_items(cfg, tokenizer, [100, 101])
     for item in items:
         item["gold_numeric"] = qs.canonical_fraction(qs.extract_gold(item["answer"]))
+    # Preserve any previous failed smoke attempt instead of overwriting it.
+    preserved = []
+    if (RUN_DIR / "train-smoke.json").exists():
+        fail_dir = RUN_DIR / "failed"
+        fail_dir.mkdir(parents=True, exist_ok=True)
+        stamp = int(time.time())
+        for name in ("train-smoke.json", "train-smoke-dense.json", "train-smoke-s2.json"):
+            src = RUN_DIR / name
+            if src.exists():
+                dest = fail_dir / f"{src.stem}-attempt-{stamp}{src.suffix}"
+                shutil.move(str(src), str(dest))
+                preserved.append(str(dest))
     started = eff._now()
     t0 = time.time()
     sampler = eff.NvmlSampler(
@@ -728,6 +739,7 @@ def cmd_smoke(args):
               "config_sha256": _config_sha(), "manifest_sha256": _manifest_sha(),
               "budget_deadline": budget_info,
               "commands": ["smoke train100..101 both conditions ordinary EOS max256"],
+              "preserved_previous_attempts": preserved,
               "conditions": {}}
     try:
         free = eff._require_free_headroom(
@@ -763,6 +775,8 @@ def cmd_smoke(args):
             _atomic_json(RUN_DIR / f"train-smoke-{cond}.json", res)
             if res["status"] != "SUCCEEDED":
                 ok_all = False
+                result["stopped_after_failed_condition"] = cond
+                break
             if cond == "s2":
                 if int(res["counters"].get("reuse_rows", 0)) <= 0:
                     ok_all = False
