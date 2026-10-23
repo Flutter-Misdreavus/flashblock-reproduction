@@ -205,8 +205,9 @@ def cmd_correctness(args):
     def dense_parity():
         import torch.nn.functional as F
         out = {}
-        cases = [(1, 1, 1, 8, 2, 64), (2, 4, 17, 8, 2, 64), (2, 8, 65, 8, 8, 128),
-                 (1, 3, 129, 16, 4, 128), (2, 5, 256, 8, 1, 64)]
+        # the vendored build compiles bf16 hdim128 only (TraDo-4B head_dim=128)
+        cases = [(1, 1, 1, 8, 8, 128), (2, 4, 17, 8, 2, 128), (2, 8, 65, 8, 8, 128),
+                 (1, 3, 129, 16, 4, 128), (2, 5, 256, 8, 1, 128)]
         for (B, Q, S, Hq, Hkv, D) in cases:
             past = S - Q
             q = torch.randn(B, Q, Hq, D, device="cuda", dtype=torch.bfloat16)
@@ -238,7 +239,7 @@ def cmd_correctness(args):
     # ---------- 3. no-reuse history decomposition, single step ----------
     def decomposition():
         out = {}
-        for (B, S, Hq, Hkv, D) in [(2, 16, 8, 2, 64), (2, 68, 8, 2, 128), (1, 4, 16, 4, 64), (2, 0, 8, 2, 64)]:
+        for (B, S, Hq, Hkv, D) in [(2, 16, 8, 2, 128), (2, 68, 8, 2, 128), (1, 4, 16, 4, 128), (2, 0, 8, 2, 128)]:
             Q = 4
             q = torch.randn(B, Q, Hq, D, device="cuda", dtype=torch.bfloat16)
             k_new = torch.randn(B, Q, Hkv, D, device="cuda", dtype=torch.bfloat16)
@@ -277,7 +278,7 @@ def cmd_correctness(args):
 
     # ---------- 4. multi-step no-reuse (8 denoising steps, cache grows) ----------
     def multistep():
-        B, Q, Hq, Hkv, D, prefix = 2, 4, 8, 2, 64, 16
+        B, Q, Hq, Hkv, D, prefix = 2, 4, 8, 2, 128, 16
         steps = 8
         k_cache = torch.zeros(B, prefix + Q * steps, Hkv, D, device="cuda", dtype=torch.bfloat16)
         v_cache = torch.zeros(B, prefix + Q * steps, Hkv, D, device="cuda", dtype=torch.bfloat16)
@@ -303,7 +304,7 @@ def cmd_correctness(args):
 
     # ---------- 5. paged KV + slot reuse / cache reset ----------
     def paged_slots():
-        B, Q, Hq, Hkv, D = 2, 4, 8, 2, 64
+        B, Q, Hq, Hkv, D = 2, 4, 8, 2, 128
         page, nblocks, npages = 256, 6, 2
         k_cache = torch.zeros(nblocks, page, Hkv, D, device="cuda", dtype=torch.bfloat16)
         v_cache = torch.zeros(nblocks, page, Hkv, D, device="cuda", dtype=torch.bfloat16)
