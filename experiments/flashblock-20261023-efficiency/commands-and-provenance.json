@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "task_sha256": "9605c6b2f02267642c80ab469c3af813220184aa345b451a7b698bea9658d516",
+  "config_sha256": "85bf6fc4d4a4f2e74a53d003321864862669f45a6f2880a98476428f3e38b470",
+  "input_manifest_sha256": "ce851e22588b2d7661317f5142067cb37431b21d3dff73f4dc6de87d892e8001",
+  "environment": "isolated venv Python3.10 torch2.4.1+cu121 triton3.0 numpy1.26.4 transformers4.52.4 FlashInfer0.2.9 custom FlashAttention; no reinstall",
+  "entries": [
+    {
+      "stage": "environment_probe",
+      "command": "repro/efficiency_cli.py probe --out experiments/flashblock-20261023-efficiency/environment.json",
+      "git_head_at_stage": "7a9b87fb",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "input_freeze",
+      "command": "repro/efficiency_cli.py freeze",
+      "git_head_at_stage": "7a9b87fb",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "preflight_attempt1_failed",
+      "command": "repro/efficiency_cli.py preflight --out runs/flashblock-20261023-efficiency/preflight.json",
+      "git_head_at_stage": "fd94c13f",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "preflight_attempt2_passed",
+      "command": "repro/efficiency_cli.py preflight --out runs/flashblock-20261023-efficiency/preflight.json",
+      "git_head_at_stage": "6131651c",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "engine_release_smoke",
+      "command": "repro/efficiency_cli.py smoke --out runs/flashblock-20261023-efficiency/smoke.json",
+      "git_head_at_stage": "cafd8a40",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "matrix_B1_attempt",
+      "command": "repro/efficiency_cli.py matrix",
+      "git_head_at_stage": "0d33c934",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "matrix_full_restart_cancelled",
+      "command": "repro/efficiency_cli.py matrix",
+      "git_head_at_stage": "6d5ac288",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "matrix_B4_resume",
+      "command": "repro/efficiency_cli.py matrix --resume-b4",
+      "git_head_at_stage": "5d6fb451",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "profile_attempt1_empty",
+      "command": "repro/efficiency_cli.py profile --out runs/flashblock-20261023-efficiency/profile.json",
+      "git_head_at_stage": "5d6fb451",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "profile_attempt2",
+      "command": "repro/efficiency_cli.py profile --out runs/flashblock-20261023-efficiency/profile.json",
+      "git_head_at_stage": "a13e5b09",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "summary",
+      "command": "repro/efficiency_cli.py summarize",
+      "git_head_at_stage": "HEAD",
+      "note": "actual execution SHA recorded in each raw artifact"
+    },
+    {
+      "stage": "ledger",
+      "command": "repro/efficiency_cli.py ledger",
+      "git_head_at_stage": "HEAD",
+      "note": "actual execution SHA recorded in each raw artifact"
+    }
+  ]
+}

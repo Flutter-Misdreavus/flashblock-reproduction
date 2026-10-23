@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "repository": "Flutter-Misdreavus/flashblock-reproduction",
+  "branch": "exp/flashblock-20261023",
+  "run_commits": [
+    {
+      "stage": "driver_config_manifest",
+      "sha": "d8584599af1307f61c41a2ffa5682f6566274d59",
+      "note": "frozen efficiency config, input recipe, driver"
+    },
+    {
+      "stage": "input_manifest",
+      "sha": "7a9b87fbb0d76063168aedc7e6b7c67d799a602f",
+      "note": "deterministic distinct-prefix token manifests"
+    },
+    {
+      "stage": "environment",
+      "sha": "fd94c13f2185286584e6aff1c4e3a06472eaf3ee",
+      "note": "environment and initial headroom snapshot"
+    },
+    {
+      "stage": "preflight_attempt1_failed",
+      "sha": "fd94c13f2185286584e6aff1c4e3a06472eaf3ee",
+      "note": "output-id vocabulary bound failure"
+    },
+    {
+      "stage": "preflight_attempt2_dirty_guard",
+      "sha": "8bf3118682b87cf49c6db6b3a0428b4b08351e60",
+      "note": "refused; no GPU work"
+    },
+    {
+      "stage": "preflight_review_fix",
+      "sha": "6131651c22abf5b0b149a139e851dd483bbe698b",
+      "note": "A/L identity, guards, finite logits, single engine"
+    },
+    {
+      "stage": "preflight_passed_execution",
+      "sha": "6131651c22abf5b0b149a139e851dd483bbe698b",
+      "note": "actual A/L identity preflight"
+    },
+    {
+      "stage": "engine_release_smoke",
+      "sha": "cafd8a4060afff8139cc6706346c574ea7aceca9",
+      "note": "B1 release to 168.1 MiB then B4 init"
+    },
+    {
+      "stage": "matrix_B1_retained_execution",
+      "sha": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "note": "30 B1 rows; OOM at B4 engine construction"
+    },
+    {
+      "stage": "matrix_full_restart_cancelled",
+      "sha": "6d5ac288ab030902de854faf51873a461625e31e",
+      "note": "root cancelled unintended full restart; no rows used"
+    },
+    {
+      "stage": "matrix_B4_resume_execution",
+      "sha": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "note": "30 B4 rows; no B1 rerun"
+    },
+    {
+      "stage": "profile_attempt1_empty",
+      "sha": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "note": "device-time extraction bug; preserved, not used"
+    },
+    {
+      "stage": "profile_attempt2",
+      "sha": "a13e5b0953623e6a95f307d4a5160c8964579dec",
+      "note": "valid B4L8192 profiles, 43/51 kernels"
+    },
+    {
+      "stage": "summary_and_report",
+      "sha": null,
+      "note": "summary commit; its SHA is the report head_commit"
+    }
+  ],
+  "push_mode": "relay",
+  "push_status": "pending",
+  "push_error": "relay mode: executor commits locally only; GPT pulls the private repository objects and verifies/pushes"
+}

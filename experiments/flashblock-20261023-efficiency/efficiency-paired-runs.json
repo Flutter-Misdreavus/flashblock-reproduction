@@ -1,0 +1,3641 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "execution_commits": {
+    "B1_retained_attempt": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+    "B4_resume_attempt": "5d6fb45146dfb1fa8290645b68babc7c9dba7235"
+  },
+  "b1_rows_retained_unchanged": true,
+  "rows": [
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19242152944207191,
+      "decode_seconds": 15.726444941014051,
+      "e2e_seconds": 15.918866470456123,
+      "wall_seconds": 15.921,
+      "decode_tps": 16.278313437028633,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "303364e7b06769988190907c56bb2ec171784ce8dc2aa907eba0422b20b0e992",
+      "counters": {
+        "decode_rows": 187,
+        "decode_steps": 187,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        123
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 73
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 59
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:17:17Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.1911328323185444,
+      "decode_seconds": 17.26446302048862,
+      "e2e_seconds": 17.455595852807164,
+      "wall_seconds": 17.457,
+      "decode_tps": 14.828147258110011,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "95c07286b206e2836fcaa3659b5797bf765863ff53035ba1f355bb4d9b970bcb",
+      "counters": {
+        "decode_rows": 197,
+        "decode_steps": 197,
+        "prefill_steps": 1,
+        "reuse_rows": 35,
+        "saving_rows": 64,
+        "store_rows": 89,
+        "update_rows": 162
+      },
+      "per_seq_global_denoise_steps": [
+        133
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 59
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:17:34Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19355149380862713,
+      "decode_seconds": 16.767705423757434,
+      "e2e_seconds": 16.96125691756606,
+      "wall_seconds": 16.963,
+      "decode_tps": 15.267443787346402,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "95c07286b206e2836fcaa3659b5797bf765863ff53035ba1f355bb4d9b970bcb",
+      "counters": {
+        "decode_rows": 197,
+        "decode_steps": 197,
+        "prefill_steps": 1,
+        "reuse_rows": 35,
+        "saving_rows": 64,
+        "store_rows": 89,
+        "update_rows": 162
+      },
+      "per_seq_global_denoise_steps": [
+        133
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 75
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:17:51Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.1943739876151085,
+      "decode_seconds": 15.638919623568654,
+      "e2e_seconds": 15.833293611183763,
+      "wall_seconds": 15.835,
+      "decode_tps": 16.369417207963323,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "303364e7b06769988190907c56bb2ec171784ce8dc2aa907eba0422b20b0e992",
+      "counters": {
+        "decode_rows": 187,
+        "decode_steps": 187,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        123
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 75
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 69
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:18:07Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19752011448144913,
+      "decode_seconds": 16.030752893537283,
+      "e2e_seconds": 16.228273008018732,
+      "wall_seconds": 16.23,
+      "decode_tps": 15.969306101849098,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "303364e7b06769988190907c56bb2ec171784ce8dc2aa907eba0422b20b0e992",
+      "counters": {
+        "decode_rows": 187,
+        "decode_steps": 187,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        123
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 69
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 92
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:18:23Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.1974347773939371,
+      "decode_seconds": 17.114484660327435,
+      "e2e_seconds": 17.31191943772137,
+      "wall_seconds": 17.313,
+      "decode_tps": 14.958089891740988,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "95c07286b206e2836fcaa3659b5797bf765863ff53035ba1f355bb4d9b970bcb",
+      "counters": {
+        "decode_rows": 197,
+        "decode_steps": 197,
+        "prefill_steps": 1,
+        "reuse_rows": 35,
+        "saving_rows": 64,
+        "store_rows": 89,
+        "update_rows": 162
+      },
+      "per_seq_global_denoise_steps": [
+        133
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 92
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 63
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:18:41Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19135466031730175,
+      "decode_seconds": 16.50255387276411,
+      "e2e_seconds": 16.693908533081412,
+      "wall_seconds": 16.696,
+      "decode_tps": 15.512750449038288,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "95c07286b206e2836fcaa3659b5797bf765863ff53035ba1f355bb4d9b970bcb",
+      "counters": {
+        "decode_rows": 197,
+        "decode_steps": 197,
+        "prefill_steps": 1,
+        "reuse_rows": 35,
+        "saving_rows": 64,
+        "store_rows": 89,
+        "update_rows": 162
+      },
+      "per_seq_global_denoise_steps": [
+        133
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 63
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:18:57Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19160311669111252,
+      "decode_seconds": 15.645573176443577,
+      "e2e_seconds": 15.83717629313469,
+      "wall_seconds": 15.839,
+      "decode_tps": 16.3624558277891,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "303364e7b06769988190907c56bb2ec171784ce8dc2aa907eba0422b20b0e992",
+      "counters": {
+        "decode_rows": 187,
+        "decode_steps": 187,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        123
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 57
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:19:13Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.19608528725802898,
+      "decode_seconds": 15.655089892446995,
+      "e2e_seconds": 15.851175179705024,
+      "wall_seconds": 15.853,
+      "decode_tps": 16.35250910462741,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "303364e7b06769988190907c56bb2ec171784ce8dc2aa907eba0422b20b0e992",
+      "counters": {
+        "decode_rows": 187,
+        "decode_steps": 187,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        123
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 57
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 66
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:19:29Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L1024",
+      "batch": 1,
+      "length": 1024,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.1939661204814911,
+      "decode_seconds": 17.07995787076652,
+      "e2e_seconds": 17.27392399124801,
+      "wall_seconds": 17.276,
+      "decode_tps": 14.988327368076297,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "95c07286b206e2836fcaa3659b5797bf765863ff53035ba1f355bb4d9b970bcb",
+      "counters": {
+        "decode_rows": 197,
+        "decode_steps": 197,
+        "prefill_steps": 1,
+        "reuse_rows": 35,
+        "saving_rows": 64,
+        "store_rows": 89,
+        "update_rows": 162
+      },
+      "per_seq_global_denoise_steps": [
+        133
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 13956.6,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 66
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 83
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:19:46Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8845209088176489,
+      "decode_seconds": 18.915963165462017,
+      "e2e_seconds": 19.800484074279666,
+      "wall_seconds": 19.802,
+      "decode_tps": 13.533542953150874,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "3b34231881c80eae28ed17d35f8e9a929779c2850fd9aec1b607b332b14951f2",
+      "counters": {
+        "decode_rows": 219,
+        "decode_steps": 219,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        155
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 54
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 64
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:20:44Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8794491775333881,
+      "decode_seconds": 17.614952884614468,
+      "e2e_seconds": 18.494402062147856,
+      "wall_seconds": 18.496,
+      "decode_tps": 14.533107279758868,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "7a61dc0af55825afca464a3911176d317aa63237415b871556ab7ce48b8a08f8",
+      "counters": {
+        "decode_rows": 209,
+        "decode_steps": 209,
+        "prefill_steps": 1,
+        "reuse_rows": 45,
+        "saving_rows": 64,
+        "store_rows": 94,
+        "update_rows": 164
+      },
+      "per_seq_global_denoise_steps": [
+        145
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 64
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 67
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:21:02Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8862371984869242,
+      "decode_seconds": 17.837803648784757,
+      "e2e_seconds": 18.72404084727168,
+      "wall_seconds": 18.725,
+      "decode_tps": 14.351542658529073,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "7a61dc0af55825afca464a3911176d317aa63237415b871556ab7ce48b8a08f8",
+      "counters": {
+        "decode_rows": 209,
+        "decode_steps": 209,
+        "prefill_steps": 1,
+        "reuse_rows": 45,
+        "saving_rows": 64,
+        "store_rows": 94,
+        "update_rows": 164
+      },
+      "per_seq_global_denoise_steps": [
+        145
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 67
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 51
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:21:21Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8797584474086761,
+      "decode_seconds": 18.767068780958652,
+      "e2e_seconds": 19.64682722836733,
+      "wall_seconds": 19.648,
+      "decode_tps": 13.640915530705648,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "3b34231881c80eae28ed17d35f8e9a929779c2850fd9aec1b607b332b14951f2",
+      "counters": {
+        "decode_rows": 219,
+        "decode_steps": 219,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        155
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 51
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 66
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:21:41Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8908585663884878,
+      "decode_seconds": 18.640982503071427,
+      "e2e_seconds": 19.531841069459915,
+      "wall_seconds": 19.534,
+      "decode_tps": 13.73318171173754,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "3b34231881c80eae28ed17d35f8e9a929779c2850fd9aec1b607b332b14951f2",
+      "counters": {
+        "decode_rows": 219,
+        "decode_steps": 219,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        155
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 66
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 83
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:22:00Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8850473668426275,
+      "decode_seconds": 18.104099925607443,
+      "e2e_seconds": 18.98914729245007,
+      "wall_seconds": 18.991,
+      "decode_tps": 14.140443383097958,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "7a61dc0af55825afca464a3911176d317aa63237415b871556ab7ce48b8a08f8",
+      "counters": {
+        "decode_rows": 209,
+        "decode_steps": 209,
+        "prefill_steps": 1,
+        "reuse_rows": 45,
+        "saving_rows": 64,
+        "store_rows": 94,
+        "update_rows": 164
+      },
+      "per_seq_global_denoise_steps": [
+        145
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 83
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 72
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:22:19Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8872865960001945,
+      "decode_seconds": 17.677600532770157,
+      "e2e_seconds": 18.56488712877035,
+      "wall_seconds": 18.566,
+      "decode_tps": 14.481603401176285,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "7a61dc0af55825afca464a3911176d317aa63237415b871556ab7ce48b8a08f8",
+      "counters": {
+        "decode_rows": 209,
+        "decode_steps": 209,
+        "prefill_steps": 1,
+        "reuse_rows": 45,
+        "saving_rows": 64,
+        "store_rows": 94,
+        "update_rows": 164
+      },
+      "per_seq_global_denoise_steps": [
+        145
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 72
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 55
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:22:38Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8837793953716755,
+      "decode_seconds": 18.79168053716421,
+      "e2e_seconds": 19.675459932535887,
+      "wall_seconds": 19.677,
+      "decode_tps": 13.623049811522185,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "3b34231881c80eae28ed17d35f8e9a929779c2850fd9aec1b607b332b14951f2",
+      "counters": {
+        "decode_rows": 219,
+        "decode_steps": 219,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        155
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 55
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 65
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:22:58Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.883654598146677,
+      "decode_seconds": 18.34954270720482,
+      "e2e_seconds": 19.233197305351496,
+      "wall_seconds": 19.235,
+      "decode_tps": 13.95130135311129,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "3b34231881c80eae28ed17d35f8e9a929779c2850fd9aec1b607b332b14951f2",
+      "counters": {
+        "decode_rows": 219,
+        "decode_steps": 219,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        155
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 65
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 81
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:23:17Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L4096",
+      "batch": 1,
+      "length": 4096,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.8897128645330667,
+      "decode_seconds": 18.163547094911337,
+      "e2e_seconds": 19.053259959444404,
+      "wall_seconds": 19.055,
+      "decode_tps": 14.094163362602256,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "7a61dc0af55825afca464a3911176d317aa63237415b871556ab7ce48b8a08f8",
+      "counters": {
+        "decode_rows": 209,
+        "decode_steps": 209,
+        "prefill_steps": 1,
+        "reuse_rows": 45,
+        "saving_rows": 64,
+        "store_rows": 94,
+        "update_rows": 164
+      },
+      "per_seq_global_denoise_steps": [
+        145
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14301.6,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 81
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 69
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:23:36Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.1698383390903473,
+      "decode_seconds": 14.239779245108366,
+      "e2e_seconds": 16.409617584198713,
+      "wall_seconds": 16.411,
+      "decode_tps": 17.9778067899431,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "274a62dea1dc37473cb307539db8b4cf49607eabb9487443b0ebc5876b2f4aec",
+      "counters": {
+        "decode_rows": 174,
+        "decode_steps": 174,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        110
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 73
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 60
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:24:31Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.162115940824151,
+      "decode_seconds": 20.900288006290793,
+      "e2e_seconds": 23.062403947114944,
+      "wall_seconds": 23.064,
+      "decode_tps": 12.2486350390457,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "73971e66e806583280fa6ac990c8f2d7913fc81feb3bbbd2f96f00d88da7b36a",
+      "counters": {
+        "decode_rows": 242,
+        "decode_steps": 242,
+        "prefill_steps": 1,
+        "reuse_rows": 64,
+        "saving_rows": 64,
+        "store_rows": 101,
+        "update_rows": 178
+      },
+      "per_seq_global_denoise_steps": [
+        178
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 60
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 87
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:24:54Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.1794377770274878,
+      "decode_seconds": 21.122868491336703,
+      "e2e_seconds": 23.30230626836419,
+      "wall_seconds": 23.304,
+      "decode_tps": 12.119566057280307,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "73971e66e806583280fa6ac990c8f2d7913fc81feb3bbbd2f96f00d88da7b36a",
+      "counters": {
+        "decode_rows": 242,
+        "decode_steps": 242,
+        "prefill_steps": 1,
+        "reuse_rows": 64,
+        "saving_rows": 64,
+        "store_rows": 101,
+        "update_rows": 178
+      },
+      "per_seq_global_denoise_steps": [
+        178
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 87
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 59
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:25:18Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.1497830152511597,
+      "decode_seconds": 14.65052749402821,
+      "e2e_seconds": 16.80031050927937,
+      "wall_seconds": 16.802,
+      "decode_tps": 17.473773562375122,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "274a62dea1dc37473cb307539db8b4cf49607eabb9487443b0ebc5876b2f4aec",
+      "counters": {
+        "decode_rows": 174,
+        "decode_steps": 174,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        110
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 59
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 83
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:25:34Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.2576822228729725,
+      "decode_seconds": 14.245725259184837,
+      "e2e_seconds": 16.50340748205781,
+      "wall_seconds": 16.505,
+      "decode_tps": 17.970303044763952,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "274a62dea1dc37473cb307539db8b4cf49607eabb9487443b0ebc5876b2f4aec",
+      "counters": {
+        "decode_rows": 174,
+        "decode_steps": 174,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        110
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 83
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 58
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:25:51Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.1737263072282076,
+      "decode_seconds": 21.030128268525004,
+      "e2e_seconds": 23.203854575753212,
+      "wall_seconds": 23.205,
+      "decode_tps": 12.173011820529192,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "73971e66e806583280fa6ac990c8f2d7913fc81feb3bbbd2f96f00d88da7b36a",
+      "counters": {
+        "decode_rows": 242,
+        "decode_steps": 242,
+        "prefill_steps": 1,
+        "reuse_rows": 64,
+        "saving_rows": 64,
+        "store_rows": 101,
+        "update_rows": 178
+      },
+      "per_seq_global_denoise_steps": [
+        178
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 58
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 71
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:26:14Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.164421072229743,
+      "decode_seconds": 21.052660359069705,
+      "e2e_seconds": 23.217081431299448,
+      "wall_seconds": 23.219,
+      "decode_tps": 12.159983376624064,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "73971e66e806583280fa6ac990c8f2d7913fc81feb3bbbd2f96f00d88da7b36a",
+      "counters": {
+        "decode_rows": 242,
+        "decode_steps": 242,
+        "prefill_steps": 1,
+        "reuse_rows": 64,
+        "saving_rows": 64,
+        "store_rows": 101,
+        "update_rows": 178
+      },
+      "per_seq_global_denoise_steps": [
+        178
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 71
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 55
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:26:37Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.1661224011331797,
+      "decode_seconds": 14.204329572618008,
+      "e2e_seconds": 16.370451973751187,
+      "wall_seconds": 16.372,
+      "decode_tps": 18.022673910178536,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "274a62dea1dc37473cb307539db8b4cf49607eabb9487443b0ebc5876b2f4aec",
+      "counters": {
+        "decode_rows": 174,
+        "decode_steps": 174,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        110
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 55
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 65
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:26:54Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.141736377030611,
+      "decode_seconds": 14.672161253169179,
+      "e2e_seconds": 16.81389763019979,
+      "wall_seconds": 16.816,
+      "decode_tps": 17.44800889130796,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "274a62dea1dc37473cb307539db8b4cf49607eabb9487443b0ebc5876b2f4aec",
+      "counters": {
+        "decode_rows": 174,
+        "decode_steps": 174,
+        "prefill_steps": 1,
+        "reuse_rows": 0,
+        "saving_rows": 64,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        110
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 65
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 80
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:27:11Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B1L8192",
+      "batch": 1,
+      "length": 8192,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 2.177171617746353,
+      "decode_seconds": 21.568301973864436,
+      "e2e_seconds": 23.74547359161079,
+      "wall_seconds": 23.747,
+      "decode_tps": 11.86927001996773,
+      "total_output_tokens": 256,
+      "output_token_counts": [
+        256
+      ],
+      "output_concat_sha256": "73971e66e806583280fa6ac990c8f2d7913fc81feb3bbbd2f96f00d88da7b36a",
+      "counters": {
+        "decode_rows": 242,
+        "decode_steps": 242,
+        "prefill_steps": 1,
+        "reuse_rows": 64,
+        "saving_rows": 64,
+        "store_rows": 101,
+        "update_rows": 178
+      },
+      "per_seq_global_denoise_steps": [
+        178
+      ],
+      "per_seq_completion_tokens": [
+        256
+      ],
+      "peak_allocated_mib": 14761.7,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 80
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 80
+      },
+      "problems": [],
+      "execution_commit": "0d33c9340c1971b6f44e9d9eb1b8f192997edbcb",
+      "ended_at_utc": "2026-10-23T03:27:34Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7773457318544388,
+      "decode_seconds": 17.495491851121187,
+      "e2e_seconds": 18.272837582975626,
+      "wall_seconds": 18.275,
+      "decode_tps": 58.52936337622184,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f52f1712212ba0a2fa538e4c188b59d83a220e827bb001936489fea14c52d188",
+      "counters": {
+        "decode_rows": 690,
+        "decode_steps": 207,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        143,
+        113,
+        78,
+        100
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 46
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:34:42Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7724566515535116,
+      "decode_seconds": 16.475985130295157,
+      "e2e_seconds": 17.24844178184867,
+      "wall_seconds": 17.251,
+      "decode_tps": 62.1510636178667,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "fb12e2a5ee206899fb7355ed500b4af4da31453e548f195ae5a68347ecc0dfed",
+      "counters": {
+        "decode_rows": 661,
+        "decode_steps": 188,
+        "prefill_steps": 4,
+        "reuse_rows": 73,
+        "saving_rows": 256,
+        "store_rows": 306,
+        "update_rows": 588
+      },
+      "per_seq_global_denoise_steps": [
+        124,
+        107,
+        77,
+        97
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 75
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:34:59Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7772986683994532,
+      "decode_seconds": 15.834904061630368,
+      "e2e_seconds": 16.61220273002982,
+      "wall_seconds": 16.615,
+      "decode_tps": 64.66726896573117,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "fb12e2a5ee206899fb7355ed500b4af4da31453e548f195ae5a68347ecc0dfed",
+      "counters": {
+        "decode_rows": 661,
+        "decode_steps": 188,
+        "prefill_steps": 4,
+        "reuse_rows": 73,
+        "saving_rows": 256,
+        "store_rows": 306,
+        "update_rows": 588
+      },
+      "per_seq_global_denoise_steps": [
+        124,
+        107,
+        77,
+        97
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 75
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 67
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:35:16Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7740287631750107,
+      "decode_seconds": 16.908062363043427,
+      "e2e_seconds": 17.682091126218438,
+      "wall_seconds": 17.684,
+      "decode_tps": 60.5628236999051,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f52f1712212ba0a2fa538e4c188b59d83a220e827bb001936489fea14c52d188",
+      "counters": {
+        "decode_rows": 690,
+        "decode_steps": 207,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        143,
+        113,
+        78,
+        100
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 67
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:35:34Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7801805939525366,
+      "decode_seconds": 17.007282227277756,
+      "e2e_seconds": 17.787462821230292,
+      "wall_seconds": 17.79,
+      "decode_tps": 60.2095023952516,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f52f1712212ba0a2fa538e4c188b59d83a220e827bb001936489fea14c52d188",
+      "counters": {
+        "decode_rows": 690,
+        "decode_steps": 207,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        143,
+        113,
+        78,
+        100
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 73
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:35:52Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7795255966484547,
+      "decode_seconds": 15.70461923070252,
+      "e2e_seconds": 16.484144827350974,
+      "wall_seconds": 16.486,
+      "decode_tps": 65.20374578697717,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "fb12e2a5ee206899fb7355ed500b4af4da31453e548f195ae5a68347ecc0dfed",
+      "counters": {
+        "decode_rows": 661,
+        "decode_steps": 188,
+        "prefill_steps": 4,
+        "reuse_rows": 73,
+        "saving_rows": 256,
+        "store_rows": 306,
+        "update_rows": 588
+      },
+      "per_seq_global_denoise_steps": [
+        124,
+        107,
+        77,
+        97
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 73
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:36:08Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7756102010607719,
+      "decode_seconds": 15.600473748520017,
+      "e2e_seconds": 16.37608394958079,
+      "wall_seconds": 16.378,
+      "decode_tps": 65.63903228241031,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "fb12e2a5ee206899fb7355ed500b4af4da31453e548f195ae5a68347ecc0dfed",
+      "counters": {
+        "decode_rows": 661,
+        "decode_steps": 188,
+        "prefill_steps": 4,
+        "reuse_rows": 73,
+        "saving_rows": 256,
+        "store_rows": 306,
+        "update_rows": 588
+      },
+      "per_seq_global_denoise_steps": [
+        124,
+        107,
+        77,
+        97
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 71
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:36:24Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.782688433304429,
+      "decode_seconds": 17.149054856970906,
+      "e2e_seconds": 17.931743290275335,
+      "wall_seconds": 17.934,
+      "decode_tps": 59.71174554752532,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f52f1712212ba0a2fa538e4c188b59d83a220e827bb001936489fea14c52d188",
+      "counters": {
+        "decode_rows": 690,
+        "decode_steps": 207,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        143,
+        113,
+        78,
+        100
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 70
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 72
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:36:42Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7742914278060198,
+      "decode_seconds": 18.72067891061306,
+      "e2e_seconds": 19.49497033841908,
+      "wall_seconds": 19.497,
+      "decode_tps": 54.69887095918715,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f52f1712212ba0a2fa538e4c188b59d83a220e827bb001936489fea14c52d188",
+      "counters": {
+        "decode_rows": 690,
+        "decode_steps": 207,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        143,
+        113,
+        78,
+        100
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 72
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 56
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:37:02Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L1024",
+      "batch": 4,
+      "length": 1024,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 0.7718998473137617,
+      "decode_seconds": 15.924413293600082,
+      "e2e_seconds": 16.696313140913844,
+      "wall_seconds": 16.698,
+      "decode_tps": 64.30378194288257,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "fb12e2a5ee206899fb7355ed500b4af4da31453e548f195ae5a68347ecc0dfed",
+      "counters": {
+        "decode_rows": 661,
+        "decode_steps": 188,
+        "prefill_steps": 4,
+        "reuse_rows": 73,
+        "saving_rows": 256,
+        "store_rows": 306,
+        "update_rows": 588
+      },
+      "per_seq_global_denoise_steps": [
+        124,
+        107,
+        77,
+        97
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 13963.4,
+      "peak_reserved_mib": 14004.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 56
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 18910.875,
+        "mem_free_mib": 5665.125,
+        "util_gpu_pct": 57
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:37:19Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.537317395210266,
+      "decode_seconds": 15.100424939766526,
+      "e2e_seconds": 18.637742334976792,
+      "wall_seconds": 18.64,
+      "decode_tps": 67.81266117242343,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "18bd415adfd5ac2600c1decc2654c9e319b5eafc7d6895b6c7c94664f4d8be06",
+      "counters": {
+        "decode_rows": 630,
+        "decode_steps": 180,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        116,
+        103,
+        82,
+        73
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 62
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 69
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:38:15Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.565715704113245,
+      "decode_seconds": 16.36220750771463,
+      "e2e_seconds": 19.927923211827874,
+      "wall_seconds": 19.93,
+      "decode_tps": 62.58324248223801,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "cf61c541b970e3fef09391da7d09cd65f1eee3a574ac91b40c791edfb64f08c7",
+      "counters": {
+        "decode_rows": 674,
+        "decode_steps": 197,
+        "prefill_steps": 4,
+        "reuse_rows": 84,
+        "saving_rows": 256,
+        "store_rows": 312,
+        "update_rows": 590
+      },
+      "per_seq_global_denoise_steps": [
+        133,
+        128,
+        77,
+        80
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 69
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 74
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:38:35Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5457198284566402,
+      "decode_seconds": 16.99586870521307,
+      "e2e_seconds": 20.54158853366971,
+      "wall_seconds": 20.544,
+      "decode_tps": 60.24993589682844,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "cf61c541b970e3fef09391da7d09cd65f1eee3a574ac91b40c791edfb64f08c7",
+      "counters": {
+        "decode_rows": 674,
+        "decode_steps": 197,
+        "prefill_steps": 4,
+        "reuse_rows": 84,
+        "saving_rows": 256,
+        "store_rows": 312,
+        "update_rows": 590
+      },
+      "per_seq_global_denoise_steps": [
+        133,
+        128,
+        77,
+        80
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 74
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 73
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:38:56Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5712356865406036,
+      "decode_seconds": 14.922396464273334,
+      "e2e_seconds": 18.493632150813937,
+      "wall_seconds": 18.496,
+      "decode_tps": 68.62168569583471,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "18bd415adfd5ac2600c1decc2654c9e319b5eafc7d6895b6c7c94664f4d8be06",
+      "counters": {
+        "decode_rows": 630,
+        "decode_steps": 180,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        116,
+        103,
+        82,
+        73
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 73
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 59
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:39:14Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.57060812972486,
+      "decode_seconds": 15.63569675013423,
+      "e2e_seconds": 19.20630487985909,
+      "wall_seconds": 19.209,
+      "decode_tps": 65.49116527162175,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "18bd415adfd5ac2600c1decc2654c9e319b5eafc7d6895b6c7c94664f4d8be06",
+      "counters": {
+        "decode_rows": 630,
+        "decode_steps": 180,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        116,
+        103,
+        82,
+        73
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 59
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 79
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:39:33Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5531689804047346,
+      "decode_seconds": 16.47389691323042,
+      "e2e_seconds": 20.027065893635154,
+      "wall_seconds": 20.029,
+      "decode_tps": 62.15894183346571,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "cf61c541b970e3fef09391da7d09cd65f1eee3a574ac91b40c791edfb64f08c7",
+      "counters": {
+        "decode_rows": 674,
+        "decode_steps": 197,
+        "prefill_steps": 4,
+        "reuse_rows": 84,
+        "saving_rows": 256,
+        "store_rows": 312,
+        "update_rows": 590
+      },
+      "per_seq_global_denoise_steps": [
+        133,
+        128,
+        77,
+        80
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 79
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 70
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:39:53Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5651344042271376,
+      "decode_seconds": 16.54378260858357,
+      "e2e_seconds": 20.108917012810707,
+      "wall_seconds": 20.111,
+      "decode_tps": 61.89636458766741,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "cf61c541b970e3fef09391da7d09cd65f1eee3a574ac91b40c791edfb64f08c7",
+      "counters": {
+        "decode_rows": 674,
+        "decode_steps": 197,
+        "prefill_steps": 4,
+        "reuse_rows": 84,
+        "saving_rows": 256,
+        "store_rows": 312,
+        "update_rows": 590
+      },
+      "per_seq_global_denoise_steps": [
+        133,
+        128,
+        77,
+        80
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 70
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 72
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:40:14Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5722631495445967,
+      "decode_seconds": 14.899613516405225,
+      "e2e_seconds": 18.47187666594982,
+      "wall_seconds": 18.474,
+      "decode_tps": 68.72661487981044,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "18bd415adfd5ac2600c1decc2654c9e319b5eafc7d6895b6c7c94664f4d8be06",
+      "counters": {
+        "decode_rows": 630,
+        "decode_steps": 180,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        116,
+        103,
+        82,
+        73
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 72
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 78
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:40:32Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5851517878472805,
+      "decode_seconds": 16.833978656679392,
+      "e2e_seconds": 20.419130444526672,
+      "wall_seconds": 20.421,
+      "decode_tps": 60.829351211853705,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "18bd415adfd5ac2600c1decc2654c9e319b5eafc7d6895b6c7c94664f4d8be06",
+      "counters": {
+        "decode_rows": 630,
+        "decode_steps": 180,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        116,
+        103,
+        82,
+        73
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 78
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 73
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:40:53Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L4096",
+      "batch": 4,
+      "length": 4096,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 3.5666187200695276,
+      "decode_seconds": 17.25640818849206,
+      "e2e_seconds": 20.823026908561587,
+      "wall_seconds": 20.825,
+      "decode_tps": 59.340274570167175,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "cf61c541b970e3fef09391da7d09cd65f1eee3a574ac91b40c791edfb64f08c7",
+      "counters": {
+        "decode_rows": 674,
+        "decode_steps": 197,
+        "prefill_steps": 4,
+        "reuse_rows": 84,
+        "saving_rows": 256,
+        "store_rows": 312,
+        "update_rows": 590
+      },
+      "per_seq_global_denoise_steps": [
+        133,
+        128,
+        77,
+        80
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14308.5,
+      "peak_reserved_mib": 14404.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 73
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19310.875,
+        "mem_free_mib": 5265.125,
+        "util_gpu_pct": 79
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:41:13Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 1,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.653441175818443,
+      "decode_seconds": 14.471445752307773,
+      "e2e_seconds": 23.124886928126216,
+      "wall_seconds": 23.127,
+      "decode_tps": 70.76003445175489,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f6c8de389875542e555dba969c2d5681bf60127bb299a9f78ce99ec91408519e",
+      "counters": {
+        "decode_rows": 590,
+        "decode_steps": 169,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        105,
+        74,
+        66,
+        89
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 75
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 64
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:42:22Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 1,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.744579948484898,
+      "decode_seconds": 14.5341093018651,
+      "e2e_seconds": 23.27868925035,
+      "wall_seconds": 23.281,
+      "decode_tps": 70.4549538421728,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "582789bdc5b96605a1135190c25ace48bea68dbe13056aacba17d2e1f1a507db",
+      "counters": {
+        "decode_rows": 604,
+        "decode_steps": 171,
+        "prefill_steps": 4,
+        "reuse_rows": 32,
+        "saving_rows": 256,
+        "store_rows": 279,
+        "update_rows": 572
+      },
+      "per_seq_global_denoise_steps": [
+        107,
+        74,
+        66,
+        101
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 64
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 74
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:42:45Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 2,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.790163148194551,
+      "decode_seconds": 14.500843869522214,
+      "e2e_seconds": 23.291007017716765,
+      "wall_seconds": 23.293,
+      "decode_tps": 70.61657991865128,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "582789bdc5b96605a1135190c25ace48bea68dbe13056aacba17d2e1f1a507db",
+      "counters": {
+        "decode_rows": 604,
+        "decode_steps": 171,
+        "prefill_steps": 4,
+        "reuse_rows": 32,
+        "saving_rows": 256,
+        "store_rows": 279,
+        "update_rows": 572
+      },
+      "per_seq_global_denoise_steps": [
+        107,
+        74,
+        66,
+        101
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 74
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 68
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:43:09Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 2,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.777575075626373,
+      "decode_seconds": 13.763568110764027,
+      "e2e_seconds": 22.5411431863904,
+      "wall_seconds": 22.543,
+      "decode_tps": 74.39931213761088,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f6c8de389875542e555dba969c2d5681bf60127bb299a9f78ce99ec91408519e",
+      "counters": {
+        "decode_rows": 590,
+        "decode_steps": 169,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        105,
+        74,
+        66,
+        89
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 68
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 78
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:43:31Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 3,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.749937517568469,
+      "decode_seconds": 13.919590204954147,
+      "e2e_seconds": 22.669527722522616,
+      "wall_seconds": 22.672,
+      "decode_tps": 73.56538410416323,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f6c8de389875542e555dba969c2d5681bf60127bb299a9f78ce99ec91408519e",
+      "counters": {
+        "decode_rows": 590,
+        "decode_steps": 169,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        105,
+        74,
+        66,
+        89
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 78
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 82
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:43:54Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 3,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.725866328924894,
+      "decode_seconds": 14.166756791993976,
+      "e2e_seconds": 22.89262312091887,
+      "wall_seconds": 22.895,
+      "decode_tps": 72.28189309911006,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "582789bdc5b96605a1135190c25ace48bea68dbe13056aacba17d2e1f1a507db",
+      "counters": {
+        "decode_rows": 604,
+        "decode_steps": 171,
+        "prefill_steps": 4,
+        "reuse_rows": 32,
+        "saving_rows": 256,
+        "store_rows": 279,
+        "update_rows": 572
+      },
+      "per_seq_global_denoise_steps": [
+        107,
+        74,
+        66,
+        101
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 82
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 77
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:44:17Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 4,
+      "order_index": 0,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.834204034879804,
+      "decode_seconds": 14.854056172072887,
+      "e2e_seconds": 23.68826020695269,
+      "wall_seconds": 23.69,
+      "decode_tps": 68.93739919505775,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "582789bdc5b96605a1135190c25ace48bea68dbe13056aacba17d2e1f1a507db",
+      "counters": {
+        "decode_rows": 604,
+        "decode_steps": 171,
+        "prefill_steps": 4,
+        "reuse_rows": 32,
+        "saving_rows": 256,
+        "store_rows": 279,
+        "update_rows": 572
+      },
+      "per_seq_global_denoise_steps": [
+        107,
+        74,
+        66,
+        101
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 77
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 87
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:44:40Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 4,
+      "order_index": 1,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.738362541422248,
+      "decode_seconds": 13.637127792462707,
+      "e2e_seconds": 22.375490333884954,
+      "wall_seconds": 22.377,
+      "decode_tps": 75.08912548036463,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f6c8de389875542e555dba969c2d5681bf60127bb299a9f78ce99ec91408519e",
+      "counters": {
+        "decode_rows": 590,
+        "decode_steps": 169,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        105,
+        74,
+        66,
+        89
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 87
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 78
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:45:03Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 5,
+      "order_index": 0,
+      "condition": "dense",
+      "ratio": 0.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.794758167117834,
+      "decode_seconds": 13.682912766933441,
+      "e2e_seconds": 22.477670934051275,
+      "wall_seconds": 22.48,
+      "decode_tps": 74.83786657433282,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "f6c8de389875542e555dba969c2d5681bf60127bb299a9f78ce99ec91408519e",
+      "counters": {
+        "decode_rows": 590,
+        "decode_steps": 169,
+        "prefill_steps": 4,
+        "reuse_rows": 0,
+        "saving_rows": 256,
+        "store_rows": 0,
+        "update_rows": 0
+      },
+      "per_seq_global_denoise_steps": [
+        105,
+        74,
+        66,
+        89
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 78
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 86
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:45:25Z"
+    },
+    {
+      "schema_version": 1,
+      "run_id": "flashblock-20261023-efficiency",
+      "setting": "B4L8192",
+      "batch": 4,
+      "length": 8192,
+      "round": 5,
+      "order_index": 1,
+      "condition": "s2",
+      "ratio": 2.0,
+      "seed": 42,
+      "max_new_tokens": 256,
+      "ignore_eos": true,
+      "prefill_seconds": 8.802038125693798,
+      "decode_seconds": 13.890440883114934,
+      "e2e_seconds": 22.692479008808732,
+      "wall_seconds": 22.694,
+      "decode_tps": 73.71976228952985,
+      "total_output_tokens": 1024,
+      "output_token_counts": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "output_concat_sha256": "582789bdc5b96605a1135190c25ace48bea68dbe13056aacba17d2e1f1a507db",
+      "counters": {
+        "decode_rows": 604,
+        "decode_steps": 171,
+        "prefill_steps": 4,
+        "reuse_rows": 32,
+        "saving_rows": 256,
+        "store_rows": 279,
+        "update_rows": 572
+      },
+      "per_seq_global_denoise_steps": [
+        107,
+        74,
+        66,
+        101
+      ],
+      "per_seq_completion_tokens": [
+        256,
+        256,
+        256,
+        256
+      ],
+      "peak_allocated_mib": 14768.6,
+      "peak_reserved_mib": 14946.0,
+      "load_start": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 86
+      },
+      "load_end": {
+        "mem_total_mib": 24576.0,
+        "mem_used_mib": 19852.875,
+        "mem_free_mib": 4723.125,
+        "util_gpu_pct": 76
+      },
+      "problems": [],
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "ended_at_utc": "2026-10-23T03:45:48Z"
+    }
+  ]
+}

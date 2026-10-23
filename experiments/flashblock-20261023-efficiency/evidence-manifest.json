@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "note": "small sanitized evidence retained in run dir (outside Git); hashes for provenance",
+  "files": {
+    "timed-rows.json": {
+      "sha256": "35a3512b0561d4b26e2fdf0ec5a6eba848c5a291c9b709bd616340164e1f2bc1",
+      "bytes": 97903
+    },
+    "timed-rows-attempt1.json": {
+      "sha256": "d8669124677b9a6776ee800e6f632abf8c859214f0201b5d157f27b9c1dd066b",
+      "bytes": 47265
+    },
+    "matrix-attempt1.json": {
+      "sha256": "6952f0d15ac85e59e37a5d1dd11569740cbc25d3ed7284c289b6903d001b1106",
+      "bytes": 55353
+    },
+    "matrix.json": {
+      "sha256": "bcc67767a0cc2f1cf75a04dff29e36810e0418ece39a229248e9f8a31d3852a4",
+      "bytes": 55607
+    },
+    "smoke.json": {
+      "sha256": "1482517780add0bd2f7efaaee40e70dd2ab75f48d0b7cacd610ec8137738993b",
+      "bytes": 1776
+    },
+    "aborted-restart.json": {
+      "sha256": "6146f318905e3fc7b4dc8ff1906a65f0087df5cc4ea8d3a9325c8267a9f9eb85",
+      "bytes": 582
+    },
+    "profile-attempt1-empty.json": {
+      "sha256": "f9cc7b908a73931eb191c51278391f6e0b1fb278ab805630ba3852010d788eee",
+      "bytes": 4868
+    },
+    "profile.json": {
+      "sha256": "af4a4c2949cdb84185beb501fcf3cdaa4813e5f86e4b3d60fa34b09958751dea",
+      "bytes": 58002
+    },
+    "preflight-attempt1.json": {
+      "sha256": "3437fe93367e20bd76f53d6319eabbad0c32680ca76368aa8559c4c2e9fb1b86",
+      "bytes": 5470
+    },
+    "preflight.json": {
+      "sha256": "350d4a5a0c2e437b1220d72b02f2b817774b8e0facc63d77a0fc134ad41a3572",
+      "bytes": 6350
+    }
+  }
+}

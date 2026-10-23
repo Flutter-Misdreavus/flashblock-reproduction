@@ -1,0 +1,9 @@
+# GPT finalization review — no further GPU reruns
+
+The firstprofile at5d6fb451 had statusSUCCEEDED but EMPTY CUDA kernel tables (0total), wall259.130s. Treat its attribution as unusable, preserve the original JSON/log. Its exactB4L8192 warmup finite audits are valid evidence: dense173calls/s2175calls,0nonfinite. The current committeda13e5b09 property-extraction retry may finish, but no third profile/GPU repair is authorized in thisstage. If still empty, report attribution unavailable; do not invent zero-attention costs. Primary60timings unchanged, remain usable subject to GPT audit.
+
+Beforefinalreport ensure ledger includes BOTH profileattempt1-empty259.130s and currentprofile plus allfailed/abortedcommands. `_prior_gpu_wall` originally default-excludesmatrix.json, so profile livecumulativecheck omitted B4matrixwall; note implementationgap and fixledger inclusion now. GPT's conservative fullwrapperwall will bound cumulativecharge, but do not claim that flawed check enforced allcommands.
+
+Add original evidence as hash-manifested report artifacts (may remain under ignoredruns): timed-rows-attempt1.json, matrix-attempt1.json, smoke.json, aborted-restart.json, profile-attempt1-empty.json, currentmatrix.json/currentprofile.json, and preflight-attempt1.json. They are small metrics, not rawDSHlogs or data. Finalreport must list actualB1/B4/profileSHAs and laterCPUfixHEAD separately. Profileanalysis-only extra retry must be disclosed as scope-limited repair beyond the two generative repaircycles, not silently omitted.
+
+Root read-only independentcheck found all60 rows and exactoriginalB1preservation, oneoutputhash percondition/setting acrossfive repeats. Primarymean pairedratio0.966106, no1.10target. Negative result is valid; no tuning or reruns forspeed. Finish report andstopforGPTreview.

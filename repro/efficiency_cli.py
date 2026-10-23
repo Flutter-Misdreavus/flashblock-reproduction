@@ -936,7 +936,7 @@ def _prior_gpu_wall(include_current_matrix=False):
         except Exception:
             pass
     for name in ("smoke.json", "matrix-attempt1.json", "aborted-restart.json",
-                 "matrix.json", "profile.json"):
+                 "matrix.json", "profile-attempt1-empty.json", "profile.json"):
         p = RUN_DIR / name
         if p.exists() and (include_current_matrix or name != "matrix.json"):
             try:
@@ -1659,7 +1659,8 @@ def cmd_ledger(args):
     for name, w in details.items():
         files[name] = {"wall_seconds": round(w, 3)}
     for p in sorted(RUN_DIR.glob("*.json")):
-        if p.name not in ("preflight.json", "smoke.json", "matrix.json", "profile.json"):
+        if p.name not in ("preflight.json", "smoke.json", "matrix.json",
+                          "profile-attempt1-empty.json", "profile.json"):
             continue
         try:
             d = _load(p)
@@ -1678,9 +1679,14 @@ def cmd_ledger(args):
               "campaign_limit_gpu_hours": cfg["budget"]["campaign_limit_gpu_hours"],
               "stage_limit_gpu_hours": cfg["budget"]["stage_gpu_hours"],
               "note": "conservative sum of measured GPU-command walls including every "
-                      "retained preflight attempt, matrix warmups/timed runs and profiles; "
-                      "failed/aborted commands are charged too"}
-    for fname in ("preflight.json", "smoke.json", "matrix.json", "profile.json"):
+                      "retained preflight attempt, matrix warmups/timed runs and both profile "
+                      "attempts; failed/aborted commands are charged too",
+              "live_budget_check_gap": "the profile command's live cumulative check called "
+                      "_prior_gpu_wall() with its default matrix-exclusion, so it did not see "
+                      "the B4 matrix wall; this final ledger includes it and no claim is made "
+                      "that the live profile check enforced the full cumulative budget"}
+    for fname in ("preflight.json", "smoke.json", "matrix.json",
+                  "profile-attempt1-empty.json", "profile.json"):
         p = RUN_DIR / fname
         if p.exists():
             d = _load(p)
@@ -1704,17 +1710,22 @@ def cmd_commands(args):
     cfg = load_config(args.config)
     entries = []
     cmds = [
-        ("environment_probe", "repro/efficiency_cli.py probe --out experiments/" + RUN_ID + "/environment.json"),
-        ("input_freeze", "repro/efficiency_cli.py freeze"),
-        ("preflight", "repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json"),
-        ("matrix", "repro/efficiency_cli.py matrix"),
-        ("profile", "repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json"),
-        ("summary", "repro/efficiency_cli.py summarize"),
-        ("ledger", "repro/efficiency_cli.py ledger"),
+        ("environment_probe", "repro/efficiency_cli.py probe --out experiments/" + RUN_ID + "/environment.json", "7a9b87fb"),
+        ("input_freeze", "repro/efficiency_cli.py freeze", "7a9b87fb"),
+        ("preflight_attempt1_failed", "repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json", "fd94c13f"),
+        ("preflight_attempt2_passed", "repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json", "6131651c"),
+        ("engine_release_smoke", "repro/efficiency_cli.py smoke --out runs/" + RUN_ID + "/smoke.json", "cafd8a40"),
+        ("matrix_B1_attempt", "repro/efficiency_cli.py matrix", "0d33c934"),
+        ("matrix_full_restart_cancelled", "repro/efficiency_cli.py matrix", "6d5ac288"),
+        ("matrix_B4_resume", "repro/efficiency_cli.py matrix --resume-b4", "5d6fb451"),
+        ("profile_attempt1_empty", "repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json", "5d6fb451"),
+        ("profile_attempt2", "repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json", "a13e5b09"),
+        ("summary", "repro/efficiency_cli.py summarize", "HEAD"),
+        ("ledger", "repro/efficiency_cli.py ledger", "HEAD"),
     ]
-    for stage, cmd in cmds:
-        entries.append({"stage": stage, "argv": [sys.executable] + cmd.split(),
-                        "git_head_at_stage": None, "note": "see per-artifact execution_commit"})
+    for stage, cmd, sha in cmds:
+        entries.append({"stage": stage, "command": cmd, "git_head_at_stage": sha,
+                        "note": "actual execution SHA recorded in each raw artifact"})
     payload = {"schema_version": 1, "run_id": RUN_ID,
                "task_sha256": _sha256(ROOT / "experiments" / RUN_ID / "task.json")
                if (ROOT / "experiments" / RUN_ID / "task.json").exists() else None,
@@ -1744,6 +1755,13 @@ def cmd_finalize(args):
                              and profile.get("status") == "SUCCEEDED"
                              and summary.get("all_rows") == 60) else "FAILED"
     b4_commit = summary.get("execution_commits", {}).get("B4_resume_attempt")
+    try:
+        started = _load(RUN_DIR / "started.json")
+        import datetime
+        t0 = datetime.datetime.fromisoformat(started["started_at"].replace("Z", "+00:00")).timestamp()
+        wrapper_wall = round(time.time() - t0, 3)
+    except Exception:
+        wrapper_wall = None
     run_commits = [
         {"stage": "driver_config_manifest", "sha": args.driver_commit,
          "note": "frozen config, input recipe, driver"},
@@ -1810,15 +1828,15 @@ def cmd_finalize(args):
             f"finite-logit audit. No heldout QA or training."),
         "executed_commands": [
             "cd /data/research/flashblock-reproduction",
-            "runtime/venv/bin/python repro/efficiency_cli.py probe --out experiments/" + RUN_ID + "/environment.json",
-            "runtime/venv/bin/python repro/efficiency_cli.py freeze",
-            "runtime/venv/bin/python repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json",
-            "runtime/venv/bin/python repro/efficiency_cli.py matrix",
-            "runtime/venv/bin/python repro/efficiency_cli.py smoke --out runs/" + RUN_ID + "/smoke.json",
-            "runtime/venv/bin/python repro/efficiency_cli.py matrix --resume-b4",
-            "runtime/venv/bin/python repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json",
-            "runtime/venv/bin/python repro/efficiency_cli.py summarize",
-            "runtime/venv/bin/python repro/efficiency_cli.py ledger",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py probe --out experiments/" + RUN_ID + "/environment.json",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py freeze",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py preflight --out runs/" + RUN_ID + "/preflight.json",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py smoke --out runs/" + RUN_ID + "/smoke.json",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py matrix",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py matrix --resume-b4",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py profile --out runs/" + RUN_ID + "/profile.json",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py summarize",
+            "/data/research/flashblock-reproduction-runtime/venv/bin/python repro/efficiency_cli.py ledger",
         ],
         "metrics": [
             {"config": "B4L8192", "seed": 42, "split": "train-only synthetic workload",
@@ -1842,16 +1860,27 @@ def cmd_finalize(args):
             "Profiler latencies are separate and excluded from the 60 primary rows.",
             "B1 and B4 rows have different execution commits: B1 from the retained OOM "
             "attempt, B4 from the strict B4-only resume; no B1 rerun or cherry-picking.",
+            "Profile attempt 1 at 5d6fb451 was marked SUCCEEDED but produced an empty kernel "
+            "table; it is preserved as profile-attempt1-empty.json. The a13e5b09 extraction "
+            "retry is a profile-analysis-only repair beyond the two generative repair cycles; "
+            "no primary timing row changed.",
+            "The profile command's live cumulative-budget check omitted the already-completed "
+            "B4 matrix wall due to a _prior_gpu_wall default; the final ledger includes every "
+            "command, and no claim is made that the live check enforced the full cumulative "
+            "budget.",
             "This is an engineering efficiency measurement, not a paper-table replication."
         ],
         "failures": failures,
         "resource_usage": {
-            "wall_seconds": ledger["gpu_command_wall_seconds_sum"],
+            "wall_seconds": wrapper_wall,
             "gpu_hours": ledger["gpu_command_wall_hours"],
+            "gpu_command_wall_seconds": ledger["gpu_command_wall_seconds_sum"],
+            "wrapper_wall_seconds": wrapper_wall,
+            "note": "wall_seconds is wrapper wall; gpu_hours is conservative sum of measured "
+                    "GPU-command walls including failed/aborted attempts",
             "stage_gpu_hours_limit": cfg["budget"]["stage_gpu_hours"],
             "campaign_before_gpu_hours": cfg["budget"]["campaign_before_gpu_hours"],
             "campaign_after_upper_gpu_hours": ledger["campaign_after_upper_gpu_hours"],
-            "note": "conservative sum of measured GPU-command walls including failures",
         },
         "next_recommendation": (
             "GPT should independently recompute the paired statistics from all 60 rows and "
@@ -1864,6 +1893,9 @@ def cmd_finalize(args):
                 ["git", "-C", str(ROOT), "branch", "--show-current"], text=True).strip(),
             "run_commits": run_commits,
             "head_commit": head,
+            "later_cpu_fix_head": head,
+            "later_cpu_fix_note": "summary/report CPU-only commit made after all GPU execution; "
+                                  "not used as a timed-run SHA",
             "commits": commits,
             "push_status": "pending",
             "push_error": "relay mode: executor commits locally only; GPT pulls the private "
@@ -1871,6 +1903,7 @@ def cmd_finalize(args):
         },
     }
     artifact_names = ["metrics.json", "environment.json", "input-manifest.json",
+                      "run-commits.json", "evidence-manifest.json",
                       "preflight.json", "efficiency-paired-runs.json",
                       "efficiency-summary.json", "efficiency-speedup-table.csv",
                       "separate-profile.json", "resource-ledger.json",
@@ -1882,7 +1915,13 @@ def cmd_finalize(args):
             tmp = RUN_DIR / (name + ".tmp")
             shutil.copyfile(src, tmp)
             os.replace(tmp, RUN_DIR / name)
-    report["artifacts"] = [name for name in artifact_names if (RUN_DIR / name).exists()]
+    evidence_names = ["timed-rows.json", "timed-rows-attempt1.json",
+                      "matrix-attempt1.json", "matrix.json", "smoke.json",
+                      "aborted-restart.json", "profile-attempt1-empty.json",
+                      "profile.json", "preflight-attempt1.json", "preflight.json"]
+    report["artifacts"] = list(dict.fromkeys(
+        [name for name in artifact_names if (RUN_DIR / name).exists()]
+        + [name for name in evidence_names if (RUN_DIR / name).exists()]))
     _atomic_json(RUN_DIR / "report.json", report)
     print(json.dumps({"status": status, "out": str(RUN_DIR / "report.json"),
                       "head": head}))

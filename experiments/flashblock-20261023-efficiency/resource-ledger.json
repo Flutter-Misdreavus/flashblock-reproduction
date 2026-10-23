@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "commands": {
+    "preflight-attempt1.json": {
+      "wall_seconds": 15.146
+    },
+    "preflight.json": {
+      "wall_seconds": 20.315,
+      "status": "SUCCEEDED",
+      "execution_commit": "6131651c22abf5b0b149a139e851dd483bbe698b",
+      "path": "runs/flashblock-20261023-efficiency/preflight.json"
+    },
+    "smoke.json": {
+      "wall_seconds": 17.889,
+      "status": "SUCCEEDED",
+      "execution_commit": "cafd8a4060afff8139cc6706346c574ea7aceca9",
+      "path": "runs/flashblock-20261023-efficiency/smoke.json"
+    },
+    "matrix-attempt1.json": {
+      "wall_seconds": 678.307
+    },
+    "aborted-restart.json": {
+      "wall_seconds": 30.0
+    },
+    "matrix.json": {
+      "wall_seconds": 731.006,
+      "status": "SUCCEEDED",
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "path": "runs/flashblock-20261023-efficiency/matrix.json"
+    },
+    "profile-attempt1-empty.json": {
+      "wall_seconds": 259.13,
+      "status": "SUCCEEDED",
+      "execution_commit": "5d6fb45146dfb1fa8290645b68babc7c9dba7235",
+      "path": "runs/flashblock-20261023-efficiency/profile-attempt1-empty.json"
+    },
+    "profile.json": {
+      "wall_seconds": 252.625,
+      "status": "SUCCEEDED",
+      "execution_commit": "a13e5b0953623e6a95f307d4a5160c8964579dec",
+      "path": "runs/flashblock-20261023-efficiency/profile.json"
+    }
+  },
+  "gpu_command_wall_seconds_sum": 2004.418,
+  "gpu_command_wall_hours": 0.556783,
+  "campaign_before_gpu_hours": 1.0,
+  "campaign_after_upper_gpu_hours": 1.556783,
+  "campaign_limit_gpu_hours": 8.0,
+  "stage_limit_gpu_hours": 1.5,
+  "note": "conservative sum of measured GPU-command walls including every retained preflight attempt, matrix warmups/timed runs and both profile attempts; failed/aborted commands are charged too",
+  "live_budget_check_gap": "the profile command's live cumulative check called _prior_gpu_wall() with its default matrix-exclusion, so it did not see the B4 matrix wall; this final ledger includes it and no claim is made that the live profile check enforced the full cumulative budget",
+  "preflight.json": {
+    "gpu_command_wall_seconds": 20.315,
+    "cumulative_gpu_wall_seconds": null,
+    "physical_free_min_mib": 5659.1,
+    "physical_used_max_mib": 18916.9,
+    "util_gpu_mean_pct": 54.25,
+    "util_gpu_max_pct": 100,
+    "samples": 40,
+    "breach": null
+  },
+  "smoke.json": {
+    "gpu_command_wall_seconds": 17.889,
+    "cumulative_gpu_wall_seconds": null,
+    "physical_free_min_mib": null,
+    "physical_used_max_mib": null,
+    "util_gpu_mean_pct": null,
+    "util_gpu_max_pct": null,
+    "samples": null,
+    "breach": null
+  },
+  "matrix.json": {
+    "gpu_command_wall_seconds": 731.006,
+    "cumulative_gpu_wall_seconds": 1492.663,
+    "physical_free_min_mib": 4723.1,
+    "physical_used_max_mib": 19852.9,
+    "util_gpu_mean_pct": 81.95,
+    "util_gpu_max_pct": 100,
+    "samples": 1458,
+    "breach": null
+  },
+  "profile-attempt1-empty.json": {
+    "gpu_command_wall_seconds": 259.13,
+    "cumulative_gpu_wall_seconds": 1020.787,
+    "physical_free_min_mib": 4731.1,
+    "physical_used_max_mib": 19844.9,
+    "util_gpu_mean_pct": 49.12,
+    "util_gpu_max_pct": 100,
+    "samples": 434,
+    "breach": null
+  },
+  "profile.json": {
+    "gpu_command_wall_seconds": 252.625,
+    "cumulative_gpu_wall_seconds": 1014.282,
+    "physical_free_min_mib": 4731.1,
+    "physical_used_max_mib": 19844.9,
+    "util_gpu_mean_pct": 46.68,
+    "util_gpu_max_pct": 100,
+    "samples": 427,
+    "breach": null
+  },
+  "stage_cumulative_gpu_hours_including_this": 0.556783
+}

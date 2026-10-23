@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "run_id": "flashblock-20261023-efficiency",
+  "metrics": [
+    {
+      "config": "B1L1024",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 0.9289838242940551,
+      "unit": "ratio"
+    },
+    {
+      "config": "B1L4096",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 1.045774207175244,
+      "unit": "ratio"
+    },
+    {
+      "config": "B1L8192",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 0.6814543217885565,
+      "unit": "ratio"
+    },
+    {
+      "config": "B4L1024",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 1.0974917910781836,
+      "unit": "ratio"
+    },
+    {
+      "config": "B4L4096",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 0.925228550162015,
+      "unit": "ratio"
+    },
+    {
+      "config": "B4L8192",
+      "seed": 42,
+      "split": "train-only synthetic workload",
+      "metric": "mean_paired_dense_decode_seconds/s2_decode_seconds",
+      "value": 0.966106382862414,
+      "unit": "ratio"
+    }
+  ]
+}
